@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Struktur Organisasi Kampung Lapua - Tradisional Mewah</title>
+
+    <!-- Memuat Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Memuat Lucide Icons untuk simbol-simbol profesional -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+
+    <style>
+      /* Impor font Serif untuk kesan Tradisional Mewah */
+      @import url("https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Merriweather:wght@300;400;700;900&display=swap");
+
+      /* Skema Warna Mewah */
+      :root {
+        --color-primary: #b8860b; /* Emas Tua (Goldenrod) - Aksen Mewah */
+        --color-secondary: #1d2b45; /* Biru Dongker / Navy Gelap - Warna Dasar Kaya */
+        --color-light-bg: #fcf8f3; /* Putih Gading / Creamy White - Latar Belakang Hangat */
+        --color-text: #1d2b45; /* Teks Gelap (Dark Navy) */
+      }
+
+      body {
+        font-family: "Merriweather", serif; /* Teks umum */
+        background-color: var(--color-light-bg);
+        color: var(--color-text);
+        line-height: 1.6;
+        min-height: 100vh;
+      }
+
+      /* Judul dan Header menggunakan font yang lebih elegan */
+      h1,
+      .header-primary span {
+        font-family: "Playfair Display", serif;
+      }
+
+      /* Kotak Konten Utama */
+      .main-container {
+        background-color: white;
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15); /* Bayangan lebih dalam */
+        border-radius: 12px;
+        border: 1px solid #e0d9c9; /* Border halus */
+      }
+
+      /* Styling Judul */
+      h1 {
+        color: var(--color-secondary);
+        font-weight: 800;
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.05);
+      }
+
+      /* Styling Kotak Jabatan (Card) */
+      .jabatan-card {
+        background-color: white;
+        border-radius: 4px; /* Lebih klasik */
+        border: 2px solid var(--color-primary); /* Garis emas */
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease-in-out;
+        cursor: pointer;
+      }
+      .jabatan-card:hover {
+        box-shadow: 0 8px 25px rgba(184, 134, 11, 0.5); /* Bayangan emas saat hover */
+        transform: translateY(-3px);
+        background-color: #fffff0; /* Sedikit lebih cerah */
+      }
+
+      /* Warna Aksen untuk Header Utama */
+      .header-primary {
+        background-color: var(--color-secondary); /* Navy Gelap */
+        color: var(--color-light-bg);
+        font-weight: 700;
+        letter-spacing: 0.5px; /* Sedikit jarak antar huruf */
+      }
+
+      /* Garis Penghubung Hierarchy */
+      .connector-line {
+        width: 3px; /* Garis lebih tebal */
+        background-color: var(--color-primary); /* Emas */
+        margin: 0 auto;
+      }
+
+      /* Styling Garis Horizontal untuk Koneksi antar level */
+      .connector-horizontal {
+        height: 3px; /* Garis lebih tebal */
+        background-color: var(--color-primary); /* Emas */
+      }
+
+      /* Titik Tengah untuk koneksi horizontal */
+      .connector-dot {
+        width: 10px;
+        height: 10px;
+        background-color: var(--color-secondary);
+        border-radius: 50%;
+        border: 2px solid var(--color-primary);
+        position: absolute;
+        top: -4px;
+        left: 50%;
+        transform: translateX(-50%);
+      }
+
+      /* Responsif untuk garis penghubung di desktop/tablet */
+      @media (min-width: 1024px) {
+        .hierarchy-group {
+          display: flex;
+          justify-content: center;
+          gap: 2.5rem; /* Jarak lebih luas */
+        }
+        .hierarchy-item {
+          flex: 1 1 30%;
+          max-width: 30%;
+        }
+      }
+
+      /* Styling Modal Avatar yang Diperbesar */
+      .modal-avatar {
+        width: 128px; /* w-32 */
+        height: 128px; /* h-32 */
+        margin-left: auto;
+        margin-right: auto;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 5px solid var(--color-primary); /* Border Emas */
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+      }
+
+      /* Warna Aksen Modal */
+      .modal-accent-text {
+        color: var(--color-primary);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="max-w-7xl mx-auto p-4 md:p-8 lg:p-12 py-16">
+      <!-- Kontainer Utama -->
+      <div class="main-container p-6 md:p-10 lg:p-14">
+        <!-- Header Utama -->
+        <header class="text-center mb-10">
+          <h1
+            class="text-3xl md:text-5xl leading-tight mb-2 uppercase tracking-wide"
+          >
+            Struktur Organisasi Kampung Lapua
+          </h1>
+          <p class="text-base text-gray-700 max-w-xl mx-auto font-light">
+            Sistem Kepengurusan Resmi - Tradisional & Berwibawa.
+          </p>
+          <!-- Garis Aksen Emas di bawah header -->
+          <div
+            class="w-24 h-1 bg-[var(--color-primary)] mx-auto mt-4 rounded-full"
+          ></div>
+        </header>
+
+        <!-- Bagan Struktur Organisasi (Hierarki) -->
+        <section id="bagan-struktur" class="mb-12">
+          <div class="flex flex-col items-center space-y-6">
+            <!-- LEVEL 1: KEPALA KAMPUNG -->
+            <div
+              id="card-kepala-kampung"
+              class="w-full max-w-sm jabatan-card overflow-hidden"
+              onclick="showModal('kepala-kampung', 'KEPALA KAMPUNG')"
+            >
+              <div
+                class="header-primary text-center py-3 px-4 text-xl flex justify-between items-center"
+              >
+                <i data-lucide="crown" class="w-6 h-6 mr-2"></i>
+                <span class="flex-grow">KEPALA KAMPUNG</span>
+                <i
+                  data-lucide="chevron-down"
+                  class="w-5 h-5 transition-transform duration-300"
+                ></i>
+              </div>
+              <div class="p-4 text-center">
+                <i
+                  data-lucide="shield"
+                  class="w-7 h-7 mx-auto mb-1 text-[var(--color-primary)]"
+                ></i>
+                <p class="text-sm font-medium">
+                  Penanggung Jawab Wilayah & Administrasi
+                </p>
+              </div>
+            </div>
+
+            <!-- Garis Penghubung (Level 1 ke 2) -->
+            <div class="connector-line h-8"></div>
+
+            <!-- LEVEL 2: SEKRETARIS KAMPUNG -->
+            <div
+              id="card-sekretaris-kampung"
+              class="w-full max-w-sm jabatan-card overflow-hidden"
+              onclick="showModal('sekretaris-kampung', 'SEKRETARIS KAMPUNG')"
+            >
+              <div
+                class="header-primary text-center py-2 px-4 bg-[var(--color-secondary)] flex justify-between items-center"
+              >
+                <span>SEKRETARIS KAMPUNG</span>
+                <i
+                  data-lucide="chevron-down"
+                  class="w-5 h-5 transition-transform duration-300"
+                ></i>
+              </div>
+              <div class="p-3 text-center">
+                <i
+                  data-lucide="file-text"
+                  class="w-6 h-6 mx-auto mb-1 text-[var(--color-primary)]"
+                ></i>
+                <p class="text-xs font-medium">
+                  Koordinator Tata Usaha & Pelaporan
+                </p>
+              </div>
+            </div>
+
+            <!-- Garis Penghubung Horizontal (Sekretaris ke Kaur/Kasi) -->
+            <div class="connector-line h-8"></div>
+            <div class="connector-horizontal w-full max-w-4xl relative">
+              <div class="connector-dot"></div>
+            </div>
+
+            <!-- Garis Penghubung Vertikal ke Grup -->
+            <div class="h-8 flex justify-center w-full max-w-4xl">
+              <div class="connector-line h-full"></div>
+            </div>
+
+            <!-- LEVEL 3: KAUR & KASI (Staf Inti) -->
+            <div
+              class="hierarchy-group w-full max-w-4xl flex flex-col lg:flex-row space-y-4 lg:space-y-0 lg:gap-8"
+            >
+              <!-- Grup KAUR (Urusan) -->
+              <div class="hierarchy-item flex flex-col items-center">
+                <div
+                  class="text-center mb-4 text-sm font-semibold uppercase text-[var(--color-secondary)] tracking-wider"
+                >
+                  Kepala Urusan (KAUR)
+                </div>
+                <div class="w-full space-y-4">
+                  <div
+                    id="card-kaur-tu-umum"
+                    class="jabatan-card text-xs p-3 text-center font-medium bg-[#fffff0] border-[var(--color-primary)]/50"
+                    onclick="showModal('kaur-tu-umum', 'KAUR TU & UMUM')"
+                  >
+                    KAUR Tata Usaha & Umum
+                  </div>
+                  <div
+                    id="card-kaur-keuangan"
+                    class="jabatan-card text-xs p-3 text-center font-medium bg-[#fffff0] border-[var(--color-primary)]/50"
+                    onclick="showModal('kaur-keuangan', 'KAUR KEUANGAN')"
+                  >
+                    KAUR Keuangan
+                  </div>
+                  <div
+                    id="card-kaur-perencanaan"
+                    class="jabatan-card text-xs p-3 text-center font-medium bg-[#fffff0] border-[var(--color-primary)]/50"
+                    onclick="showModal('kaur-perencanaan', 'KAUR PERENCANAAN')"
+                  >
+                    KAUR Perencanaan
+                  </div>
+                </div>
+                <!-- Garis ke Kadus (di bawah grup ini) -->
+                <div class="connector-line h-8 mt-6"></div>
+              </div>
+
+              <!-- Grup KASI (Seksi) -->
+              <div class="hierarchy-item flex flex-col items-center">
+                <div
+                  class="text-center mb-4 text-sm font-semibold uppercase text-[var(--color-secondary)] tracking-wider"
+                >
+                  Kepala Seksi (KASI)
+                </div>
+                <div class="w-full space-y-4">
+                  <div
+                    id="card-kasi-pemerintahan"
+                    class="jabatan-card text-xs p-3 text-center font-medium bg-[#fffff0] border-[var(--color-primary)]/50"
+                    onclick="showModal('kasi-pemerintahan', 'KASI PEMERINTAHAN')"
+                  >
+                    KASI Pemerintahan
+                  </div>
+                  <div
+                    id="card-kasi-kesejahteraan"
+                    class="jabatan-card text-xs p-3 text-center font-medium bg-[#fffff0] border-[var(--color-primary)]/50"
+                    onclick="showModal('kasi-kesejahteraan', 'KASI KESEJAHTERAAN')"
+                  >
+                    KASI Kesejahteraan
+                  </div>
+                  <div
+                    id="card-kasi-pelayanan"
+                    class="jabatan-card text-xs p-3 text-center font-medium bg-[#fffff0] border-[var(--color-primary)]/50"
+                    onclick="showModal('kasi-pelayanan', 'KASI PELAYANAN')"
+                  >
+                    KASI Pelayanan
+                  </div>
+                </div>
+                <!-- Garis ke Kadus (di bawah grup ini) -->
+                <div class="connector-line h-8 mt-6"></div>
+              </div>
+            </div>
+
+            <!-- Garis Penghubung Horizontal (Kaur/Kasi ke Kadus) -->
+            <div class="connector-horizontal w-full max-w-3xl relative">
+              <div class="connector-dot"></div>
+            </div>
+
+            <!-- Garis Penghubung Vertikal ke Dusun -->
+            <div class="h-8 flex justify-center w-full max-w-3xl">
+              <div class="connector-line h-full"></div>
+            </div>
+
+            <!-- LEVEL 4: KEPALA DUSUN (Kadus) -->
+            <div class="w-full max-w-xl">
+              <div
+                class="text-center mb-4 text-sm font-semibold uppercase text-gray-700 tracking-wider"
+              >
+                Unsur Kewilayahan
+              </div>
+              <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                <div
+                  id="card-kadus-1"
+                  class="jabatan-card text-sm p-3 text-center font-medium bg-[#fffff8] border-[var(--color-secondary)]/50"
+                  onclick="showModal('kadus-1', 'KEPALA DUSUN I')"
+                >
+                  KEPALA DUSUN I
+                </div>
+                <div
+                  id="card-kadus-2"
+                  class="jabatan-card text-sm p-3 text-center font-medium bg-[#fffff8] border-[var(--color-secondary)]/50"
+                  onclick="showModal('kadus-2', 'KEPALA DUSUN II')"
+                >
+                  KEPALA DUSUN II
+                </div>
+                <div
+                  id="card-kadus-3"
+                  class="jabatan-card text-sm p-3 text-center font-medium bg-[#fffff8] border-[var(--color-secondary)]/50"
+                  onclick="showModal('kadus-3', 'KEPALA DUSUN III')"
+                >
+                  KEPALA DUSUN III
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+      <!-- Akhir Kontainer Utama -->
+    </div>
+
+    <footer class="mt-8 py-4 text-center text-gray-600 text-xs">
+      <p class="font-light">
+        Dibangun dengan Wibawa & Tradisi | Kampung Lapua © 2025
+      </p>
+    </footer>
+
+    <!-- Modal Kontak Detail (Popup) -->
+    <div
+      id="contactModal"
+      class="fixed inset-0 bg-black bg-opacity-60 z-50 hidden flex items-center justify-center p-4"
+      onclick="closeModal()"
+    >
+      <div
+        class="bg-white rounded-xl shadow-2xl p-6 md:p-8 max-w-sm w-full transform transition-all duration-300 scale-95"
+        onclick="event.stopPropagation()"
+      >
+        <div class="text-center mb-6">
+          <!-- Avatar Placeholder Gambar - Ukuran Diperbesar -->
+          <img
+            id="modal-avatar-img"
+            src=""
+            alt="Foto Pejabat"
+            class="modal-avatar mb-3"
+          />
+
+          <p
+            class="text-xs uppercase text-gray-500 font-medium tracking-wider"
+            id="modal-title"
+          ></p>
+          <h3
+            class="text-2xl font-extrabold text-[var(--color-secondary)] mt-1 font-['Playfair_Display']"
+            id="modal-name"
+          ></h3>
+        </div>
+
+        <div class="space-y-4">
+          <!-- Telepon -->
+          <div
+            class="flex items-start text-gray-700 p-2 border-b border-gray-100"
+          >
+            <i
+              data-lucide="phone"
+              class="w-5 h-5 mr-3 text-[var(--color-primary)] flex-shrink-0 mt-1"
+            ></i>
+            <div>
+              <span class="text-xs font-semibold block uppercase text-gray-500"
+                >Telepon/WhatsApp</span
+              >
+              <span class="font-medium text-gray-800" id="modal-phone"></span>
+            </div>
+          </div>
+          <!-- Email -->
+          <div class="flex items-start text-gray-700 p-2">
+            <i
+              data-lucide="mail"
+              class="w-5 h-5 mr-3 text-[var(--color-primary)] flex-shrink-0 mt-1"
+            ></i>
+            <div>
+              <span class="text-xs font-semibold block uppercase text-gray-500"
+                >Email</span
+              >
+              <span
+                class="font-medium text-gray-800 break-all block"
+                id="modal-email"
+              ></span>
+            </div>
+          </div>
+        </div>
+
+        <button
+          onclick="closeModal()"
+          class="w-full mt-8 bg-[var(--color-secondary)] hover:bg-[var(--color-primary)] hover:text-white text-white font-bold py-3 rounded-lg transition duration-300"
+        >
+          Tutup Detail
+        </button>
+      </div>
+    </div>
+    <!-- Akhir Modal -->
+
+    <script>
+      // Data Kontak Dummy (Silakan ganti dengan data sebenarnya)
+      const contactData = {
+        // Ukuran gambar placeholder diubah menjadi 128x128 dan warna disesuaikan
+        "kepala-kampung": {
+          name: "Bpk. H. Ahmad Fauzi, S.E.",
+          phone: "0812-1234-5678",
+          email: "ahmad.fauzi@lapua.go.id",
+          initial: "AF",
+          imgUrl: "https://placehold.co/128x128/1d2b45/b8860b?text=Fauzi",
+          altText: "Foto Bpk. H. Ahmad Fauzi"
+        },
+        "sekretaris-kampung": {
+          name: "Ibu Rita Melati, S.Sos.",
+          phone: "0813-9876-5432",
+          email: "rita.melati@lapua.go.id",
+          initial: "RM",
+          imgUrl: "https://placehold.co/128x128/b8860b/1d2b45?text=Rita",
+          altText: "Foto Ibu Rita Melati"
+        },
+        "kaur-tu-umum": {
+          name: "Bpk. Joni Iskandar, A.Md.",
+          phone: "0811-2233-4455",
+          email: "joni.iskandar@lapua.go.id",
+          initial: "JI",
+          imgUrl: "https://placehold.co/128x128/2a4365/fcf8f3?text=Joni",
+          altText: "Foto Bpk. Joni Iskandar"
+        },
+        "kaur-keuangan": {
+          name: "Ibu Siti Khadijah",
+          phone: "0815-5678-1234",
+          email: "siti.khadijah@lapua.go.id",
+          initial: "SK",
+          imgUrl: "https://placehold.co/128x128/b8860b/1d2b45?text=Siti",
+          altText: "Foto Ibu Siti Khadijah"
+        },
+        "kaur-perencanaan": {
+          name: "Bpk. Rian Hidayat",
+          phone: "0817-8899-0011",
+          email: "rian.hidayat@lapua.go.id",
+          initial: "RH",
+          imgUrl: "https://placehold.co/128x128/1d2b45/b8860b?text=Rian",
+          altText: "Foto Bpk. Rian Hidayat"
+        },
+        "kasi-pemerintahan": {
+          name: "Ibu Dewi Sartika, S.IP.",
+          phone: "0819-1122-3344",
+          email: "dewi.sartika@lapua.go.id",
+          initial: "DS",
+          imgUrl: "https://placehold.co/128x128/b8860b/1d2b45?text=Dewi",
+          altText: "Foto Ibu Dewi Sartika"
+        },
+        "kasi-kesejahteraan": {
+          name: "Bpk. Budi Santoso",
+          phone: "0812-5566-7788",
+          email: "budi.santoso@lapua.go.id",
+          initial: "BS",
+          imgUrl: "https://placehold.co/128x128/2a4365/fcf8f3?text=Budi",
+          altText: "Foto Bpk. Budi Santoso"
+        },
+        "kasi-pelayanan": {
+          name: "Ibu Vina Maulida",
+          phone: "0813-0099-8877",
+          email: "vina.maulida@lapua.go.id",
+          initial: "VM",
+          imgUrl: "https://placehold.co/128x128/1d2b45/b8860b?text=Vina",
+          altText: "Foto Ibu Vina Maulida"
+        },
+        "kadus-1": {
+          name: "Bpk. Herman Jaya",
+          phone: "0815-1020-3040",
+          email: "herman.jaya@lapua.go.id",
+          initial: "HJ",
+          imgUrl: "https://placehold.co/128x128/b8860b/1d2b45?text=Herman",
+          altText: "Foto Bpk. Herman Jaya"
+        },
+        "kadus-2": {
+          name: "Ibu Nia Ramadhani",
+          phone: "0816-4030-2010",
+          email: "nia.ramadhani@lapua.go.id",
+          initial: "NR",
+          imgUrl: "https://placehold.co/128x128/1d2b45/b8860b?text=Nia",
+          altText: "Foto Ibu Nia Ramadhani"
+        },
+        "kadus-3": {
+          name: "Bpk. Fajar Setiawan",
+          phone: "0817-7080-9000",
+          email: "fajar.setiawan@lapua.go.id",
+          initial: "FS",
+          imgUrl: "https://placehold.co/128x128/2a4365/fcf8f3?text=Fajar",
+          altText: "Foto Bpk. Fajar Setiawan"
+        }
+      };
+
+      /**
+       * Menampilkan Modal Kontak dengan data yang relevan.
+       * @param {string} cardId - ID unik untuk mengambil data dari contactData.
+       * @param {string} jabatan - Nama jabatan yang akan ditampilkan di modal.
+       */
+      function showModal(cardId, jabatan) {
+        const data = contactData[cardId];
+        if (!data) return;
+
+        // Mengisi konten Modal
+        document.getElementById("modal-title").textContent = jabatan;
+        document.getElementById("modal-name").textContent = data.name;
+        document.getElementById("modal-phone").textContent = data.phone;
+        document.getElementById("modal-email").textContent = data.email;
+
+        // Mengisi URL Gambar Avatar
+        const avatarImg = document.getElementById("modal-avatar-img");
+        avatarImg.src = data.imgUrl;
+        avatarImg.alt = data.altText;
+
+        // Menampilkan Modal
+        document.getElementById("contactModal").classList.remove("hidden");
+      }
+
+      /**
+       * Menyembunyikan Modal Kontak.
+       */
+      function closeModal() {
+        document.getElementById("contactModal").classList.add("hidden");
+      }
+
+      // Memastikan ikon di HTML utama terbuat saat halaman dimuat
+      window.onload = function () {
+        lucide.createIcons();
+      };
+    </script>
+  </body>
+</html>

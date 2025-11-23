@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pembangunan Kampung Lapua</title>
+    
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Load Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Google Fonts: Poppins -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Konfigurasi Tema Elegan Modern -->
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              primary: '#1e293b', // Slate-900 (Dark/Sophisticated text)
+              accent: '#d97706',  // Amber-600 (Gold/Highlight)
+              soft: '#f9f7f5',    // Soft Cream/Off-White background
+              secondary: '#64748b', // Slate-500 (Subtle text)
+            },
+            fontFamily: {
+              sans: ['Poppins', 'sans-serif'],
+            }
+          }
+        }
+      }
+    </script>
+
+    <style>
+      body {
+        background-color: #f9f7f5; /* Soft Cream */
+      }
+      .activity-card {
+        transition: transform 0.3s ease, box-shadow 0.4s ease;
+        /* Default shadow is lighter for elegance */
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+      }
+      .activity-card:hover {
+        transform: translateY(-5px);
+        /* Deeper shadow on hover for a floating effect */
+        box-shadow: 0 15px 30px -5px rgba(0, 0, 0, 0.15);
+      }
+      .image-container {
+        height: 220px; /* Tinggi gambar sedikit lebih besar */
+        width: 100%;
+        overflow: hidden;
+      }
+      .image-placeholder {
+        object-fit: cover;
+        height: 100%;
+        width: 100%;
+        transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94); /* Smooth zoom */
+      }
+      .activity-card:hover .image-placeholder {
+        transform: scale(1.08);
+      }
+      /* Progress bar (kept blue as requested in the initial screenshot style) */
+      .progress-bar-fill {
+        background-color: #2563eb; /* Blue-600 */
+      }
+      .progress-text {
+        color: #2563eb; /* Blue-600 */
+      }
+    </style>
+  </head>
+  <body class="min-h-screen font-sans bg-soft text-primary antialiased selection:bg-accent selection:text-white">
+    
+    <!-- Header Navigasi -->
+    <header class="sticky top-0 z-50 bg-white/95 backdrop-blur-md shadow-lg border-b border-gray-100">
+      <div class="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
+        <!-- Brand / Judul -->
+        <div class="flex items-center gap-3">
+          <i data-lucide="hard-hat" class="w-6 h-6 text-accent"></i>
+          <div>
+            <h1 class="font-bold text-lg leading-tight text-primary">Realisasi Proyek Pembangunan</h1>
+            <p class="text-xs text-secondary">Monitoring Progres Fisik Terbaru</p>
+          </div>
+        </div>
+        <!-- Tombol Aksi (Filter/Search Mock) -->
+        <button class="text-sm font-medium text-secondary hover:text-accent transition-colors flex items-center gap-2 border border-gray-200 p-2 rounded-xl hover:border-accent shadow-sm">
+          <i data-lucide="filter" class="w-4 h-4"></i>
+          <span class="hidden sm:inline">Filter Proyek Aktif</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Kontainer Utama -->
+    <div id="app-container" class="p-4 sm:p-8 max-w-6xl mx-auto">
+      
+      <!-- Judul Halaman -->
+      <div class="mb-14 text-center max-w-4xl mx-auto mt-6">
+        <span class="inline-block py-1.5 px-4 rounded-full bg-accent/20 text-accent text-sm font-semibold tracking-wide mb-4 uppercase shadow-md">Fokus Infrastruktur</span>
+        <h2 class="text-4xl md:text-5xl font-extrabold text-primary mb-4 leading-tight">
+          Dokumentasi Progres Proyek Strategis
+        </h2>
+        <p class="text-secondary text-lg mt-4">
+          Laporan visual dan data Realisasi Fisik dari proyek-proyek pembangunan utama kami. Elegansi dalam setiap capaian.
+        </p>
+      </div>
+
+      <!-- Grid Dokumentasi Kegiatan -->
+      <div
+        id="activities-grid"
+        class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"
+      >
+        <!-- Activity Cards will be rendered here by JavaScript -->
+        <div class="col-span-full text-center py-20 text-gray-400 animate-pulse">
+          Memuat data proyek...
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <div class="text-center text-xs text-secondary pt-12 mt-12 border-t border-gray-200">
+        <p>© 2025 Proyek Pembangunan. Desain Elegan Modern.</p>
+      </div>
+    </div>
+
+    <script>
+      // Data Mock Kegiatan Proyek Pembangunan
+      const ACTIVITY_DATA = [
+        {
+          id: "P001",
+          title: "Pembangunan Gedung Pusat Layanan Terpadu",
+          date: "30 Oktober 2025",
+          location: "Jalan Merdeka Raya No. 10",
+          category: "Konstruksi Bangunan",
+          summary:
+            "Proyek gedung 5 lantai. Fokus saat ini pada pemasangan fasad dan instalasi listrik.",
+          imageUrl:
+            "https://placehold.co/600x220/1e293b/f8fafc?text=Proyek+Gedung", 
+          detailUrl: "#detail-P001",
+          progress: 85 // Realisasi Fisik
+        },
+        {
+          id: "P002",
+          title: "Rehabilitasi dan Pelebaran Jalan Protokol A",
+          date: "15 November 2025",
+          location: "Ruas Jalan A KM 5-15",
+          category: "Infrastruktur Sipil",
+          summary:
+            "Pekerjaan pengaspalan ulang dan penambahan bahu jalan. Ditargetkan selesai akhir tahun.",
+          imageUrl:
+            "https://placehold.co/600x220/334155/f8fafc?text=Proyek+Jalan",
+          detailUrl: "#detail-P002",
+          progress: 75 // Realisasi Fisik
+        },
+        {
+          id: "P003",
+          title: "Review Desain Anggaran Jembatan Penyeberangan",
+          date: "01 September 2025",
+          location: "Kantor Pusat Perencanaan",
+          category: "Perencanaan",
+          summary:
+            "Rapat finalisasi desain struktural jembatan. Persiapan untuk proses lelang konstruksi.",
+          imageUrl:
+            "https://placehold.co/600x220/64748b/f8fafc?text=Review+Desain",
+          detailUrl: "#detail-P003",
+          progress: 95 // Realisasi Fisik (Realisasi tahap desain/studi)
+        },
+        {
+          id: "P004",
+          title: "Peninjauan Lokasi Proyek Air Bersih dan Sanitasi",
+          date: "25 Juli 2025",
+          location: "Desa Sukamaju",
+          category: "Survei Lapangan",
+          summary:
+            "Inspeksi geologi tanah dan penentuan titik pengeboran sumur artesis untuk sistem air bersih komunal.",
+          imageUrl:
+            "https://placehold.co/600x220/94a3b8/f8fafc?text=Survei+Sanitasi",
+          detailUrl: "#detail-P004",
+          progress: 40 // Realisasi Fisik
+        },
+        {
+          id: "P005",
+          title: "Tender Pengadaan Material Beton Kualitas Tinggi",
+          date: "10 Juni 2025",
+          location: "Departemen Pengadaan",
+          category: "Pengadaan",
+          summary:
+            "Proses lelang terbuka untuk material beton K-300. Menentukan vendor pemenang untuk suplai triwulan mendatang.",
+          imageUrl:
+            "https://placehold.co/600x220/cbd5e1/1e293b?text=Tender+Material",
+          detailUrl: "#detail-P005",
+          progress: 10 // Realisasi Fisik (Baru di tahap awal)
+        },
+        {
+          id: "P006",
+          title: "Pelatihan Keselamatan dan Kesehatan Kerja (K3) Konstruksi",
+          date: "01 Maret 2025",
+          location: "Pusat Pelatihan Regional",
+          category: "Pelatihan",
+          summary:
+            "Sertifikasi ulang K3 untuk seluruh mandor dan pekerja lapangan. Fokus pada protokol bahaya ketinggian.",
+          imageUrl:
+            "https://placehold.co/600x220/e2e8f0/1e293b?text=Pelatihan+K3",
+          detailUrl: "#detail-P006",
+          progress: 100 // Realisasi Fisik (Selesai dilaksanakan)
+        }
+      ];
+
+      // --- UTILITAS ---
+
+      function getCategoryColor(category) {
+        switch (category) {
+          case "Konstruksi Bangunan": return "bg-blue-100 text-blue-700";
+          case "Infrastruktur Sipil": return "bg-green-100 text-green-700";
+          case "Perencanaan": return "bg-indigo-100 text-indigo-700";
+          case "Survei Lapangan": return "bg-yellow-100 text-yellow-700";
+          case "Pengadaan": return "bg-red-100 text-red-700";
+          case "Pelatihan": return "bg-teal-100 text-teal-700";
+          default: return "bg-gray-100 text-gray-700";
+        }
+      }
+
+      function renderIcons() {
+        setTimeout(() => {
+          if (typeof lucide !== "undefined" && lucide.createIcons) {
+            lucide.createIcons();
+          }
+        }, 0);
+      }
+
+      // --- RENDERING UI ---
+
+      function renderActivitiesGrid() {
+        const container = document.getElementById("activities-grid");
+        // Hapus placeholder atau konten lama
+        container.innerHTML = ""; 
+
+        ACTIVITY_DATA.forEach((activity, index) => {
+          const categoryClass = getCategoryColor(activity.category);
+          const delay = index * 100; // Animasi delay
+          
+          // Pastikan progress adalah angka dan dibatasi antara 0 hingga 100
+          const progressValue = Math.min(100, Math.max(0, activity.progress || 0));
+
+          const cardHtml = `
+            <!-- Kartu Proyek: Elegan Modern -->
+            <a href="${activity.detailUrl}" class="activity-card bg-white rounded-xl overflow-hidden border border-gray-100 block group" style="animation-delay: ${delay}ms">
+                
+                <!-- Image Header -->
+                <div class="image-container relative">
+                    <img 
+                        src="${activity.imageUrl}" 
+                        alt="${activity.title}" 
+                        class="image-placeholder"
+                        loading="lazy"
+                        onerror="this.onerror=null; this.src='https://placehold.co/600x220/1e293b/f8fafc?text=Proyek+Pembangunan';"
+                    >
+                    <div class="absolute top-4 left-4">
+                         <span class="text-xs font-bold px-3 py-1 rounded-full ${categoryClass} shadow-md backdrop-blur-sm bg-opacity-90">
+                            ${activity.category}
+                        </span>
+                    </div>
+                </div>
+
+                <div class="p-6 flex flex-col">
+                    <h3 class="text-xl font-bold text-primary mb-3 line-clamp-2 group-hover:text-accent transition-colors">
+                        ${activity.title}
+                    </h3>
+                    
+                    <!-- Metadata -->
+                    <div class="flex flex-wrap items-center space-x-6 text-sm text-secondary mb-4">
+                        <div class="flex items-center mb-1">
+                            <i data-lucide="calendar-check" class="w-4 h-4 mr-2 text-accent"></i>
+                            <span class="font-medium">Target:</span> ${activity.date.split(' ')[0]}
+                        </div>
+                        <div class="flex items-center mb-1">
+                            <i data-lucide="map-pin" class="w-4 h-4 mr-2 text-accent"></i>
+                            ${activity.location}
+                        </div>
+                    </div>
+
+                    <p class="text-sm text-secondary mb-3 line-clamp-3">
+                        ${activity.summary}
+                    </p>
+                    
+                    <!-- Realisasi Fisik (Progress Bar) - Sesuai Screenshot -->
+                    <div class="mt-4 pt-4 border-t border-gray-100">
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="text-sm font-semibold text-primary">Realisasi Fisik:</span>
+                            <span class="text-lg font-bold progress-text">${progressValue}%</span>
+                        </div>
+                        
+                        <!-- Progress Bar Container -->
+                        <div class="w-full bg-gray-200 rounded-full h-2.5">
+                            <!-- Progress Fill -->
+                            <div 
+                                class="progress-bar-fill h-2.5 rounded-full transition-all duration-500 ease-out" 
+                                style="width: ${progressValue}%"
+                            ></div>
+                        </div>
+                    </div>
+
+                </div>
+            </a>
+          `;
+          container.insertAdjacentHTML("beforeend", cardHtml);
+        });
+
+        renderIcons();
+      }
+
+      window.onload = function () {
+        renderActivitiesGrid();
+      };
+    </script>
+  </body>
+</html>

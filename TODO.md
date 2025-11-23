@@ -1,0 +1,5 @@
+- [ ] Add hamburger menu icon HTML in header
+- [ ] Add CSS for mobile navigation (hide nav ul, show hamburger, style mobile menu)
+- [ ] Add JavaScript for menu toggle functionality
+- [ ] Adjust header padding and other styles in media query for mobile
+- [ ] Test responsiveness

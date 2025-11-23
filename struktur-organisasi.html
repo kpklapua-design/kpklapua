@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Struktur Organisasi Detail Kampung</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Load Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <!-- Konfigurasi Font Inter -->
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap");
+      body {
+        font-family: "Inter", sans-serif;
+        background-color: #f8fafc; /* Tailwind slate-50 */
+      }
+      /* Style Card Organisasi */
+      .org-card {
+        @apply bg-white p-4 rounded-xl shadow-lg border-t-4 border-indigo-500 transition duration-300 hover:shadow-xl hover:scale-[1.01] flex flex-col items-center text-center;
+      }
+      /* Style Placeholder Foto Profil */
+      .profile-pic {
+        @apply w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-gray-200 mb-2 border-2 border-white shadow-md flex items-center justify-center text-xl font-bold text-gray-600 overflow-hidden;
+      }
+      /* Style untuk garis penghubung vertikal */
+      .v-line {
+        height: 1.5rem;
+        width: 2px;
+        background-color: #94a3b8; /* slate-400 */
+        margin: 0 auto;
+      }
+      /* Style untuk garis penghubung horizontal (Untuk Seksi/Kaur) */
+      .h-line-container {
+        display: flex;
+        justify-content: center;
+        width: 100%;
+      }
+      .h-line {
+        height: 2px;
+        background-color: #94a3b8;
+      }
+      /* Style untuk foto di dalam lingkaran */
+      .profile-pic img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover; /* Memastikan foto mengisi lingkaran tanpa distorsi */
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Header Responsif (Fokus Menu Profil) -->
+    <header class="sticky top-0 bg-white shadow-lg z-10">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
+        <div class="flex justify-between items-center">
+          <!-- Tombol Balik -->
+          <button
+            id="backButton"
+            class="flex items-center text-indigo-600 hover:text-indigo-800 transition duration-150 p-2 rounded-lg hover:bg-indigo-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+          >
+            <svg
+              class="w-6 h-6 sm:w-5 sm:h-5 mr-1"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M10 19l-7-7m0 0l7-7m-7 7h18"
+              ></path>
+            </svg>
+            <span class="hidden sm:inline font-semibold text-base"
+              >Balik ke Profil</span
+            >
+            <span class="sm:hidden font-semibold text-lg">Menu Profil</span>
+          </button>
+
+          <!-- Judul Sub-Menu -->
+          <h1
+            class="text-xl sm:text-2xl font-bold text-gray-800 flex-grow text-center pr-12 sm:pr-0"
+          >
+            Struktur Organisasi Kampung
+          </h1>
+
+          <!-- Placeholder untuk menjaga keseimbangan layout -->
+          <div class="w-10 sm:w-28 flex-shrink-0"></div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Konten Utama (Struktur Organisasi) -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <!-- Pesan Status Simulasi & Panduan Foto -->
+      <div
+        id="statusMessage"
+        class="bg-blue-100 border-l-4 border-blue-500 text-blue-700 p-4 mb-8 rounded-lg shadow-inner"
+        role="alert"
+      >
+        <p class="font-bold flex items-center">
+          <i data-lucide="info" class="w-5 h-5 mr-2"></i> Panduan Foto
+        </p>
+        <p class="text-sm mt-1">
+          Foto Kepala Kampung menggunakan file unggahan Anda:
+          <span class="font-mono bg-blue-200 px-1 rounded"
+            >/files/image_50b209.jpg</span
+          >. Untuk mengganti foto lain, ganti atribut
+          <code class="font-mono">src</code> pada tag
+          <code class="font-mono">&lt;img&gt;</code> dengan path file unggahan
+          Anda (misalnya:
+          <code class="font-mono">/files/nama_foto_anda.png</code>).
+        </p>
+      </div>
+
+      <!-- ============================================== -->
+      <!-- BAGIAN 1: PEMERINTAHAN KAMPUNG (RESMI) -->
+      <!-- ============================================== -->
+      <div class="text-center mb-10">
+        <h2 class="text-2xl sm:text-3xl font-extrabold text-indigo-700">
+          Pemerintahan Kampung
+        </h2>
+        <p class="text-gray-500 text-base">
+          Perangkat dan Pelaksana Teknis Pemerintahan
+        </p>
+      </div>
+
+      <!-- 1. Kepala Kampung -->
+      <div class="flex justify-center mb-8">
+        <div class="org-card w-full max-w-sm border-t-8 border-indigo-700">
+          <div class="profile-pic">
+            <!-- MENGGUNAKAN FOTO UNGGAHAN ANDA SEBAGAI DEMO -->
+            <img
+              src="image/02.jpg"
+              alt="Foto Kepala Kampung"
+              onerror="this.onerror=null; this.src='https://placehold.co/80x80/6366f1/ffffff?text=KK (ERR)'"
+            />
+          </div>
+          <p class="text-base font-medium text-gray-500">Kepala Kampung</p>
+          <p class="text-xl font-bold text-indigo-900 mt-0">
+            Bpk. [Nama Kepala]
+          </p>
+        </div>
+      </div>
+      <div class="v-line mb-4 h-6"></div>
+
+      <!-- Garis Penghubung Horizontal (Menghubungkan Sekertaris, Pelaksana Teknis, dan Kewilayahan) -->
+      <div class="h-line-container mb-4">
+        <div class="h-line w-full max-w-2xl"></div>
+      </div>
+
+      <!-- 2. Sekretaris Kampung dan Garis Vertikalnya -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+        <!-- Kolom 1: Sekretaris Kampung -->
+        <div class="flex flex-col items-center">
+          <div class="v-line mb-4 h-6"></div>
+          <div class="org-card w-full max-w-sm border-t-8 border-green-600">
+            <div class="profile-pic">
+              <img
+                src="https://placehold.co/80x80/10b981/ffffff?text=SK"
+                alt="Foto Sekretaris Kampung"
+                onerror="this.onerror=null; this.src='https://placehold.co/80x80/10b981/ffffff?text=SK (ERR)'"
+              />
+            </div>
+            <p class="text-base font-medium text-gray-500">
+              Sekretaris Kampung
+            </p>
+            <p class="text-lg font-bold text-green-900 mt-0">
+              Ibu. [Nama Sekertaris]
+            </p>
+          </div>
+          <!-- Sub-Level: Kepala Urusan (Kaur) -->
+          <div class="v-line mt-4 h-6"></div>
+          <div class="h-line-container w-full max-w-sm">
+            <div class="h-line w-full"></div>
+          </div>
+          <div class="grid grid-cols-3 gap-2 mt-4 w-full max-w-sm">
+            <!-- Kaur 1a -->
+            <div class="flex flex-col items-center">
+              <div class="v-line h-4"></div>
+              <div class="org-card p-2 border-t-2 border-gray-400">
+                <div class="profile-pic w-10 h-10 mb-1">
+                  <img
+                    src="https://placehold.co/40x40/94a3b8/ffffff?text=TU"
+                    alt="Foto Kaur TU & Umum"
+                  />
+                </div>
+                <p class="text-xs font-semibold text-gray-700">
+                  Kaur Tata Usaha & Umum
+                </p>
+              </div>
+            </div>
+            <!-- Kaur 1b -->
+            <div class="flex flex-col items-center">
+              <div class="v-line h-4"></div>
+              <div class="org-card p-2 border-t-2 border-gray-400">
+                <div class="profile-pic w-10 h-10 mb-1">
+                  <img
+                    src="https://placehold.co/40x40/94a3b8/ffffff?text=KAU"
+                    alt="Foto Kaur Keuangan"
+                  />
+                </div>
+                <p class="text-xs font-semibold text-gray-700">Kaur Keuangan</p>
+              </div>
+            </div>
+            <!-- Kaur 1c -->
+            <div class="flex flex-col items-center">
+              <div class="v-line h-4"></div>
+              <div class="org-card p-2 border-t-2 border-gray-400">
+                <div class="profile-pic w-10 h-10 mb-1">
+                  <img
+                    src="https://placehold.co/40x40/94a3b8/ffffff?text=REN"
+                    alt="Foto Kaur Perencanaan"
+                  />
+                </div>
+                <p class="text-xs font-semibold text-gray-700">
+                  Kaur Perencanaan
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Kolom 2: Pelaksana Teknis (Kasi) -->
+        <div class="flex flex-col items-center">
+          <div class="v-line mb-4 h-6"></div>
+          <div class="org-card w-full max-w-sm border-t-8 border-red-600">
+            <div class="profile-pic">
+              <img
+                src="https://placehold.co/80x80/ef4444/ffffff?text=PT"
+                alt="Foto Pelaksana Teknis"
+                onerror="this.onerror=null; this.src='https://placehold.co/80x80/ef4444/ffffff?text=PT (ERR)'"
+              />
+            </div>
+            <p class="text-base font-medium text-gray-500">Pelaksana Teknis</p>
+            <p class="text-lg font-bold text-red-900 mt-0">Tim Kasi</p>
+          </div>
+          <!-- Sub-Level: Kepala Seksi (Kasi) -->
+          <div class="v-line mt-4 h-6"></div>
+          <div class="h-line-container w-full max-w-sm">
+            <div class="h-line w-full"></div>
+          </div>
+          <div class="grid grid-cols-3 gap-2 mt-4 w-full max-w-sm">
+            <!-- Kasi 3a -->
+            <div class="flex flex-col items-center">
+              <div class="v-line h-4"></div>
+              <div class="org-card p-2 border-t-2 border-gray-400">
+                <div class="profile-pic w-10 h-10 mb-1">
+                  <img
+                    src="https://placehold.co/40x40/94a3b8/ffffff?text=PEM"
+                    alt="Foto Kasi Pemerintahan"
+                  />
+                </div>
+                <p class="text-xs font-semibold text-gray-700">
+                  Kasi Pemerintahan
+                </p>
+              </div>
+            </div>
+            <!-- Kasi 3b -->
+            <div class="flex flex-col items-center">
+              <div class="v-line h-4"></div>
+              <div class="org-card p-2 border-t-2 border-gray-400">
+                <div class="profile-pic w-10 h-10 mb-1">
+                  <img
+                    src="https://placehold.co/40x40/94a3b8/ffffff?text=KES"
+                    alt="Foto Kasi Kesejahteraan"
+                  />
+                </div>
+                <p class="text-xs font-semibold text-gray-700">
+                  Kasi Kesejahteraan
+                </p>
+              </div>
+            </div>
+            <!-- Kasi 3c -->
+            <div class="flex flex-col items-center">
+              <div class="v-line h-4"></div>
+              <div class="org-card p-2 border-t-2 border-gray-400">
+                <div class="profile-pic w-10 h-10 mb-1">
+                  <img
+                    src="https://placehold.co/40x40/94a3b8/ffffff?text=YAN"
+                    alt="Foto Kasi Pelayanan"
+                  />
+                </div>
+                <p class="text-xs font-semibold text-gray-700">
+                  Kasi Pelayanan
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Kolom 3: Pelaksana Kewilayahan (Kadus) -->
+        <div class="flex flex-col items-center">
+          <div class="v-line mb-4 h-6"></div>
+          <div class="org-card w-full max-w-sm border-t-8 border-blue-600">
+            <div class="profile-pic">
+              <img
+                src="https://placehold.co/80x80/3b82f6/ffffff?text=PKW"
+                alt="Foto Pelaksana Kewilayahan"
+                onerror="this.onerror=null; this.src='https://placehold.co/80x80/3b82f6/ffffff?text=PKW (ERR)'"
+              />
+            </div>
+            <p class="text-base font-medium text-gray-500">
+              Pelaksana Kewilayahan
+            </p>
+            <p class="text-lg font-bold text-blue-900 mt-0">Tim Kadus</p>
+          </div>
+          <!-- Sub-Level: Kepala Dusun (Kadus) -->
+          <div class="v-line mt-4 h-6"></div>
+          <div class="org-card p-2 border-t-2 border-gray-400 w-full max-w-sm">
+            <div class="profile-pic w-10 h-10 mb-1">
+              <img
+                src="https://placehold.co/40x40/94a3b8/ffffff?text=DU"
+                alt="Foto Kepala Dusun"
+              />
+            </div>
+            <p class="text-sm font-semibold text-gray-700">
+              Kepala Dusun (Kadus)
+            </p>
+            <p class="text-xs text-gray-500">Bertanggung jawab atas wilayah</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============================================== -->
+      <!-- BAGIAN 2: LEMBAGA KEMASYARAKATAN -->
+      <!-- ============================================== -->
+      <div class="mt-16 pt-8 border-t-2 border-gray-300">
+        <div class="text-center mb-10">
+          <h2 class="text-2xl sm:text-3xl font-extrabold text-teal-700">
+            Lembaga Kemasyarakatan Kampung
+          </h2>
+          <p class="text-gray-500 text-base">Mitra Kerja Pemerintah Kampung</p>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
+          <!-- 5. Bamus -->
+          <div class="org-card border-t-4 border-teal-500">
+            <div class="profile-pic w-14 h-14">
+              <img
+                src="https://placehold.co/56x56/0d9488/ffffff?text=BAM"
+                alt="Foto Ketua Bamus"
+              />
+            </div>
+            <p class="text-sm font-medium text-gray-500"></p>
+            <p class="text-lg font-bold text-teal-900 mt-0">Bamus</p>
+            <p class="text-xs text-gray-600">Badan Musyawarah Kampung</p>
+          </div>
+
+          <!-- 6. Lembaga Adat Kampung -->
+          <div class="org-card border-t-4 border-amber-500">
+            <div class="profile-pic w-14 h-14">
+              <img
+                src="https://placehold.co/56x56/f59e0b/ffffff?text=ADAT"
+                alt="Foto Ondoafi/Kepala Suku"
+              />
+            </div>
+            <p class="text-sm font-medium text-gray-500">Lembaga Adat</p>
+            <p class="text-lg font-bold text-amber-900 mt-0">
+              Ondoafi/Kepala Suku
+            </p>
+            <p class="text-xs text-gray-600">Penjaga Tradisi</p>
+          </div>
+
+          <!-- 7. RT/RW -->
+          <div class="org-card border-t-4 border-fuchsia-500">
+            <div class="profile-pic w-14 h-14">
+              <img
+                src="https://placehold.co/56x56/d946ef/ffffff?text=RTW"
+                alt="Foto Ketua RT/RW"
+              />
+            </div>
+            <p class="text-sm font-medium text-gray-500"></p>
+            <p class="text-lg font-bold text-fuchsia-900 mt-0">RT & RW</p>
+            <p class="text-xs text-gray-600">Basis Kewilayahan</p>
+          </div>
+
+          <!-- 8. LPM -->
+          <div class="org-card border-t-4 border-cyan-500">
+            <div class="profile-pic w-14 h-14">
+              <img
+                src="https://placehold.co/56x56/06b6d4/ffffff?text=LPM"
+                alt="Foto Ketua LPM"
+              />
+            </div>
+            <p class="text-sm font-medium text-gray-500"></p>
+            <p class="text-lg font-bold text-cyan-900 mt-0">LPM</p>
+            <p class="text-xs text-gray-600">Pemberdayaan Masyarakat</p>
+          </div>
+
+          <!-- 9. PKK -->
+          <div class="org-card border-t-4 border-pink-500">
+            <div class="profile-pic w-14 h-14">
+              <img
+                src="https://placehold.co/56x56/ec4899/ffffff?text=PKK"
+                alt="Foto Ketua PKK"
+              />
+            </div>
+            <p class="text-sm font-medium text-gray-500"></p>
+            <p class="text-lg font-bold text-pink-900 mt-0">PKK</p>
+            <p class="text-xs text-gray-600">
+              Pembinaan Kesejahteraan Keluarga
+            </p>
+          </div>
+
+          <!-- Baris Kedua (Karang Taruna & BUMKampung) -->
+          <div
+            class="col-span-1 sm:col-span-2 lg:col-span-5 flex justify-center space-x-6 mt-6"
+          >
+            <!-- 10. Karang Taruna -->
+            <div class="org-card border-t-4 border-orange-500 w-full max-w-xs">
+              <div class="profile-pic w-14 h-14">
+                <img
+                  src="https://placehold.co/56x56/f97316/ffffff?text=KT"
+                  alt="Foto Ketua Karang Taruna"
+                />
+              </div>
+              <p class="text-sm font-medium text-gray-500"></p>
+              <p class="text-lg font-bold text-orange-900 mt-0">
+                Karang Taruna
+              </p>
+              <p class="text-xs text-gray-600">Organisasi Pemuda</p>
+            </div>
+
+            <!-- 11. BUMKampung -->
+            <div class="org-card border-t-4 border-lime-600 w-full max-w-xs">
+              <div class="profile-pic w-14 h-14">
+                <img src="image/01.jpg" alt="Foto Direktur BUMKampung" />
+              </div>
+              <p class="text-sm font-medium text-gray-500"></p>
+              <p class="text-lg font-bold text-lime-900 mt-0">BUMKampung</p>
+              <p class="text-xs text-gray-600">Badan Usaha Milik Kampung</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      // Inisialisasi Lucide Icons
+      lucide.createIcons();
+
+      document.addEventListener("DOMContentLoaded", () => {
+        const backButton = document.getElementById("backButton");
+        const statusMessage = document.getElementById("statusMessage");
+
+        // Fungsi untuk simulasi tombol Balik
+        backButton.addEventListener("click", () => {
+          // Update pesan status
+          statusMessage.innerHTML = `
+                    <p class="font-bold flex items-center"><i data-lucide="check-circle" class="w-5 h-5 mr-2"></i> Berhasil Balik!</p>
+                    <p class="text-sm mt-1">Anda telah menekan tombol "Balik". Di aplikasi nyata, Anda akan kembali ke Menu Profil. Silakan ulangi.</p>
+                `;
+          statusMessage.classList.remove(
+            "bg-blue-100",
+            "border-blue-500",
+            "text-blue-700"
+          );
+          statusMessage.classList.add(
+            "bg-green-100",
+            "border-green-500",
+            "text-green-700"
+          );
+
+          // Reset pesan setelah 3 detik
+          setTimeout(() => {
+            // Re-initialize icons in the status message after content change
+            lucide.createIcons();
+
+            statusMessage.innerHTML = `
+                        <p class="font-bold flex items-center"><i data-lucide="info" class="w-5 h-5 mr-2"></i> Panduan Foto</p>
+                        <p class="text-sm mt-1">
+                            Foto Kepala Kampung menggunakan file unggahan Anda: 
+                            <span class="font-mono bg-blue-200 px-1 rounded">/files/image_50b209.jpg</span>.
+                            Untuk mengganti foto lain, ganti atribut <code class="font-mono">src</code> pada tag <code class="font-mono">&lt;img&gt;</code> dengan path file unggahan Anda (misalnya: <code class="font-mono">/files/nama_foto_anda.png</code>).
+                        </p>
+                    `;
+            statusMessage.classList.remove(
+              "bg-green-100",
+              "border-green-500",
+              "text-green-700"
+            );
+            statusMessage.classList.add(
+              "bg-blue-100",
+              "border-blue-500",
+              "text-blue-700"
+            );
+            lucide.createIcons(); // Re-initialize icons
+          }, 3000);
+        });
+      });
+    </script>
+  </body>
+</html>

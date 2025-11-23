@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Form Pengaduan Warga Anonim</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Load Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap");
+      body {
+        font-family: "Inter", sans-serif;
+        /* Latar belakang yang sedikit lebih gelap untuk kontras elegan */
+        background-color: #eef1f4;
+      }
+      /* Style kustom dasar untuk input form */
+      .form-input,
+      .form-textarea,
+      .form-select {
+        /* Border tipis, rounded kuat, tanpa shadow, dan warna fokus */
+        @apply w-full rounded-xl border border-gray-300 p-3 bg-white 
+               focus:border-emerald-500 focus:ring-1 focus:ring-emerald-200 
+               transition duration-150;
+      }
+
+      /* KELAS BARU: Untuk kotak yang lebih menonjol (seperti yang diminta pengguna) */
+      .input-box-strong {
+        /* Border lebih tebal dan shadow tipis agar terlihat siap diisi */
+        @apply border-2 border-gray-300 shadow-sm;
+      }
+
+      /* Styling untuk file input agar lebih konsisten */
+      input[type="file"] {
+        @apply block w-full text-sm text-gray-600 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-emerald-50 file:text-emerald-700 hover:file:bg-emerald-100;
+      }
+    </style>
+  </head>
+  <body class="min-h-screen">
+    <!-- Kontainer Utama -->
+    <div id="app-container" class="min-h-screen p-4 sm:p-8">
+      <!-- Header Utama (Form Pengaduan) - Lebih berkelas dengan aksen Emerald -->
+      <div
+        class="max-w-3xl mx-auto mb-10 bg-white p-6 rounded-xl shadow-2xl border-l-4 border-emerald-600"
+      >
+        <h1
+          class="text-3xl font-extrabold text-stone-900 mb-2 flex items-center"
+        >
+          <i
+            data-lucide="shield-alert"
+            class="w-8 h-8 mr-3 text-emerald-600"
+          ></i>
+          Form Pengaduan Warga
+        </h1>
+        <p class="text-base text-stone-600">
+          Sampaikan keluhan, masukan, atau laporan Anda. Identitas Anda akan
+          dijaga kerahasiaannya (Anonim).
+        </p>
+        <!-- ID Sesi Pengguna (Wajib ditampilkan untuk kepatuhan Firestore) -->
+        <p id="session-info" class="text-xs mt-2 text-gray-400">
+          ID Sesi: Menunggu autentikasi...
+        </p>
+      </div>
+
+      <!-- Bagian Form Pengaduan -->
+      <div
+        class="max-w-3xl mx-auto mt-6 mb-10 bg-white p-6 sm:p-8 rounded-xl shadow-2xl"
+      >
+        <!-- Pesan Sukses (Tersembunyi) -->
+        <div
+          id="success-message"
+          class="hidden p-4 mb-6 text-emerald-800 bg-emerald-50 border border-emerald-300 rounded-lg"
+        >
+          <h3 class="font-bold flex items-center">
+            <i data-lucide="check-circle" class="w-5 h-5 mr-2"></i> Link
+            WhatsApp Berhasil Dibuka!
+          </h3>
+          <p class="text-sm">
+            Silakan kirim pesan Anda melalui WhatsApp untuk menyelesaikan
+            pengaduan.
+          </p>
+        </div>
+
+        <!-- Pesan Error (Tersembunyi) -->
+        <div
+          id="error-message"
+          class="hidden p-4 mb-6 text-red-800 bg-red-50 border border-red-300 rounded-lg"
+        >
+          <h3 class="font-bold flex items-center">
+            <i data-lucide="triangle-alert" class="w-5 h-5 mr-2"></i> Gagal
+            Mengirim!
+          </h3>
+          <p id="error-text" class="text-sm">
+            Terjadi kesalahan saat membuat link WhatsApp. Pastikan semua kolom
+            wajib terisi.
+          </p>
+        </div>
+
+        <!-- Form -->
+        <form id="complaint-form" class="space-y-6">
+          <!-- Grup 1: Perihal dan Kategori (Dibuat dalam satu baris untuk desktop/tablet) -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Perihal Laporan -->
+            <div>
+              <label
+                for="subject"
+                class="block text-sm font-semibold text-stone-700 mb-1"
+                >Perihal Laporan <span class="text-red-500">*</span></label
+              >
+              <input
+                type="text"
+                id="subject"
+                class="form-input input-box-strong"
+                placeholder="Contoh: Lampu Jalan Mati di RT 01"
+                required
+              />
+            </div>
+
+            <!-- Kategori Laporan -->
+            <div>
+              <label
+                for="category"
+                class="block text-sm font-semibold text-stone-700 mb-1"
+                >Kategori <span class="text-red-500">*</span></label
+              >
+              <select id="category" class="form-select" required>
+                <option value="">-- Pilih Kategori --</option>
+                <option value="infrastruktur">
+                  Infrastruktur (Jalan, Air, Listrik)
+                </option>
+                <option value="pelayanan">Pelayanan Publik</option>
+                <option value="lingkungan">
+                  Lingkungan (Sampah, Kebersihan)
+                </option>
+                <option value="sosial">Sosial & Keamanan</option>
+                <option value="masukan">Masukan & Saran</option>
+                <option value="lainnya">Lainnya</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Garis Pemisah Visual -->
+          <hr class="border-gray-200 mt-4 mb-6" />
+
+          <!-- Detail Laporan -->
+          <div>
+            <label
+              for="details"
+              class="block text-sm font-semibold text-stone-700 mb-1"
+              >Detail Laporan / Masukan
+              <span class="text-red-500">*</span></label
+            >
+            <textarea
+              id="details"
+              rows="6"
+              class="form-textarea"
+              placeholder="Jelaskan secara rinci keluhan atau masukan Anda di sini..."
+              required
+            ></textarea>
+          </div>
+
+          <!-- Lampiran Foto (Opsional) -->
+          <div>
+            <label
+              for="attachment"
+              class="block text-sm font-semibold text-stone-700 mb-1"
+              >Lampiran Foto (Opsional)</label
+            >
+            <input type="file" id="attachment" accept="image/*" />
+            <p class="text-xs text-gray-500 mt-1">
+              Anda dapat melampirkan foto untuk memperjelas laporan (Catatan:
+              Foto harus dikirim terpisah di WhatsApp).
+            </p>
+          </div>
+
+          <!-- Jaminan Anonimitas - Menggunakan warna abu-abu yang lebih netral -->
+          <div
+            class="p-4 text-stone-700 bg-stone-50 border border-stone-200 rounded-lg"
+          >
+            <h4 class="font-bold flex items-center text-sm">
+              <i
+                data-lucide="shield-check"
+                class="w-4 h-4 mr-2 text-emerald-600"
+              ></i>
+              Laporan Anda Anonim
+            </h4>
+            <p class="text-xs mt-1 text-stone-600">
+              Anda tidak perlu mengisi nama atau identitas pribadi. Laporan akan
+              langsung dikirimkan ke administrator melalui WhatsApp.
+            </p>
+          </div>
+
+          <!-- Tombol Kirim - Lebih menonjol dengan warna aksen baru dan bayangan kuat -->
+          <div>
+            <button
+              id="submit-button"
+              type="submit"
+              class="w-full flex justify-center items-center py-3 px-6 bg-emerald-600 text-white font-extrabold rounded-xl shadow-xl hover:bg-emerald-700 transition duration-200 transform hover:scale-[1.01] disabled:opacity-50 disabled:shadow-none"
+            >
+              <i data-lucide="send" id="submit-icon" class="w-5 h-5 mr-2"></i>
+              <span id="submit-text">Kirim Laporan via WhatsApp</span>
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Footer -->
+      <div
+        class="max-w-3xl mx-auto text-center text-xs text-gray-400 pt-8 mt-12 border-t border-gray-300"
+      >
+        <p>© 2024 Layanan Pengaduan Warga.</p>
+      </div>
+    </div>
+
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+      import {
+        getAuth,
+        signInAnonymously,
+        signInWithCustomToken
+      } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+      // Hapus import Firestore karena kita pindah ke WhatsApp
+
+      // Variabel global untuk Firebase
+      let db = null; // Tidak digunakan lagi
+      let auth = null;
+      let userId = null;
+      const appId =
+        typeof __app_id !== "undefined" ? __app_id : "default-app-id";
+
+      // Nomor WhatsApp tujuan pengaduan
+      const WA_NUMBER = "628123456789"; // GANTI DENGAN NOMOR TUJUAN YANG BENAR!
+
+      // --- UTILITAS ICON ---
+      function renderIcons() {
+        if (typeof lucide !== "undefined" && lucide.createIcons) {
+          lucide.createIcons();
+        }
+      }
+
+      // --- FIREBASE INITIALIZATION AND AUTH (Hanya untuk mendapatkan ID Sesi) ---
+      async function initializeFirebase() {
+        try {
+          // Inisialisasi Firebase
+          const firebaseConfig = JSON.parse(
+            typeof __firebase_config !== "undefined" ? __firebase_config : "{}"
+          );
+          const app = initializeApp(firebaseConfig);
+          auth = getAuth(app);
+
+          // Autentikasi Pengguna
+          if (typeof __initial_auth_token !== "undefined") {
+            await signInWithCustomToken(auth, __initial_auth_token);
+          } else {
+            await signInAnonymously(auth);
+          }
+
+          // Dapatkan ID Pengguna setelah sign in
+          userId = auth.currentUser?.uid || crypto.randomUUID();
+          document.getElementById(
+            "session-info"
+          ).textContent = `ID Sesi Anda: ${userId.substring(
+            0,
+            8
+          )}... (Full ID: ${userId})`;
+
+          // Tombol sudah aktif dari awal (tidak perlu di-disable/enable)
+        } catch (error) {
+          console.error("Firebase Initialization Error:", error);
+          document.getElementById(
+            "session-info"
+          ).textContent = `ID Sesi: Gagal memuat (${error.message})`;
+          document.getElementById("submit-text").textContent =
+            "Kirim Laporan via WhatsApp";
+        }
+      }
+
+      // --- FUNGSI UTAMA FORM (PENGIRIMAN WHATSAPP) ---
+      async function sendWhatsAppReport(event) {
+        event.preventDefault(); // Mencegah form reload halaman
+
+        const form = document.getElementById("complaint-form");
+        const submitButton = document.getElementById("submit-button");
+        const submitIcon = document.getElementById("submit-icon");
+        const submitText = document.getElementById("submit-text");
+        const successMessage = document.getElementById("success-message");
+        const errorMessage = document.getElementById("error-message");
+
+        // Sembunyikan pesan status sebelumnya
+        successMessage.classList.add("hidden");
+        errorMessage.classList.add("hidden");
+
+        // Validasi dasar (karena atribut required HTML sudah ada, ini hanya validasi tambahan)
+        if (!form.checkValidity()) {
+          document.getElementById("error-text").textContent =
+            "Mohon lengkapi semua kolom wajib yang bertanda (*).";
+          errorMessage.classList.remove("hidden");
+          return;
+        }
+
+        // Tampilkan status loading
+        submitButton.disabled = true;
+        submitText.textContent = "Mempersiapkan Pesan...";
+        submitIcon.setAttribute("data-lucide", "loader");
+        submitIcon.classList.add("animate-spin");
+        renderIcons();
+
+        try {
+          const subject = document.getElementById("subject").value;
+          const category = document.getElementById("category").value;
+          const details = document.getElementById("details").value;
+          const attachmentFile = document.getElementById("attachment").files[0];
+          const categoryText = form
+            .querySelector(`#category option[value="${category}"]`)
+            .textContent.trim();
+
+          // Buat pesan yang terformat untuk WhatsApp
+          const message = encodeURIComponent(
+            `*FORMULIR PENGADUAN WARGA (Anonim)*\n` +
+              `------------------------------------\n` +
+              `*Perihal:* ${subject}\n` +
+              `*Kategori:* ${categoryText}\n` +
+              `*Detail Laporan:*\n${details}\n\n` +
+              (attachmentFile
+                ? `(Catatan: Ada Lampiran Foto, mohon kirimkan foto di chat ini.)\n`
+                : ``) +
+              `------------------------------------\n` +
+              `ID Sesi Pelapor: ${userId.substring(0, 8)}`
+          );
+
+          // Membuat link WhatsApp
+          const waLink = `https://wa.me/${WA_NUMBER}?text=${message}`;
+
+          // Membuka link di tab baru
+          window.open(waLink, "_blank");
+
+          // Tampilkan pesan sukses
+          successMessage.classList.remove("hidden");
+
+          // Reset form (kecuali file input, karena file tidak bisa dipertahankan di WA)
+          form.reset();
+
+          // Gulir ke atas untuk melihat pesan status
+          window.scrollTo({ top: 0, behavior: "smooth" });
+
+          // Sembunyikan pesan sukses setelah 8 detik
+          setTimeout(() => {
+            successMessage.classList.add("hidden");
+          }, 8000);
+        } catch (error) {
+          console.error("WhatsApp Link Error:", error);
+          document.getElementById("error-text").textContent =
+            "Gagal membuat link WhatsApp: " + error.message;
+          errorMessage.classList.remove("hidden");
+        } finally {
+          // Reset status tombol
+          submitButton.disabled = false;
+          submitText.textContent = "Kirim Laporan via WhatsApp";
+          submitIcon.setAttribute("data-lucide", "send");
+          submitIcon.classList.remove("animate-spin");
+          renderIcons();
+        }
+      }
+
+      // --- SETUP AWAL ---
+      window.onload = function () {
+        renderIcons();
+        initializeFirebase(); // Tetap panggil untuk mendapatkan ID Sesi
+
+        // Tambahkan event listener ke form
+        const form = document.getElementById("complaint-form");
+        form.addEventListener("submit", sendWhatsAppReport);
+      };
+    </script>
+  </body>
+</html>

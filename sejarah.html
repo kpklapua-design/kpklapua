@@ -1,0 +1,281 @@
+<!-- Chosen Palette: Elegan Modern (Soft Cream: #f9f7f5, Dark Slate: #1e293b, Golden Accent: #d97706) -->
+<!-- Application Structure Plan: Halaman Sejarah. Struktur: 1. Header, 2. Hero (Judul & Nuansa Nostalgia), 3. Asal Usul (Naratif & Foto), 4. Linimasa/Timeline (Perjalanan Waktu), 5. Tokoh Perintis (Grid), 6. Footer. -->
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sejarah</title>
+    
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Load Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Google Fonts: Poppins -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Konfigurasi Tema Elegan Modern -->
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              primary: '#1e293b', // Dark Slate
+              accent: '#d97706',  // Golden Accent
+              soft: '#f9f7f5',    // Soft Cream
+              secondary: '#64748b', // Slate-500
+              card: '#ffffff',    // Card White
+            },
+            fontFamily: {
+              sans: ['Poppins', 'sans-serif'],
+            }
+          }
+        }
+      }
+    </script>
+
+    <style>
+      body {
+        background-color: var(--tw-colors-soft);
+      }
+      /* Styling Khusus Timeline */
+      .timeline-line {
+        position: absolute;
+        left: 24px;
+        top: 0;
+        bottom: 0;
+        width: 2px;
+        background-color: #e2e8f0; /* Slate-200 */
+        z-index: 0;
+      }
+      .timeline-item {
+        position: relative;
+        z-index: 10;
+      }
+      /* Efek Hover untuk Foto Sejarah */
+      .history-img {
+        transition: transform 0.5s ease, filter 0.5s ease;
+        filter: sepia(20%); /* Sedikit efek vintage */
+      }
+      .history-img:hover {
+        transform: scale(1.02);
+        filter: sepia(0%);
+      }
+    </style>
+  </head>
+  <body class="min-h-screen font-sans bg-soft text-primary antialiased selection:bg-accent selection:text-white">
+    
+    <!-- 1. HEADER -->
+    <header class="sticky top-0 z-50 bg-white/95 backdrop-blur-md shadow-lg border-b border-gray-100">
+      <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
+        <div class="flex items-center gap-3">
+          <i data-lucide="scroll" class="w-6 h-6 text-accent"></i>
+          <div>
+            <h1 class="font-bold text-lg leading-tight text-primary">Jejak Langkah</h1>
+            <p class="text-xs text-secondary">Sejarah & Asal Usul</p>
+          </div>
+        </div>
+        <nav class="hidden md:flex items-center space-x-6">
+            <a href="#asal-usul" class="text-sm font-medium text-secondary hover:text-primary transition-colors">Asal Usul</a>
+            <a href="#timeline" class="text-sm font-medium text-secondary hover:text-primary transition-colors">Linimasa</a>
+            <a href="#tokoh" class="text-sm font-medium text-secondary hover:text-primary transition-colors">Tokoh</a>
+        </nav>
+      </div>
+    </header>
+
+    <!-- Kontainer Utama -->
+    <div id="app-container" class="p-4 sm:p-8 max-w-5xl mx-auto">
+      
+      <!-- 2. HERO SECTION -->
+      <section class="mb-20 mt-10 text-center">
+        <span class="inline-block py-1.5 px-4 rounded-full bg-primary/10 text-primary text-sm font-semibold tracking-wide mb-6 uppercase shadow-sm">Warisan Leluhur</span>
+        <h2 class="text-4xl md:text-6xl font-extrabold text-primary mb-6 leading-tight">
+          Sejarah Kampung <span class="text-accent">Lapua</span>
+        </h2>
+        <p class="text-xl text-secondary max-w-3xl mx-auto leading-relaxed">
+          Dari hamparan lahan perkebunan yang sederhana, tumbuh menjadi komunitas yang mandiri, berbudaya, dan visioner. Ini adalah cerita perjalanan kami.
+        </p>
+      </section>
+
+      <!-- 3. ASAL USUL (Naratif) -->
+      <section id="asal-usul" class="mb-24">
+        <div class="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
+            <div class="grid grid-cols-1 lg:grid-cols-2">
+                <!-- Gambar Vintage -->
+                <div class="relative h-64 lg:h-auto overflow-hidden">
+                    <img src="https://placehold.co/800x800/e5e5e5/525252?text=Foto+Sejarah+Kampung" 
+                         alt="Foto Sejarah Lama" 
+                         class="w-full h-full object-cover history-img">
+                    <div class="absolute bottom-0 left-0 w-full bg-gradient-to-t from-black/60 to-transparent p-6">
+                        <p class="text-white text-sm italic">Dokumentasi Tahun 1985</p>
+                    </div>
+                </div>
+                <!-- Teks Naratif -->
+                <div class="p-8 lg:p-12 flex flex-col justify-center">
+                    <h3 class="text-2xl font-bold text-primary mb-4 flex items-center gap-3">
+                        <i data-lucide="feather" class="w-6 h-6 text-accent"></i>
+                        Awal Mula Berdiri
+                    </h3>
+                    <p class="text-secondary mb-4 leading-relaxed text-justify">
+                        Kampung Jaya Sentosa didirikan pada awal tahun 1980-an oleh sekelompok perintis yang memiliki visi untuk mengubah lahan tidur menjadi pemukiman yang produktif. Nama "Jaya Sentosa" dipilih sebagai doa agar setiap warga yang tinggal di sini mendapatkan kejayaan dan ketentraman hidup.
+                    </p>
+                    <p class="text-secondary leading-relaxed text-justify">
+                        Pada masa-masa awal, akses menuju kampung ini sangat terbatas. Namun, dengan semangat gotong royong yang tinggi—nilai yang masih kami pegang teguh hingga hari ini—para pendiri berhasil membangun jalan setapak, irigasi sederhana, dan balai warga pertama.
+                    </p>
+                </div>
+            </div>
+        </div>
+      </section>
+
+      <!-- 4. LINIMASA (Timeline) -->
+      <section id="timeline" class="mb-24 max-w-3xl mx-auto">
+        <div class="text-center mb-12">
+            <h2 class="text-3xl font-bold text-primary">Linimasa Perjalanan</h2>
+            <p class="text-secondary mt-2">Momentum penting dalam sejarah perkembangan kampung.</p>
+        </div>
+
+        <div class="relative pl-4 sm:pl-0">
+            <!-- Garis Vertikal -->
+            <div class="timeline-line hidden sm:block left-1/2 -translate-x-1/2"></div>
+            <div class="timeline-line sm:hidden left-6"></div>
+
+            <!-- Event 1 -->
+            <div class="timeline-item flex flex-col sm:flex-row items-center justify-between mb-12 w-full">
+                <div class="order-1 sm:w-5/12 mb-4 sm:mb-0 text-left sm:text-right">
+                    <h4 class="text-2xl font-bold text-accent">1982</h4>
+                    <h5 class="font-bold text-primary text-lg">Pembukaan Lahan</h5>
+                    <p class="text-sm text-secondary mt-1">Para perintis pertama mulai membuka lahan dan mendirikan 10 rumah pertama.</p>
+                </div>
+                <div class="order-1 sm:w-2/12 flex justify-center relative">
+                    <div class="w-12 h-12 bg-white border-4 border-accent rounded-full flex items-center justify-center shadow-md z-20">
+                        <i data-lucide="shovel" class="w-5 h-5 text-primary"></i>
+                    </div>
+                </div>
+                <div class="order-1 sm:w-5/12"></div> <!-- Spacer -->
+            </div>
+
+            <!-- Event 2 -->
+            <div class="timeline-item flex flex-col sm:flex-row items-center justify-between mb-12 w-full">
+                <div class="order-1 sm:w-5/12"></div> <!-- Spacer -->
+                <div class="order-1 sm:w-2/12 flex justify-center relative">
+                    <div class="w-12 h-12 bg-white border-4 border-primary rounded-full flex items-center justify-center shadow-md z-20">
+                        <i data-lucide="school" class="w-5 h-5 text-primary"></i>
+                    </div>
+                </div>
+                <div class="order-1 sm:w-5/12 mb-4 sm:mb-0 text-left">
+                    <h4 class="text-2xl font-bold text-accent">1995</h4>
+                    <h5 class="font-bold text-primary text-lg">Pembangunan Sekolah</h5>
+                    <p class="text-sm text-secondary mt-1">SD Inpres pertama didirikan, menandai fokus warga pada pendidikan generasi muda.</p>
+                </div>
+            </div>
+
+            <!-- Event 3 -->
+            <div class="timeline-item flex flex-col sm:flex-row items-center justify-between mb-12 w-full">
+                <div class="order-1 sm:w-5/12 mb-4 sm:mb-0 text-left sm:text-right">
+                    <h4 class="text-2xl font-bold text-accent">2010</h4>
+                    <h5 class="font-bold text-primary text-lg">Infrastruktur Modern</h5>
+                    <p class="text-sm text-secondary mt-1">Pengaspalan jalan utama dan masuknya jaringan listrik serta internet ke seluruh pelosok kampung.</p>
+                </div>
+                <div class="order-1 sm:w-2/12 flex justify-center relative">
+                    <div class="w-12 h-12 bg-white border-4 border-primary rounded-full flex items-center justify-center shadow-md z-20">
+                        <i data-lucide="zap" class="w-5 h-5 text-primary"></i>
+                    </div>
+                </div>
+                <div class="order-1 sm:w-5/12"></div> <!-- Spacer -->
+            </div>
+
+            <!-- Event 4 -->
+            <div class="timeline-item flex flex-col sm:flex-row items-center justify-between w-full">
+                <div class="order-1 sm:w-5/12"></div> <!-- Spacer -->
+                <div class="order-1 sm:w-2/12 flex justify-center relative">
+                    <div class="w-12 h-12 bg-white border-4 border-accent rounded-full flex items-center justify-center shadow-md z-20">
+                        <i data-lucide="medal" class="w-5 h-5 text-primary"></i>
+                    </div>
+                </div>
+                <div class="order-1 sm:w-5/12 mb-4 sm:mb-0 text-left">
+                    <h4 class="text-2xl font-bold text-accent">2024</h4>
+                    <h5 class="font-bold text-primary text-lg">Desa Wisata</h5>
+                    <p class="text-sm text-secondary mt-1">Diresmikan sebagai Desa Wisata Percontohan dengan fokus pada pelestarian budaya.</p>
+                </div>
+            </div>
+
+        </div>
+      </section>
+
+      <!-- 5. TOKOH PERINTIS -->
+      <section id="tokoh" class="mb-16">
+        <h2 class="text-3xl font-bold text-primary text-center mb-12">Tokoh Perintis</h2>
+        
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-8">
+            <!-- Tokoh 1 -->
+            <div class="bg-white p-6 rounded-xl border border-gray-100 text-center shadow-sm hover:shadow-lg transition-all duration-300">
+                <div class="w-24 h-24 mx-auto rounded-full overflow-hidden border-4 border-soft mb-4">
+                    <img src="https://placehold.co/200x200/e2e8f0/1e293b?text=Tokoh+1" alt="Tokoh 1" class="w-full h-full object-cover">
+                </div>
+                <h3 class="font-bold text-lg text-primary">H. Ahmad Sobari</h3>
+                <p class="text-xs text-accent font-semibold uppercase tracking-wide mb-2">Kepala Kampung Pertama</p>
+                <p class="text-sm text-secondary">Inisiator pembukaan lahan dan sistem tata kelola air pertanian.</p>
+            </div>
+
+            <!-- Tokoh 2 -->
+            <div class="bg-white p-6 rounded-xl border border-gray-100 text-center shadow-sm hover:shadow-lg transition-all duration-300">
+                <div class="w-24 h-24 mx-auto rounded-full overflow-hidden border-4 border-soft mb-4">
+                    <img src="https://placehold.co/200x200/e2e8f0/1e293b?text=Tokoh+2" alt="Tokoh 2" class="w-full h-full object-cover">
+                </div>
+                <h3 class="font-bold text-lg text-primary">Ibu Siti Aminah</h3>
+                <p class="text-xs text-accent font-semibold uppercase tracking-wide mb-2">Tokoh Pendidikan</p>
+                <p class="text-sm text-secondary">Pendiri sekolah pertama dan penggerak kelompok wanita tani.</p>
+            </div>
+
+            <!-- Tokoh 3 -->
+            <div class="bg-white p-6 rounded-xl border border-gray-100 text-center shadow-sm hover:shadow-lg transition-all duration-300">
+                <div class="w-24 h-24 mx-auto rounded-full overflow-hidden border-4 border-soft mb-4">
+                    <img src="https://placehold.co/200x200/e2e8f0/1e293b?text=Tokoh+3" alt="Tokoh 3" class="w-full h-full object-cover">
+                </div>
+                <h3 class="font-bold text-lg text-primary">Bpk. Dedi Mulyadi</h3>
+                <p class="text-xs text-accent font-semibold uppercase tracking-wide mb-2">Ketua Pembangunan</p>
+                <p class="text-sm text-secondary">Arsitek di balik pembangunan balai desa dan jembatan penghubung.</p>
+            </div>
+        </div>
+      </section>
+
+      <!-- Footer -->
+      <footer class="text-center text-xs text-secondary pt-8 mt-12 border-t border-gray-200">
+        <p>© 2025 Kampung Jaya Sentosa. Menghargai Masa Lalu, Membangun Masa Depan.</p>
+      </footer>
+    </div>
+
+    <!-- SCRIPT -->
+    <script>
+      // Render Icons
+      function renderIcons() {
+        if (typeof lucide !== "undefined" && lucide.createIcons) {
+          lucide.createIcons();
+        }
+      }
+
+      window.onload = function() {
+          renderIcons();
+          
+          // Smooth Scroll
+          document.querySelectorAll('nav a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                if(targetElement) {
+                    const headerOffset = 100; 
+                    const elementPosition = targetElement.getBoundingClientRect().top;
+                    const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+                    window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
+                }
+            });
+        });
+      };
+    </script>
+  </body>
+</html>

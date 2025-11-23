@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Publikasi APBK Transparan</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Load Chart.js for Visualization -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+    <!-- Load Lucide Icons (as a substitute for React component icons) -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap");
+      body {
+        font-family: "Inter", sans-serif;
+        background-color: #f3f4f6;
+      }
+      /* Custom utility for dynamic colors if inline styles fail */
+      .color-red-600 {
+        color: #dc2626;
+      }
+      .color-green-600 {
+        color: #16a34a;
+      }
+      .color-blue-600 {
+        color: #2563eb;
+      }
+      .bg-color-red-500 {
+        background-color: #ef4444;
+      }
+      .bg-color-orange-500 {
+        background-color: #f97316;
+      }
+      .bg-color-green-500 {
+        background-color: #22c55e;
+      }
+
+      /* Loading Spinner styling */
+      .loader {
+        width: 50px;
+        height: 50px;
+        border: 5px solid #f3f4f6;
+        border-top: 5px solid #f59e0b;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+      }
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+    </style>
+  </head>
+  <body class="min-h-screen">
+    <!-- Loading State -->
+    <div
+      id="loading-state"
+      class="flex justify-center items-center min-h-screen hidden"
+    >
+      <div class="text-center">
+        <div class="loader mx-auto mb-3"></div>
+        <p class="text-lg text-gray-600">Memuat data APBK...</p>
+      </div>
+    </div>
+
+    <!-- Main Content Container -->
+    <div id="app-container" class="min-h-screen p-4 sm:p-8 hidden">
+      <!-- Header dan Pemilih Tahun -->
+      <div
+        class="max-w-7xl mx-auto mb-8 bg-white p-6 rounded-xl shadow-lg border-l-4 border-red-600"
+      >
+        <h1 class="text-3xl font-extrabold text-gray-900 mb-2">
+          Publikasi APBK (Anggaran Kabupaten/Kota)
+        </h1>
+        <p id="header-subtitle" class="text-lg text-gray-500 mb-4">
+          Ringkasan dan Visualisasi Anggaran
+        </p>
+
+        <div class="flex items-center space-x-4">
+          <label for="year-select" class="text-base font-medium text-gray-700"
+            >Pilih Tahun Anggaran:</label
+          >
+          <select
+            id="year-select"
+            class="p-2 border border-gray-300 rounded-lg shadow-sm focus:ring-red-500 focus:border-red-500 transition duration-150"
+          ></select>
+        </div>
+      </div>
+
+      <!-- Bagian Statistik Utama -->
+      <div
+        id="stat-cards-container"
+        class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8"
+      >
+        <!-- Stat Cards will be inserted here by JavaScript -->
+      </div>
+
+      <!-- Bagian Visualisasi Utama -->
+      <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+        <!-- Visualisasi Sumber Pendapatan (Pie Chart) -->
+        <div class="bg-white p-6 rounded-xl shadow-lg">
+          <h2 class="text-xl font-bold text-gray-800 mb-4 flex items-center">
+            <i
+              data-lucide="dollar-sign"
+              class="w-5 h-5 mr-2 text-green-500"
+            ></i>
+            Sumber Pendapatan
+          </h2>
+          <div class="h-80 w-full flex justify-center items-center">
+            <canvas id="pendapatan-pie-chart"></canvas>
+          </div>
+        </div>
+
+        <!-- Visualisasi Belanja per Kategori (Bar Chart) -->
+        <div class="bg-white p-6 rounded-xl shadow-lg">
+          <h2 class="text-xl font-bold text-gray-800 mb-4 flex items-center">
+            <i data-lucide="file-text" class="w-5 h-5 mr-2 text-red-500"></i>
+            Alokasi Belanja Utama
+          </h2>
+          <div class="h-80 w-full flex justify-center items-center">
+            <canvas id="belanja-bar-chart"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- Detail Belanja Interaktif / Drill Down -->
+      <div class="max-w-7xl mx-auto mb-8 bg-white p-6 rounded-xl shadow-lg">
+        <h2
+          class="text-2xl font-bold text-gray-800 mb-5 border-b pb-3 flex items-center"
+        >
+          <i
+            data-lucide="chevron-right"
+            class="w-6 h-6 inline mr-2 text-orange-600"
+          ></i>
+          <span id="detail-title">Rincian Belanja per Kategori</span>
+        </h2>
+
+        <!-- Detail List Container -->
+        <div id="detail-view-container" class="space-y-3">
+          <!-- Belanja Categories / Detail Programs will be inserted here -->
+        </div>
+      </div>
+
+      <!-- Bagian Publikasi Dokumen Resmi -->
+      <div class="max-w-7xl mx-auto mb-12 bg-gray-800 p-6 rounded-xl shadow-xl">
+        <h2 class="text-2xl font-bold text-white mb-4 flex items-center">
+          <i data-lucide="upload" class="w-6 h-6 mr-3 text-yellow-400"></i>
+          Dokumen APBK Resmi
+        </h2>
+        <p class="text-gray-300 mb-4">
+          Unduh dokumen resmi Anggaran Pendapatan dan Belanja Kabupaten/Kota
+          untuk informasi selengkapnya.
+        </p>
+
+        <a
+          id="document-link"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-lg text-gray-900 bg-yellow-400 hover:bg-yellow-500 transition duration-300 shadow-md"
+        >
+          <i data-lucide="download" class="w-5 h-5 mr-2"></i>
+          <span id="document-link-text">Unduh Dokumen APBK</span>
+        </a>
+      </div>
+
+      <!-- Footer / Info Pengguna -->
+      <div
+        class="max-w-7xl mx-auto text-center text-xs text-gray-400 pt-4 border-t border-gray-200"
+      >
+        <p>
+          ID Pengguna Saat Ini:
+          <span id="user-id-display">Authentikasi sedang diproses</span>
+        </p>
+      </div>
+    </div>
+
+    <!-- Firebase SDK Imports -->
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+      import {
+        getAuth,
+        signInAnonymously,
+        signInWithCustomToken,
+        onAuthStateChanged
+      } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+      import {
+        getFirestore,
+        doc,
+        setDoc,
+        onSnapshot,
+        query,
+        where,
+        collection,
+        getDocs,
+        serverTimestamp,
+        getDoc
+      } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+      // Global variables (will be attached to window for access in non-module script)
+      window.fb = {
+        initializeApp,
+        getAuth,
+        signInAnonymously,
+        signInWithCustomToken,
+        onAuthStateChanged,
+        getFirestore,
+        doc,
+        setDoc,
+        onSnapshot,
+        query,
+        where,
+        collection,
+        getDocs,
+        serverTimestamp,
+        getDoc
+      };
+    </script>
+
+    <script>
+      // --- KONSTANTA DAN DATA GLOBAL ---
+      const APP_ID =
+        typeof __app_id !== "undefined" ? __app_id : "default-app-id";
+      const FIREBASE_CONFIG =
+        typeof __firebase_config !== "undefined"
+          ? JSON.parse(__firebase_config)
+          : null;
+      const INITIAL_AUTH_TOKEN =
+        typeof __initial_auth_token !== "undefined"
+          ? __initial_auth_token
+          : null;
+      const APBK_COLLECTION_PATH = `artifacts/${APP_ID}/public/data/apbk_transparency`;
+      const APBK_YEARS = [2024, 2023, 2022];
+      const MOCK_APBK_DATA = {
+        tahun: 2024,
+        pendapatan: 550000000000,
+        belanja: 520000000000,
+        sumberPendapatan: [
+          { name: "PAD", value: 150000000000, color: "#3b82f6" }, // Biru
+          { name: "Transfer Pusat", value: 350000000000, color: "#10b981" }, // Hijau
+          { name: "Lain-lain", value: 50000000000, color: "#f59e0b" } // Kuning
+        ],
+        detailBelanja: [
+          {
+            name: "Belanja Aparat Kampung",
+            value: 100000000,
+            color: "#ef4444", // Merah
+            programs: [
+              { name: "Gaji & Tunjangan Aparat Kampung", value: 70000000 },
+              { name: "Insentif Staf Kontrak", value: 30000000 }
+            ]
+          },
+          {
+            name: "Belanja Barang & Jasa",
+            value: 100000000,
+            color: "#f97316", // Oranye
+            programs: [
+              { name: "Pengadaan Alat Tulis Kantor", value: 100000000 },
+              { name: "Pemeliharaan Aset", value: 50000000 },
+              { name: "Dinas & Perjalanan", value: 50000000 }
+            ]
+          },
+          {
+            name: "Belanja Modal",
+            value: 150000000000,
+            color: "#22c55e", // Hijau Terang
+            programs: [
+              { name: "Pembangunan Infrastruktur Jalan", value: 1000000000 },
+              { name: "Pengadaan Kendaraan Dinas", value: 200000000 },
+              { name: "Peralatan TI", value: 300000000 }
+            ]
+          }
+        ],
+        dokumenUrl:
+          "https://placehold.co/400x300/10b981/ffffff?text=Dokumen+APBK" // Placeholder link
+      };
+
+      let db, auth;
+      let userId = null;
+      let apbkData = null;
+      let selectedYear = APBK_YEARS[0];
+      let detailView = null; // Object detail belanja yang diklik
+      let unsubscribeFirestore = null; // Untuk membersihkan listener
+      let pieChartInstance = null;
+      let barChartInstance = null;
+
+      // --- UTILITAS ---
+
+      /**
+       * Format angka menjadi mata uang Rupiah (IDR).
+       * @param {number} number
+       * @returns {string}
+       */
+      function formatRupiah(number) {
+        if (number === null || number === undefined) return "N/A";
+        return new Intl.NumberFormat("id-ID", {
+          style: "currency",
+          currency: "IDR",
+          minimumFractionDigits: 0
+        }).format(number);
+      }
+
+      /**
+       * Render ikon Lucide ke dalam DOM.
+       */
+      function renderIcons() {
+        lucide.createIcons();
+      }
+
+      /**
+       * Menampilkan/menyembunyikan loading state.
+       * @param {boolean} isLoading
+       */
+      function setLoading(isLoading) {
+        document
+          .getElementById("loading-state")
+          .classList.toggle("hidden", !isLoading);
+        document
+          .getElementById("app-container")
+          .classList.toggle("hidden", isLoading);
+      }
+
+      // --- FIREBASE DAN DATA ---
+
+      /**
+       * Inisialisasi Firebase App dan Autentikasi.
+       */
+      async function initFirebaseAndAuth() {
+        if (!FIREBASE_CONFIG || !window.fb) {
+          console.error("Firebase config atau modul tidak tersedia.");
+          // Fallback to mock data display if Firebase fails to load
+          apbkData = MOCK_APBK_DATA;
+          userId = crypto.randomUUID();
+          renderApp();
+          return;
+        }
+
+        try {
+          const app = window.fb.initializeApp(FIREBASE_CONFIG);
+          db = window.fb.getFirestore(app);
+          auth = window.fb.getAuth(app);
+
+          await new Promise((resolve) => {
+            window.fb.onAuthStateChanged(auth, async (user) => {
+              if (user) {
+                userId = user.uid;
+              } else {
+                try {
+                  if (INITIAL_AUTH_TOKEN) {
+                    userId = (
+                      await window.fb.signInWithCustomToken(
+                        auth,
+                        INITIAL_AUTH_TOKEN
+                      )
+                    ).user.uid;
+                  } else {
+                    userId = (await window.fb.signInAnonymously(auth)).user.uid;
+                  }
+                } catch (e) {
+                  console.error("Gagal otentikasi:", e);
+                  userId = crypto.randomUUID(); // Fallback ID
+                }
+              }
+              document.getElementById("user-id-display").textContent = userId;
+              resolve();
+            });
+          });
+
+          // Setelah auth siap, mulai fetch data
+          fetchAndSeedData();
+        } catch (e) {
+          console.error("Gagal inisialisasi Firebase:", e);
+          setLoading(false);
+        }
+      }
+
+      /**
+       * Mengambil data APBK dari Firestore, melakukan seeding jika belum ada, dan memasang listener.
+       */
+      async function fetchAndSeedData() {
+        if (unsubscribeFirestore) {
+          unsubscribeFirestore(); // Bersihkan listener lama
+        }
+        setLoading(true);
+
+        const yearString = String(selectedYear);
+        const docRef = window.fb.doc(db, APBK_COLLECTION_PATH, yearString);
+
+        try {
+          // 1. Cek dan Seed Data
+          const q = window.fb.query(
+            window.fb.collection(db, APBK_COLLECTION_PATH),
+            window.fb.where("tahun", "==", selectedYear)
+          );
+          const snapshot = await window.fb.getDocs(q);
+
+          if (snapshot.empty) {
+            const dataToSeed = {
+              ...MOCK_APBK_DATA,
+              tahun: selectedYear,
+              // Sedikit variasi data berdasarkan tahun untuk simulasi
+              pendapatan:
+                MOCK_APBK_DATA.pendapatan + (selectedYear - 2024) * 20000000000,
+              belanja:
+                MOCK_APBK_DATA.belanja + (selectedYear - 2024) * 15000000000,
+              timestamp: window.fb.serverTimestamp()
+            };
+            await window.fb.setDoc(docRef, dataToSeed);
+            console.log(`Data APBK ${selectedYear} berhasil di-seed.`);
+          }
+
+          // 2. Pasang Listener Real-Time
+          unsubscribeFirestore = window.fb.onSnapshot(
+            docRef,
+            (docSnap) => {
+              if (docSnap.exists()) {
+                apbkData = docSnap.data();
+              } else {
+                apbkData = null;
+              }
+              setLoading(false);
+              renderApp(); // Render UI setiap kali data berubah
+            },
+            (error) => {
+              console.error("Error mendapatkan data APBK:", error);
+              setLoading(false);
+            }
+          );
+        } catch (error) {
+          console.error("Error saat fetch/seed data:", error);
+          setLoading(false);
+        }
+      }
+
+      // --- RENDERING UI UTAMA ---
+
+      /**
+       * Render Card Statistik.
+       * @param {string} title
+       * @param {number} value
+       * @param {string} color
+       * @param {string} iconName
+       * @returns {string} HTML string
+       */
+      function renderStatCard(title, value, color, iconName) {
+        const formattedValue = formatRupiah(value);
+        return `
+                <div class="p-5 rounded-xl shadow-lg transition duration-300 hover:shadow-xl bg-white border-t-4 border-${color}-500" style="border-color: ${
+          color === "blue" ? "#3b82f6" : color === "red" ? "#ef4444" : "#10b981"
+        }">
+                    <div class="flex items-center justify-between">
+                        <h3 class="text-lg font-medium text-gray-500">${title}</h3>
+                        <i data-lucide="${iconName}" class="w-8 h-8 text-${color}-500" style="color: ${
+          color === "blue" ? "#3b82f6" : color === "red" ? "#ef4444" : "#10b981"
+        }"></i>
+                    </div>
+                    <p class="text-3xl font-bold text-gray-800 mt-2">
+                        ${formattedValue}
+                    </p>
+                </div>
+            `;
+      }
+
+      /**
+       * Render Stat Cards ke dalam container.
+       */
+      function renderStats() {
+        if (!apbkData) return;
+        const container = document.getElementById("stat-cards-container");
+        const surplus = apbkData.pendapatan - apbkData.belanja;
+        const surplusColor = surplus >= 0 ? "blue" : "red";
+
+        container.innerHTML =
+          renderStatCard(
+            `Pendapatan Total ${selectedYear}`,
+            apbkData.pendapatan,
+            "green",
+            "dollar-sign"
+          ) +
+          renderStatCard(
+            `Belanja Total ${selectedYear}`,
+            apbkData.belanja,
+            "red",
+            "dollar-sign"
+          ) +
+          renderStatCard(
+            `Surplus / Defisit ${selectedYear}`,
+            surplus,
+            surplusColor,
+            "dollar-sign"
+          );
+
+        renderIcons(); // Re-render Lucide icons
+      }
+
+      /**
+       * Render Belanja Detail atau Program Detail.
+       */
+      function renderDetailView() {
+        const container = document.getElementById("detail-view-container");
+        const detailTitle = document.getElementById("detail-title");
+        container.innerHTML = "";
+
+        if (detailView) {
+          // Tampilan Program Detail
+          detailTitle.textContent = `Detail Program: ${detailView.name}`;
+
+          const backButton = document.createElement("button");
+          backButton.className =
+            "text-red-600 hover:text-red-700 font-semibold mb-4 flex items-center transition";
+          backButton.innerHTML = `<i data-lucide="chevron-right" class="w-4 h-4 mr-1 transform rotate-180"></i> Kembali ke Kategori`;
+          backButton.onclick = () => setDetailView(null);
+          container.appendChild(backButton);
+
+          detailView.programs.forEach((program) => {
+            const div = document.createElement("div");
+            div.className =
+              "flex justify-between items-center p-4 bg-gray-50 border border-gray-200 rounded-lg";
+            div.innerHTML = `
+                        <span class="font-medium text-gray-700">${
+                          program.name
+                        }</span>
+                        <span class="font-bold text-red-700">${formatRupiah(
+                          program.value
+                        )}</span>
+                    `;
+            container.appendChild(div);
+          });
+        } else {
+          // Tampilan Kategori Belanja
+          detailTitle.textContent = "Rincian Belanja per Kategori";
+
+          apbkData.detailBelanja.forEach((belanja) => {
+            const div = document.createElement("div");
+            div.className = `flex justify-between items-center p-4 rounded-xl cursor-pointer transition duration-200 
+                                     bg-white hover:bg-red-50 hover:shadow-md border-l-4`;
+            div.style.borderColor = belanja.color; // Gunakan inline style untuk warna dinamis
+            div.onclick = () => setDetailView(belanja);
+
+            div.innerHTML = `
+                        <div class="flex items-center">
+                            <span class="w-3 h-3 rounded-full mr-3" style="background-color: ${
+                              belanja.color
+                            }"></span>
+                            <span class="font-semibold text-gray-800">${
+                              belanja.name
+                            }</span>
+                        </div>
+                        <div class="flex items-center">
+                            <span class="font-bold text-red-600 mr-2">${formatRupiah(
+                              belanja.value
+                            )}</span>
+                            <i data-lucide="chevron-right" class="w-5 h-5 text-gray-400"></i>
+                        </div>
+                    `;
+            container.appendChild(div);
+          });
+        }
+        renderIcons(); // Re-render Lucide icons
+      }
+
+      // --- RENDERING CHART.JS ---
+
+      /**
+       * Hapus instance chart lama.
+       */
+      function destroyCharts() {
+        if (pieChartInstance) pieChartInstance.destroy();
+        if (barChartInstance) barChartInstance.destroy();
+        pieChartInstance = null;
+        barChartInstance = null;
+      }
+
+      /**
+       * Render semua chart menggunakan Chart.js.
+       */
+      function renderCharts() {
+        if (!apbkData) return;
+
+        destroyCharts(); // Hapus chart lama sebelum membuat yang baru
+
+        // 1. Pie Chart - Sumber Pendapatan
+        const ctxPie = document
+          .getElementById("pendapatan-pie-chart")
+          .getContext("2d");
+        const pieData = apbkData.sumberPendapatan;
+
+        pieChartInstance = new Chart(ctxPie, {
+          type: "pie",
+          data: {
+            labels: pieData.map((d) => d.name),
+            datasets: [
+              {
+                data: pieData.map((d) => d.value),
+                backgroundColor: pieData.map((d) => d.color),
+                hoverOffset: 4
+              }
+            ]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: {
+                position: "bottom"
+              },
+              tooltip: {
+                callbacks: {
+                  label: function (context) {
+                    const label = context.label || "";
+                    const value = formatRupiah(context.parsed);
+                    return `${label}: ${value}`;
+                  }
+                }
+              }
+            }
+          }
+        });
+
+        // 2. Bar Chart - Alokasi Belanja
+        const ctxBar = document
+          .getElementById("belanja-bar-chart")
+          .getContext("2d");
+        const barData = apbkData.detailBelanja;
+
+        barChartInstance = new Chart(ctxBar, {
+          type: "bar",
+          data: {
+            labels: barData.map((d) => d.name),
+            datasets: [
+              {
+                label: "Anggaran (IDR)",
+                data: barData.map((d) => d.value),
+                backgroundColor: barData.map((d) => d.color),
+                borderRadius: 4
+              }
+            ]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            indexAxis: "y", // Jadikan Horizontal Bar Chart agar label panjang terbaca
+            scales: {
+              x: {
+                beginAtZero: true,
+                title: {
+                  display: true,
+                  text: "Anggaran (dalam Miliar Rupiah)",
+                  color: "#6b7280"
+                },
+                ticks: {
+                  callback: function (value) {
+                    return `${(value / 1000000000).toFixed(0)} M`;
+                  },
+                  color: "#6b7280"
+                }
+              },
+              y: {
+                ticks: { color: "#6b7280" }
+              }
+            },
+            plugins: {
+              legend: {
+                display: false
+              },
+              tooltip: {
+                callbacks: {
+                  label: function (context) {
+                    const label = context.dataset.label || "";
+                    const value = formatRupiah(context.parsed.x);
+                    return `${label}: ${value}`;
+                  }
+                }
+              }
+            }
+          }
+        });
+      }
+
+      /**
+       * Fungsi utama untuk merender seluruh aplikasi.
+       */
+      function renderApp() {
+        // Update Header
+        document.getElementById(
+          "header-subtitle"
+        ).textContent = `Ringkasan dan Visualisasi Anggaran Tahun ${selectedYear}`;
+
+        // Update Document Link
+        const docLink = document.getElementById("document-link");
+        const docText = document.getElementById("document-link-text");
+        docLink.href = apbkData ? apbkData.dokumenUrl : "#";
+        docText.textContent = `Unduh Dokumen APBK ${selectedYear} (PDF)`;
+
+        // Render komponen
+        renderStats();
+        renderCharts();
+        renderDetailView();
+      }
+
+      // --- EVENT HANDLERS ---
+
+      /**
+       * Mengubah tahun terpilih.
+       * @param {number} year
+       */
+      function handleYearChange(year) {
+        if (selectedYear === year) return;
+        selectedYear = year;
+        detailView = null; // Reset detail view saat tahun berubah
+        fetchAndSeedData();
+      }
+
+      /**
+       * Mengatur tampilan detail view.
+       * @param {object | null} detail
+       */
+      function setDetailView(detail) {
+        detailView = detail;
+        renderDetailView();
+      }
+
+      // --- SETUP AWAL ---
+
+      window.onload = function () {
+        // Isi dropdown tahun
+        const yearSelect = document.getElementById("year-select");
+        APBK_YEARS.forEach((year) => {
+          const option = document.createElement("option");
+          option.value = year;
+          option.textContent = year;
+          yearSelect.appendChild(option);
+        });
+        yearSelect.value = selectedYear; // Set nilai default
+        yearSelect.addEventListener("change", (e) =>
+          handleYearChange(Number(e.target.value))
+        );
+
+        // Mulai inisialisasi Firebase dan pengambilan data
+        initFirebaseAndAuth();
+      };
+    </script>
+  </body>
+</html>

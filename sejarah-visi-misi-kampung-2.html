@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sejarah, Visi, & Misi Kampung Lapua</title>
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Font Inter (Google Fonts) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+
+    <style>
+      /* Menggunakan font Inter sebagai default */
+      body {
+        font-family: "Inter", sans-serif;
+        background-color: #f3f4f6; /* bg-gray-100 */
+      }
+
+      .tab-button.active {
+        border-color: #3b82f6; /* blue-500 */
+        color: #3b82f6;
+        background-color: #eff6ff; /* blue-50 */
+      }
+
+      .tab-content {
+        display: none;
+        animation: fadeIn 0.5s ease-in-out;
+      }
+
+      .tab-content.active {
+        display: block;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .section-box {
+        background-color: white;
+        padding: 1.5rem;
+        border-radius: 12px;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+          0 2px 4px -2px rgba(0, 0, 0, 0.06);
+      }
+    </style>
+  </head>
+  <body class="p-4 sm:p-8">
+    <div class="max-w-4xl mx-auto">
+      <header class="text-center mb-12 pt-4">
+        <h1
+          class="text-4xl sm:text-5xl font-extrabold text-gray-900 border-b-4 border-blue-600 inline-block px-4 pb-2"
+        >
+          Profil Kampung Lapua
+        </h1>
+        <p class="mt-4 text-lg text-gray-600">
+          Pelajari lebih lanjut mengenai sejarah, tujuan, dan cita-cita
+          pembangunan Kampung kami.
+        </p>
+      </header>
+
+      <!-- TAB BUTTONS / NAVIGASI -->
+      <div
+        class="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4 mb-8"
+      >
+        <button
+          id="tab-sejarah-btn"
+          class="tab-button active flex items-center justify-center p-3 sm:px-6 font-semibold text-lg rounded-full border-2 border-transparent transition duration-200 hover:border-blue-300"
+          onclick="openTab('sejarah')"
+        >
+          <i data-lucide="book-open" class="w-5 h-5 mr-2"></i> Sejarah
+        </button>
+        <button
+          id="tab-visi-btn"
+          class="tab-button flex items-center justify-center p-3 sm:px-6 font-semibold text-lg rounded-full border-2 border-transparent transition duration-200 hover:border-blue-300"
+          onclick="openTab('visi')"
+        >
+          <i data-lucide="eye" class="w-5 h-5 mr-2"></i> Visi
+        </button>
+        <button
+          id="tab-misi-btn"
+          class="tab-button flex items-center justify-center p-3 sm:px-6 font-semibold text-lg rounded-full border-2 border-transparent transition duration-200 hover:border-blue-300"
+          onclick="openTab('misi')"
+        >
+          <i data-lucide="target" class="w-5 h-5 mr-2"></i> Misi
+        </button>
+      </div>
+
+      <!-- TAB CONTENT CONTAINER -->
+      <div id="tab-container" class="mt-8">
+        <!-- 1. SEJARAH KAMPUNG -->
+        <div id="sejarah" class="tab-content active section-box">
+          <h2 class="text-3xl font-bold text-gray-900 mb-4 flex items-center">
+            <i data-lucide="landmark" class="w-7 h-7 mr-3 text-blue-600"></i>
+            Sejarah Singkat Kampung Lapua
+          </h2>
+          <p class="text-gray-700 leading-relaxed mb-4">
+            Kampung Lapua diperkirakan telah berdiri sejak tahun 1950-an,
+            dimulai dari pemukiman sederhana oleh sekelompok transmigran yang
+            mencari lahan pertanian subur di wilayah ini. Nama "Lapua" sendiri
+            diambil dari bahasa lokal yang berarti "tempat berkumpul" atau
+            "pintu gerbang," mencerminkan lokasinya yang strategis sebagai
+            penghubung antara dataran tinggi dan pesisir.
+          </p>
+          <p class="text-gray-700 leading-relaxed mb-4">
+            Perkembangan pesat terjadi pada tahun 1980-an dengan adanya program
+            pembangunan infrastruktur yang membuka akses jalan utama. Hal ini
+            mendorong masuknya investasi di sektor perkebunan dan meningkatkan
+            jumlah penduduk secara signifikan. Sejak saat itu, Kampung Lapua
+            dikenal sebagai pusat produksi hasil bumi utama di wilayah ini.
+          </p>
+          <h3 class="text-xl font-semibold text-gray-800 mt-6 mb-2">
+            Perubahan Kepemimpinan Penting:
+          </h3>
+          <ul class="list-disc list-inside text-gray-700 ml-4 space-y-2">
+            <li>
+              <span class="font-medium">1960 - 1975:</span> Dipimpin oleh Kepala
+              Desa pertama, Bapak Sastrowijoyo. Fokus pada pembukaan lahan dan
+              irigasi.
+            </li>
+            <li>
+              <span class="font-medium">1995 - 2005:</span> Periode modernisasi
+              administrasi desa di bawah kepemimpinan Bapak Suparman, ditandai
+              dengan pembangunan balai desa permanen.
+            </li>
+            <li>
+              <span class="font-medium">2018 - Sekarang:</span> Fokus pada
+              pembangunan digitalisasi pelayanan publik dan ekonomi kreatif
+              lokal.
+            </li>
+          </ul>
+        </div>
+
+        <!-- 2. VISI KAMPUNG -->
+        <div id="visi" class="tab-content section-box">
+          <h2
+            class="text-3xl font-bold text-gray-900 mb-6 flex items-center text-blue-600"
+          >
+            <i data-lucide="lightbulb" class="w-7 h-7 mr-3"></i> Visi Kampung
+            Lapua
+          </h2>
+          <div class="bg-blue-50 p-6 rounded-lg border-l-4 border-blue-600">
+            <p class="text-2xl font-extrabold text-blue-800 text-center italic">
+              "Terwujudnya Kampung Lapua yang
+              <span class="text-red-500">SEHAT</span>,
+              <span class="text-green-600">MANDIRI</span>,
+              <span class="text-yellow-600">DAN BERBUDAYA</span>, berdasarkan
+              prinsip Tata Kelola Pemerintahan yang
+              <span class="text-blue-800">AMANAH</span>."
+            </p>
+          </div>
+
+          <h3 class="text-xl font-semibold text-gray-800 mt-6 mb-2">
+            Penjabaran Visi:
+          </h3>
+          <ul class="space-y-4 text-gray-700">
+            <li class="flex items-start">
+              <i
+                data-lucide="heart-handshake"
+                class="w-6 h-6 mr-3 text-red-500 flex-shrink-0 mt-1"
+              ></i>
+              <div>
+                <span class="font-bold text-red-700">SEHAT:</span> Menciptakan
+                lingkungan dan masyarakat yang sehat secara fisik dan mental
+                melalui pelayanan kesehatan yang merata dan sanitasi yang baik.
+              </div>
+            </li>
+            <li class="flex items-start">
+              <i
+                data-lucide="wallet"
+                class="w-6 h-6 mr-3 text-green-600 flex-shrink-0 mt-1"
+              ></i>
+              <div>
+                <span class="font-bold text-green-800">MANDIRI:</span> Mendorong
+                kemandirian ekonomi masyarakat melalui pengembangan UMKM, sektor
+                pertanian modern, dan pemberdayaan sumber daya lokal.
+              </div>
+            </li>
+            <li class="flex items-start">
+              <i
+                data-lucide="palette"
+                class="w-6 h-6 mr-3 text-yellow-600 flex-shrink-0 mt-1"
+              ></i>
+              <div>
+                <span class="font-bold text-yellow-800">BERBUDAYA:</span>
+                Melestarikan nilai-nilai adat dan budaya lokal sebagai pondasi
+                moral dan identitas Kampung, serta menjunjung tinggi gotong
+                royong.
+              </div>
+            </li>
+            <li class="flex items-start">
+              <i
+                data-lucide="shield-check"
+                class="w-6 h-6 mr-3 text-blue-800 flex-shrink-0 mt-1"
+              ></i>
+              <div>
+                <span class="font-bold text-blue-800">AMANAH:</span>
+                Menyelenggarakan pemerintahan yang bersih, transparan,
+                akuntabel, dan melayani masyarakat dengan penuh tanggung jawab.
+              </div>
+            </li>
+          </ul>
+        </div>
+
+        <!-- 3. MISI KAMPUNG -->
+        <div id="misi" class="tab-content section-box">
+          <h2
+            class="text-3xl font-bold text-gray-900 mb-6 flex items-center text-green-600"
+          >
+            <i data-lucide="list-checks" class="w-7 h-7 mr-3"></i> Misi Kampung
+            Lapua
+          </h2>
+          <ol class="space-y-6 text-gray-700 list-decimal pl-5">
+            <li class="pb-2 border-b border-gray-100">
+              <span class="font-bold text-blue-700"
+                >Meningkatkan Kualitas Pelayanan Publik:</span
+              >
+              Membangun sistem pelayanan administrasi yang cepat, tepat, dan
+              berbasis teknologi untuk efisiensi dan transparansi.
+            </li>
+            <li class="pb-2 border-b border-gray-100">
+              <span class="font-bold text-blue-700"
+                >Pemberdayaan Ekonomi Lokal:</span
+              >
+              Memberikan pelatihan kewirausahaan, memfasilitasi akses modal, dan
+              mempromosikan produk unggulan kampung.
+            </li>
+            <li class="pb-2 border-b border-gray-100">
+              <span class="font-bold text-blue-700"
+                >Pembangunan Infrastruktur Berkelanjutan:</span
+              >
+              Melanjutkan pembangunan sarana dan prasarana dasar (jalan,
+              irigasi, sanitasi) yang merata dan ramah lingkungan.
+            </li>
+            <li class="pb-2 border-b border-gray-100">
+              <span class="font-bold text-blue-700"
+                >Pelestarian Budaya dan Nilai Gotong Royong:</span
+              >
+              Mengadakan festival budaya tahunan dan mengaktifkan kembali
+              kegiatan kerja bakti di setiap dusun.
+            </li>
+            <li class="pb-2 border-b border-gray-100">
+              <span class="font-bold text-blue-700"
+                >Mewujudkan Keamanan dan Ketertiban:</span
+              >
+              Menggalakkan peran aktif masyarakat dalam menjaga keamanan
+              lingkungan dan penyelesaian konflik secara musyawarah.
+            </li>
+          </ol>
+        </div>
+      </div>
+
+      <footer class="mt-16 text-center text-gray-500 text-sm">
+        <p>Informasi ini bersumber dari Dokumen RPJM Kampung Lapua.</p>
+      </footer>
+    </div>
+
+    <!-- JavaScript untuk Fungsi Tab -->
+    <script>
+      function openTab(tabId) {
+        // Hapus kelas 'active' dari semua tombol dan konten
+        const tabButtons = document.querySelectorAll(".tab-button");
+        const tabContents = document.querySelectorAll(".tab-content");
+
+        tabButtons.forEach((button) => button.classList.remove("active"));
+        tabContents.forEach((content) => content.classList.remove("active"));
+
+        // Tambahkan kelas 'active' pada tombol yang diklik
+        document.getElementById(`tab-${tabId}-btn`).classList.add("active");
+
+        // Tampilkan konten tab yang sesuai
+        document.getElementById(tabId).classList.add("active");
+
+        // Inisialisasi Lucide Icons agar ikon di tab yang baru muncul juga terrender
+        lucide.createIcons();
+      }
+
+      // Pastikan tab Sejarah terbuka saat halaman dimuat
+      window.onload = () => {
+        openTab("sejarah");
+      };
+    </script>
+  </body>
+</html>

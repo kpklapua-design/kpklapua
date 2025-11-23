@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Galeri Proyek Pembangunan — Elegan Modern</title>
+    
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Load Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Google Fonts: Poppins -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Konfigurasi Tema Elegan Modern -->
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              primary: '#1b1f3a', // Navy Blue
+              accent: '#d97706',  // Golden Orange
+              soft: '#f9f7f5',    // Soft Cream
+            },
+            fontFamily: {
+              sans: ['Poppins', 'sans-serif'],
+            }
+          }
+        }
+      }
+    </script>
+
+    <style>
+      body {
+        background-color: #f9f7f5; /* Fallback if tailwind config fails load */
+      }
+      .project-card {
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      }
+      .project-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+      }
+      .image-container {
+        height: 220px;
+        width: 100%;
+        overflow: hidden;
+      }
+      .image-placeholder {
+        object-fit: cover;
+        height: 100%;
+        width: 100%;
+        transition: transform 0.5s ease;
+      }
+      .project-card:hover .image-placeholder {
+        transform: scale(1.05);
+      }
+      /* Progress Bar Animation */
+      @keyframes loadProgress {
+        from { width: 0; }
+      }
+      .progress-anim {
+        animation: loadProgress 1.5s ease-out forwards;
+      }
+    </style>
+  </head>
+  <body class="min-h-screen font-sans bg-soft text-primary antialiased selection:bg-accent selection:text-white">
+    
+    <!-- Header Navigasi Sederhana -->
+    <header class="sticky top-0 z-50 bg-white/90 backdrop-blur-md shadow-sm border-b border-gray-100">
+      <div class="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
+        <!-- Perubahan: Logo PP (w-10 h-10) dihilangkan, hanya menyisakan teks. -->
+        <div class="flex items-center gap-3">
+          <div>
+            <h1 class="font-bold text-lg leading-tight text-primary">Pembangunan & Infrastruktur</h1>
+            <p class="text-xs text-gray-500">Dashboard Publik</p>
+          </div>
+        </div>
+        <!-- Tombol Kembali ke Dashboard Utama (Mock) -->
+        <a href="#" class="text-sm font-medium text-gray-500 hover:text-accent transition-colors flex items-center gap-2">
+          <i data-lucide="layout-dashboard" class="w-4 h-4"></i>
+          <span class="hidden sm:inline">Kembali ke RPJM</span>
+        </a>
+      </div>
+    </header>
+
+    <!-- Kontainer Utama -->
+    <div id="app-container" class="p-4 sm:p-8 max-w-6xl mx-auto">
+      
+      <!-- Judul Halaman -->
+      <div class="mb-12 text-center max-w-3xl mx-auto mt-4">
+        <span class="inline-block py-1 px-3 rounded-full bg-orange-100 text-accent text-xs font-bold tracking-wider mb-4 uppercase">Transparansi Anggaran 2025</span>
+        <h2 class="text-3xl md:text-4xl font-bold text-primary mb-4 leading-tight">
+          Realisasi Proyek Strategis Daerah
+        </h2>
+        <p class="text-gray-500 text-lg">
+          Memantau perkembangan infrastruktur fisik dan digital untuk mendukung pertumbuhan ekonomi berkelanjutan.
+        </p>
+      </div>
+
+      <!-- Statistik Ringkas (Opsional, tambahan untuk mempercantik) -->
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
+        <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 text-center">
+          <div class="text-3xl font-bold text-primary mb-1">4</div>
+          <div class="text-xs text-gray-500 uppercase font-semibold">Total Proyek</div>
+        </div>
+        <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 text-center">
+          <div class="text-3xl font-bold text-emerald-600 mb-1">1</div>
+          <div class="text-xs text-gray-500 uppercase font-semibold">Selesai</div>
+        </div>
+        <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 text-center">
+          <div class="text-3xl font-bold text-blue-600 mb-1">2</div>
+          <div class="text-xs text-gray-500 uppercase font-semibold">Berjalan</div>
+        </div>
+        <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 text-center">
+          <div class="text-3xl font-bold text-accent mb-1">Rp 260M</div>
+          <div class="text-xs text-gray-500 uppercase font-semibold">Total Anggaran</div>
+        </div>
+      </div>
+
+      <!-- Galeri Proyek (Grid View) -->
+      <div
+        id="projects-grid"
+        class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+      >
+        <!-- Project Cards will be rendered here by JavaScript -->
+        <!-- Loading State Mock -->
+        <div class="col-span-full text-center py-20 text-gray-400 animate-pulse">
+          Memuat data proyek...
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <div class="text-center text-xs text-gray-400 pt-12 mt-12 border-t border-gray-200">
+        <p>© 2025 Dinas Pekerjaan Umum & Penataan Ruang. Data diperbarui secara berkala.</p>
+      </div>
+    </div>
+
+    <script>
+      // Data Mock Proyek (Diperbarui dengan Gambar Unsplash)
+      const PROJECT_DATA = [
+        {
+          id: "P001",
+          name: "Jembatan Layang Citarum",
+          description:
+            "Infrastruktur vital penghubung wilayah industri dan pemukiman untuk mengurai kemacetan jalur provinsi.",
+          budget: 120000000000,
+          realization: 120000000000,
+          status: "Selesai",
+          imageUrl:
+            "https://images.unsplash.com/photo-1545558014-8692077e9b5c?q=80&w=600&auto=format&fit=crop", 
+          pdfUrl: "#"
+        },
+        {
+          id: "P002",
+          name: "Revitalisasi Pasar Indah",
+          description:
+            "Modernisasi pasar tradisional dengan konsep green building untuk meningkatkan daya saing UMKM lokal.",
+          budget: 30000000000,
+          realization: 24000000000,
+          status: "Sedang Berjalan",
+          imageUrl:
+            "https://images.unsplash.com/photo-1533900298318-6b8da08a523e?q=80&w=600&auto=format&fit=crop",
+          pdfUrl: "#"
+        },
+        {
+          id: "P003",
+          name: "Jaringan Serat Optik Desa",
+          description:
+            "Pemasangan infrastruktur internet berkecepatan tinggi untuk menunjang program Desa Digital.",
+          budget: 50000000000,
+          realization: 15000000000,
+          status: "Tertunda",
+          imageUrl:
+            "https://images.unsplash.com/photo-1544197150-b99a580bb7a8?q=80&w=600&auto=format&fit=crop",
+          pdfUrl: "#"
+        },
+        {
+          id: "P004",
+          name: "Gedung Layanan Terpadu",
+          description:
+            "Pembangunan pusat pelayanan publik satu pintu yang terintegrasi dengan sistem smart office.",
+          budget: 60000000000,
+          realization: 6000000000,
+          status: "Sedang Berjalan",
+          imageUrl:
+            "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=600&auto=format&fit=crop",
+          pdfUrl: "#"
+        }
+      ];
+
+      // --- UTILITAS ---
+
+      function formatRupiah(number) {
+        if (number === null || number === undefined) return "N/A";
+        // Format singkat (Milyar/Juta) agar lebih rapi di kartu
+        if (number >= 1000000000) {
+            return "Rp " + (number / 1000000000).toFixed(1) + " M";
+        }
+        return new Intl.NumberFormat("id-ID", {
+          style: "currency",
+          currency: "IDR",
+          minimumFractionDigits: 0
+        }).format(number);
+      }
+
+      function calculatePercentage(realized, budgeted) {
+        if (budgeted === 0) return 0;
+        return (realized / budgeted) * 100;
+      }
+
+      function getStatusProps(status) {
+        switch (status) {
+          case "Selesai":
+            return {
+              colorClass: "bg-emerald-100 text-emerald-700 border border-emerald-200",
+              progressBarColor: "bg-emerald-500",
+              icon: "check-circle-2"
+            };
+          case "Sedang Berjalan":
+            return { 
+                colorClass: "bg-blue-50 text-blue-700 border border-blue-200", 
+                progressBarColor: "bg-blue-500",
+                icon: "loader-2" 
+            };
+          case "Tertunda":
+            return {
+              colorClass: "bg-red-50 text-red-700 border border-red-200",
+              progressBarColor: "bg-red-500",
+              icon: "alert-circle"
+            };
+          default:
+            return { 
+                colorClass: "bg-gray-100 text-gray-700 border border-gray-200", 
+                progressBarColor: "bg-gray-400",
+                icon: "clock" 
+            };
+        }
+      }
+
+      function renderIcons() {
+        setTimeout(() => {
+          if (typeof lucide !== "undefined" && lucide.createIcons) {
+            lucide.createIcons();
+          }
+        }, 0);
+      }
+
+      // --- RENDERING UI ---
+
+      function renderProjectsGrid() {
+        const container = document.getElementById("projects-grid");
+        container.innerHTML = ""; 
+
+        PROJECT_DATA.forEach((project, index) => {
+          const realPct = calculatePercentage(project.realization, project.budget);
+          const statusProps = getStatusProps(project.status);
+          
+          // Animasi delay untuk setiap kartu
+          const delay = index * 100;
+
+          const cardHtml = `
+            <div class="project-card bg-white rounded-2xl shadow-sm overflow-hidden border border-gray-100 flex flex-col h-full" style="animation-delay: ${delay}ms">
+                
+                <!-- Image Header -->
+                <div class="image-container relative">
+                    <img 
+                        src="${project.imageUrl}" 
+                        alt="${project.name}" 
+                        class="image-placeholder"
+                        loading="lazy"
+                    >
+                    <div class="absolute top-3 right-3">
+                         <span class="text-xs font-bold px-3 py-1 rounded-full ${statusProps.colorClass} flex items-center shadow-sm backdrop-blur-sm bg-opacity-90">
+                            <i data-lucide="${statusProps.icon}" class="w-3 h-3 mr-1.5"></i>
+                            ${project.status}
+                        </span>
+                    </div>
+                </div>
+
+                <div class="p-6 flex flex-col flex-grow">
+                    <h3 class="text-lg font-bold text-primary mb-2 line-clamp-1" title="${project.name}">
+                        ${project.name}
+                    </h3>
+                    
+                    <p class="text-sm text-gray-500 mb-6 line-clamp-2 flex-grow">
+                        ${project.description}
+                    </p>
+
+                    <!-- Progress Bar -->
+                    <div class="mb-4">
+                        <div class="flex justify-between text-xs font-medium text-gray-500 mb-1">
+                            <span>Realisasi Anggaran</span>
+                            <span class="${realPct >= 100 ? 'text-emerald-600' : 'text-accent'}">${realPct.toFixed(0)}%</span>
+                        </div>
+                        <div class="w-full bg-gray-100 rounded-full h-2 overflow-hidden">
+                            <div class="${statusProps.progressBarColor} h-2 rounded-full progress-anim" style="width: ${realPct}%"></div>
+                        </div>
+                    </div>
+
+                    <!-- Financial Details -->
+                    <div class="grid grid-cols-2 gap-4 mb-6 pt-4 border-t border-gray-50">
+                        <div>
+                            <div class="text-[10px] uppercase tracking-wider text-gray-400 font-semibold">Anggaran</div>
+                            <div class="text-sm font-bold text-gray-800">${formatRupiah(project.budget)}</div>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-[10px] uppercase tracking-wider text-gray-400 font-semibold">Terserap</div>
+                            <div class="text-sm font-bold text-gray-800">${formatRupiah(project.realization)}</div>
+                        </div>
+                    </div>
+
+                    <!-- Action Button -->
+                    <a 
+                        href="${project.pdfUrl}" 
+                        target="_blank" 
+                        class="w-full mt-auto inline-flex items-center justify-center px-4 py-2.5 border border-primary text-sm font-medium rounded-xl text-primary bg-transparent hover:bg-primary hover:text-white transition-colors duration-300 group"
+                    >
+                        <i data-lucide="file-bar-chart-2" class="w-4 h-4 mr-2 group-hover:scale-110 transition-transform"></i>
+                        Detail & RAB
+                    </a>
+                </div>
+            </div>
+          `;
+          container.insertAdjacentHTML("beforeend", cardHtml);
+        });
+
+        renderIcons();
+      }
+
+      window.onload = function () {
+        renderProjectsGrid();
+      };
+    </script>
+  </body>
+</html>

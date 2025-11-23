@@ -1,0 +1,434 @@
+<!-- Chosen Palette: Elegan Modern (Soft Cream: #f9f7f5, Dark Slate: #1e293b, Golden Accent: #d97706) -->
+<!-- Perubahan Utama: 
+    1. Thumbnail D4 DIKEMBALIKAN.
+    2. Section Peta Lokasi DIHAPUS sepenuhnya (sesuai screenshot 'DI HAPUS').
+    3. Tombol "Petunjuk Arah" tetap ada di samping thumbnail, membuka Google Maps di tab baru.
+-->
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Eksplorasi Lokasi Wisata</title>
+    
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Load Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <!-- Load Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+
+    <!-- Google Fonts: Poppins -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Konfigurasi Tema Elegan Modern -->
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              primary: '#1e293b', // Dark Slate (Teks utama)
+              accent: '#d97706',  // Golden Accent (Aksen/Sorotan)
+              soft: '#f9f7f5',    // Soft Cream (Latar belakang)
+              secondary: '#64748b', // Slate-500 (Teks sekunder)
+              card: '#ffffff',    // Warna kartu
+            },
+            fontFamily: {
+              sans: ['Poppins', 'sans-serif'],
+            }
+          }
+        }
+      }
+    </script>
+
+    <style>
+      body {
+        background-color: var(--tw-colors-soft);
+      }
+      /* Efek hover elegan untuk kartu */
+      .info-card {
+        transition: transform 0.3s ease, box-shadow 0.4s ease;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+      }
+      .info-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.1);
+      }
+      .chart-container { 
+        position: relative; 
+        width: 100%; 
+        max-width: 700px; 
+        margin-left: auto; 
+        margin-right: auto; 
+        height: 40vh; 
+        max-height: 450px; 
+      }
+      @media (max-width: 640px) {
+          .chart-container {
+              height: 50vh; 
+          }
+      }
+      /* Untuk thumbnail galeri */
+      .thumbnail-active {
+        border-color: var(--tw-colors-accent);
+        box-shadow: 0 0 0 3px rgba(217, 119, 6, 0.5);
+      }
+      /* Styling untuk gambar di grid galeri */
+      .grid-image {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          border-radius: 0.75rem; /* rounded-xl */
+          transition: transform 0.3s ease-in-out;
+      }
+      .grid-image:hover {
+          transform: scale(1.05);
+      }
+    </style>
+  </head>
+  <body class="min-h-screen font-sans bg-soft text-primary antialiased">
+    
+    <!-- 1. HEADER (Navigasi Sticky) -->
+    <header class="sticky top-0 z-50 bg-white/95 backdrop-blur-md shadow-lg border-b border-gray-100">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
+        <div class="flex items-center gap-3">
+          <i data-lucide="compass" class="w-6 h-6 text-accent"></i>
+          <h1 class="font-bold text-xl text-primary">Panorama Alam</h1>
+        </div>
+        <nav class="hidden md:flex items-center space-x-6">
+            <a href="#galeri" class="text-sm font-medium text-secondary hover:text-primary transition-colors">Visual Utama</a>
+            <a href="#visual" class="text-sm font-medium text-secondary hover:text-primary transition-colors">Galeri & Data</a>
+            <!-- Link Peta Lokasi Dihapus -->
+            <a href="#detail" class="text-sm font-medium text-secondary hover:text-primary transition-colors">Fasilitas</a>
+        </nav>
+        <button class="md:hidden p-2 rounded-lg bg-accent/10 text-accent">
+            <i data-lucide="menu" class="w-5 h-5"></i>
+        </button>
+      </div>
+    </header>
+
+    <!-- Kontainer Utama -->
+    <div id="app-container" class="p-4 sm:p-8 max-w-7xl mx-auto">
+      
+      <!-- 2. HERO SECTION & SLIDESHOW UTAMA -->
+      <section id="galeri" class="mb-16 mt-6">
+        <div class="text-center max-w-4xl mx-auto mb-10">
+            <span class="inline-block py-1.5 px-4 rounded-full bg-accent/20 text-accent text-sm font-semibold tracking-wide mb-4 uppercase shadow-md">Destinasi Pilihan</span>
+            <h2 id="main-title" class="text-4xl md:text-6xl font-extrabold text-primary mb-4 leading-tight transition-opacity duration-300">
+                Danau Biru Serenity
+            </h2>
+            <p id="main-description" class="text-secondary text-lg mt-4 max-w-2xl mx-auto transition-opacity duration-300">
+                Eksplorasi keindahan alam yang tenang, kejelasan air danau yang memukau, dan fasilitas premium yang tersedia.
+            </p>
+        </div>
+
+        <div class="bg-card rounded-2xl shadow-2xl border border-gray-100 p-4 sm:p-8">
+            <!-- Main Display Image (Slideshow) -->
+            <div id="main-image" class="w-full h-96 sm:h-[60vh] rounded-xl mb-4 bg-gray-200 bg-cover bg-center transition-all duration-500"
+                 style="background-image: url('https://placehold.co/1200x800/22d3ee/ffffff?text=Pemandangan+Utama+Danau');">
+            </div>
+            
+            <!-- Thumbnail Navigation & Map Button -->
+            <div class="flex flex-col items-center justify-center space-y-4">
+                
+                <div class="flex flex-col sm:flex-row items-center justify-center sm:space-x-6 w-full">
+                    <!-- Thumbnail List -->
+                    <div id="thumbnails" class="flex justify-center space-x-3 sm:space-x-4 overflow-x-auto pb-2 flex-shrink">
+                        <!-- Thumbnail 1 -->
+                        <div data-index="0" class="thumbnail w-20 h-14 sm:w-24 sm:h-16 rounded-lg cursor-pointer border-4 border-accent shadow-lg bg-cover bg-center thumbnail-active transition-all"
+                             style="background-image: url('https://placehold.co/100x70/22d3ee/ffffff?text=D1');" 
+                             data-src="https://placehold.co/1200x800/22d3ee/ffffff?text=Pemandangan+Utama+Danau"
+                             data-desc="1. Foto Utama: Keindahan Utama Danau Biru Serenity."
+                             data-title="Danau Biru Serenity"
+                             data-hero-desc="Eksplorasi keindahan alam yang tenang, kejelasan air danau yang memukau, dan fasilitas premium yang tersedia."
+                             data-lat="-6.9175" data-lon="107.6191">
+                        </div>
+                        <!-- Thumbnail 2 -->
+                        <div data-index="1" class="thumbnail w-20 h-14 sm:w-24 sm:h-16 rounded-lg cursor-pointer border-4 border-transparent hover:border-accent/50 shadow-md bg-cover bg-center transition-all"
+                             style="background-image: url('https://placehold.co/100x70/38bdf8/ffffff?text=D2');" 
+                             data-src="https://placehold.co/1200x800/38bdf8/ffffff?text=2.+Fasilitas+Tepi+Danau"
+                             data-desc="2. Area tempat istirahat dan fasilitas tepi danau yang modern."
+                             data-title="Area Santai Tepi Air"
+                             data-hero-desc="Nikmati kopi hangat di area santai yang didesain modern, tepat di pinggir danau dengan pemandangan terbaik."
+                             data-lat="-6.9180" data-lon="107.6180">
+                        </div>
+                        <!-- Thumbnail 3 -->
+                        <div data-index="2" class="thumbnail w-20 h-14 sm:w-24 sm:h-16 rounded-lg cursor-pointer border-4 border-transparent hover:border-accent/50 shadow-md bg-cover bg-center transition-all"
+                             style="background-image: url('https://placehold.co/100x70/fde047/1e293b?text=D3');" 
+                             data-src="https://placehold.co/1200x800/fde047/1e293b?text=3.+Aktivitas+Air"
+                             data-desc="3. Kegiatan perahu dayung dan aktivitas air lainnya yang menyenangkan."
+                             data-title="Petualangan Air"
+                             data-hero-desc="Coba pengalaman mendayung perahu kayak atau perahu dayung di tengah ketenangan Danau Biru. Tersedia penyewaan di lokasi."
+                             data-lat="-6.9165" data-lon="107.6205">
+                        </div>
+                        <!-- Thumbnail 4 (DIKEMBALIKAN) -->
+                        <div data-index="3" class="thumbnail w-20 h-14 sm:w-24 sm:h-16 rounded-lg cursor-pointer border-4 border-transparent hover:border-accent/50 shadow-md bg-cover bg-center transition-all"
+                             style="background-image: url('https://placehold.co/100x70/f97316/ffffff?text=D4');" 
+                             data-src="https://placehold.co/1200x800/f97316/ffffff?text=4.+Sunset+Spektakuler"
+                             data-desc="4. Pemandangan matahari terbenam yang spektakuler dari dermaga utama."
+                             data-title="Sunset Serenity View"
+                             data-hero-desc="Jangan lewatkan momen magis matahari terbenam yang mewarnai langit dengan palet keemasan di atas permukaan danau yang tenang."
+                             data-lat="-6.9170" data-lon="107.6175">
+                        </div>
+                    </div>
+
+                    <!-- Tombol Peta Dinamis (Arahkan ke Google Maps) -->
+                    <a id="dynamic-map-button" href="#" target="_blank" class="flex items-center justify-center px-6 py-3 bg-accent text-white font-semibold rounded-xl shadow-md hover:bg-accent/90 transition-colors shrink-0 whitespace-nowrap mt-4 sm:mt-0">
+                        <i data-lucide="map-pin" class="w-5 h-5 mr-2"></i>
+                        Petunjuk Arah
+                    </a>
+                </div>
+
+            </div>
+        </div>
+      </section>
+
+      <!-- 3. SECTION GALERI GRID & DATA ANALITIK -->
+      <section id="visual" class="mb-16">
+        <h2 class="text-3xl font-bold text-primary text-center mb-12">Galeri Visual & Data Kunci Kunjungan</h2>
+        
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
+            <!-- Galeri Foto Grid (Kiri) -->
+            <div id="gallery-grid-card" class="bg-card rounded-xl p-6 sm:p-8 info-card">
+                <h3 class="text-2xl font-bold text-primary mb-6 flex items-center gap-3">
+                    <i data-lucide="image-plus" class="w-6 h-6 text-accent"></i> Momen Eksklusif
+                </h3>
+                <div class="grid grid-cols-3 gap-3 sm:gap-4">
+                    <div class="col-span-1 h-32 sm:h-40 overflow-hidden rounded-xl shadow-lg">
+                        <img class="grid-image" src="https://placehold.co/400x300/e0f2f1/1e293b?text=G1" alt="Galeri 1">
+                    </div>
+                    <div class="col-span-2 h-32 sm:h-40 overflow-hidden rounded-xl shadow-lg">
+                        <img class="grid-image" src="https://placehold.co/800x300/99f6e4/1e293b?text=G2" alt="Galeri 2">
+                    </div>
+                    <div class="col-span-2 h-32 sm:h-40 overflow-hidden rounded-xl shadow-lg">
+                        <img class="grid-image" src="https://placehold.co/800x300/4ade80/1e293b?text=G3" alt="Galeri 3">
+                    </div>
+                    <div class="col-span-1 h-32 sm:h-40 overflow-hidden rounded-xl shadow-lg">
+                        <img class="grid-image" src="https://placehold.co/400x300/34d399/1e293b?text=G4" alt="Galeri 4">
+                    </div>
+                    <div class="col-span-1 h-32 sm:h-40 overflow-hidden rounded-xl shadow-lg">
+                        <img class="grid-image" src="https://placehold.co/400x300/06b6d4/1e293b?text=G5" alt="Galeri 5">
+                    </div>
+                    <div class="col-span-2 h-32 sm:h-40 overflow-hidden rounded-xl shadow-lg">
+                        <img class="grid-image" src="https://placehold.co/800x300/0ea5e9/1e293b?text=G6" alt="Galeri 6">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Analisis Data (Kanan) -->
+            <div class="bg-card rounded-xl p-6 sm:p-8 info-card">
+                <h3 class="text-2xl font-bold text-primary mb-4 flex items-center gap-3"><i data-lucide="bar-chart-3" class="w-6 h-6 text-accent"></i> Analisis Data Kuantitatif</h3>
+                <p class="text-secondary mb-6">Analisis tren kunjungan per kuartal terakhir dan persebaran rating kepuasan wisatawan.</p>
+                
+                <!-- Chart 1 -->
+                <div class="chart-container mb-8">
+                    <canvas id="visitorChart"></canvas>
+                </div>
+                <!-- Chart 2 -->
+                <div class="flex justify-center">
+                    <div class="w-48 h-48">
+                        <canvas id="ratingChart"></canvas>
+                    </div>
+                </div>
+                <p class="text-center text-sm text-secondary mt-3">Rata-rata rating kepuasan (4.7/5.0)</p>
+            </div>
+        </div>
+      </section>
+
+      <!-- SECTION PETA LOKASI TELAH DIHAPUS SESUAI INSTRUKSI -->
+
+      <!-- 5. SECTION DETAIL & FASILITAS -->
+      <section id="detail" class="mb-16">
+        <h2 class="text-3xl font-bold text-primary text-center mb-12">Informasi Praktis & Fasilitas Utama</h2>
+        
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- Kartu 1 -->
+            <div class="info-card bg-card rounded-xl p-6 text-center border border-gray-100">
+                <i data-lucide="clock" class="w-10 h-10 text-accent mx-auto mb-4"></i>
+                <h3 class="text-xl font-bold text-primary mb-2">Jam Operasional</h3>
+                <p class="text-2xl font-extrabold text-primary">08:00 - 17:00</p>
+                <p class="text-sm text-secondary mt-1">Buka Setiap Hari</p>
+            </div>
+            <!-- Kartu 2 -->
+            <div class="info-card bg-card rounded-xl p-6 text-center border border-gray-100">
+                <i data-lucide="ticket" class="w-10 h-10 text-accent mx-auto mb-4"></i>
+                <h3 class="text-xl font-bold text-primary mb-2">Harga Tiket</h3>
+                <p class="text-2xl font-extrabold text-primary">Rp 25.000,-</p>
+                <p class="text-sm text-secondary mt-1">Gratis anak < 5 thn</p>
+            </div>
+            <!-- Kartu 3 -->
+            <div class="info-card bg-card rounded-xl p-6 border border-gray-100">
+                <h3 class="text-xl font-bold text-primary mb-3 flex items-center gap-2"><i data-lucide="parking-square" class="w-5 h-5 text-accent"></i> Fasilitas</h3>
+                <ul id="facility-list" class="space-y-2 text-sm">
+                    <li class="flex justify-between items-center text-primary/80">Area Parkir <i data-lucide="check-circle" class="w-5 h-5 text-green-500"></i></li>
+                    <li class="flex justify-between items-center text-primary/80">Toilet Bersih <i data-lucide="check-circle" class="w-5 h-5 text-green-500"></i></li>
+                    <li class="flex justify-between items-center text-primary/80">Sewa Perahu <i data-lucide="check-circle" class="w-5 h-5 text-green-500"></i></li>
+                </ul>
+            </div>
+        </div>
+      </section>
+      
+      <!-- 6. FOOTER -->
+      <footer class="text-center text-xs text-secondary pt-12 mt-12 border-t border-gray-200">
+        <p>© 2025 Danau Biru Serenity. Semua Hak Dilindungi. Desain Elegan Modern.</p>
+      </footer>
+    </div>
+
+    <!-- Blok JavaScript (Logic & Chart Rendering) -->
+    <script>
+      
+      // --- DATA CHART.JS ---
+      const visitorData = {
+          labels: ['K1', 'K2', 'K3', 'K4'],
+          datasets: [{
+              label: 'Pengunjung (Ribuan)',
+              data: [8.5, 9.2, 11.8, 10.5],
+              backgroundColor: '#d97706', 
+              borderRadius: 4,
+          }]
+      };
+
+      const ratingData = {
+          labels: ['5 Bintang', '4 Bintang', '3 Bintang', '2 Bintang'],
+          datasets: [{
+              label: 'Persentase',
+              data: [65, 25, 8, 2], 
+              backgroundColor: ['#d97706', '#fbbf24', '#f87171', '#ef4444'], 
+              hoverOffset: 4,
+          }]
+      };
+
+      function initCharts() {
+          const visitorCtx = document.getElementById('visitorChart').getContext('2d');
+          const ratingCtx = document.getElementById('ratingChart').getContext('2d');
+
+          new Chart(visitorCtx, {
+              type: 'bar',
+              data: visitorData,
+              options: {
+                  responsive: true,
+                  maintainAspectRatio: false, 
+                  plugins: { legend: { display: false } },
+                  scales: { y: { beginAtZero: true } }
+              }
+          });
+
+          new Chart(ratingCtx, {
+              type: 'doughnut',
+              data: ratingData,
+              options: {
+                  responsive: true,
+                  maintainAspectRatio: false,
+                  plugins: { legend: { position: 'bottom' } }
+              }
+          });
+      }
+      
+      // Fungsi untuk mengupdate Tombol Peta Dinamis
+      function updateMapButton(lat, lon, title) {
+          const dynamicButton = document.getElementById('dynamic-map-button');
+          const googleMapsLink = `https://www.google.com/maps/search/?api=1&query=${lat},${lon}`;
+          dynamicButton.setAttribute('href', googleMapsLink);
+          dynamicButton.innerHTML = `<i data-lucide="map-pin" class="w-5 h-5 mr-2"></i> Petunjuk Arah`;
+          renderIcons(); 
+      }
+      
+      // --- GALLERY SLIDESHOW LOGIC ---
+      let currentIndex = 0;
+      let galleryInterval;
+      const autoplayDuration = 5000; 
+
+      function updateGallery(index) {
+          const mainImage = document.getElementById('main-image');
+          const mainTitle = document.getElementById('main-title');
+          const mainDesc = document.getElementById('main-description');
+          const thumbnails = document.querySelectorAll('.thumbnail');
+          
+          const totalItems = thumbnails.length;
+          currentIndex = (index % totalItems + totalItems) % totalItems;
+          const currentThumb = thumbnails[currentIndex];
+
+          if (!currentThumb) return; 
+
+          const newSrc = currentThumb.getAttribute('data-src');
+          const newTitle = currentThumb.getAttribute('data-title');
+          const newHeroDesc = currentThumb.getAttribute('data-hero-desc');
+          
+          const lat = currentThumb.getAttribute('data-lat');
+          const lon = currentThumb.getAttribute('data-lon');
+
+          mainImage.style.opacity = 0;
+          mainTitle.style.opacity = 0;
+          mainDesc.style.opacity = 0;
+
+          setTimeout(() => {
+              thumbnails.forEach(t => t.classList.remove('thumbnail-active', 'border-accent', 'shadow-lg'));
+              thumbnails.forEach(t => t.classList.add('border-transparent', 'hover:border-accent/50'));
+              currentThumb.classList.add('thumbnail-active', 'border-accent', 'shadow-lg');
+              currentThumb.classList.remove('border-transparent', 'hover:border-accent/50');
+
+              mainImage.style.backgroundImage = `url('${newSrc}')`;
+              mainTitle.textContent = newTitle;
+              mainDesc.textContent = newHeroDesc;
+
+              // Update Tombol Peta Dinamis
+              updateMapButton(lat, lon, newTitle);
+
+              mainImage.style.opacity = 1; 
+              mainTitle.style.opacity = 1;
+              mainDesc.style.opacity = 1;
+          }, 300); 
+      }
+
+      function startAutoplay() {
+          if (galleryInterval) clearInterval(galleryInterval);
+          galleryInterval = setInterval(() => {
+              updateGallery(currentIndex + 1);
+          }, autoplayDuration);
+      }
+
+      function setupGallery() {
+          const thumbnails = document.querySelectorAll('.thumbnail');
+          thumbnails.forEach((thumb, index) => {
+              thumb.addEventListener('click', function() {
+                  clearInterval(galleryInterval);
+                  updateGallery(index); 
+                  startAutoplay(); 
+              });
+          });
+          updateGallery(0); 
+          startAutoplay();
+      }
+
+      function renderIcons() {
+        if (typeof lucide !== "undefined" && lucide.createIcons) {
+          lucide.createIcons();
+        }
+      }
+
+      window.onload = function () {
+        renderIcons(); 
+        initCharts();
+        setupGallery(); 
+        
+        document.querySelectorAll('nav a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                if(targetElement) {
+                    const headerOffset = 80; 
+                    const elementPosition = targetElement.getBoundingClientRect().top;
+                    const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+                    window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
+                }
+            });
+        });
+      };
+    </script>
+  </body>
+</html>

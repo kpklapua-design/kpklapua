@@ -1,0 +1,1314 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Kampung Lapua</title>
+    <style>
+      /* Reset dan font */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      }
+      body {
+        background: #f7f9fa;
+        color: #222;
+        line-height: 1.5;
+      }
+      a {
+        color: #009879;
+        text-decoration: none;
+        cursor: pointer;
+      }
+      a:hover {
+        text-decoration: underline;
+      }
+      /* Header */
+      header {
+        background: white;
+        box-shadow: 0 2px 5px rgb(0 0 0 / 0.1);
+        padding: 10px clamp(20px, 5vw, 300px) 10px clamp(20px, 5vw, 170px);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+      }
+      .logo {
+        display: flex;
+        align-items: center;
+        font-family: "Segoe UI", sans-serif;
+        margin-right: -5px;
+        margin-left: 80px;
+      }
+      .logo-text {
+        display: flex;
+        flex-direction: column;
+        line-height: 1;
+      }
+      .logo-text .main {
+        color: #008060;
+        font-size: clamp(14px, 2.5vw, 22px);
+        font-weight: bold;
+        white-space: nowrap;
+        margin-bottom: 10px;
+      }
+      .logo-text .tagline {
+        color: #555;
+        font-style: italic;
+        font-size: clamp(12px, 2.5vw, 12px);
+        white-space: nowrap;
+      }
+      /* Navigation */
+      nav {
+        margin-left: -60px;
+      }
+      nav ul {
+        list-style: none;
+        display: flex;
+        gap: 0px;
+        font-weight: 600;
+        font-size: 11px;
+        max-width: 1100px;
+        margin: 0 auto;
+      }
+      nav ul li {
+        position: relative;
+      }
+      nav ul li a {
+        color: #222;
+        text-decoration: none;
+        cursor: pointer;
+        -webkit-user-select: none;
+        user-select: none;
+        padding: 8px 16px;
+        display: flex;
+        align-items: center;
+        gap: 0px;
+        white-space: nowrap;
+        margin-left: 5px;
+      }
+      nav ul li a:hover {
+        color: #009879;
+      }
+      /* Panah dropdown */
+      nav ul li .arrow {
+        border: solid #222;
+        border-width: 0 2px 2px 0;
+        display: inline-block;
+        padding: 3px;
+        margin-left: 4px;
+        -webkit-transform: rotate(45deg);
+        transform: rotate(45deg);
+        transition: border-color 0.3s;
+      }
+      /* Dropdown menu */
+      nav ul li:hover > ul.submenu,
+      nav ul li > ul.submenu:hover {
+        display: block;
+      }
+      ul.submenu {
+        position: absolute;
+        top: 40px;
+        left: 0;
+        background: white;
+        border-radius: 6px;
+        box-shadow: 0 8px 20px rgb(0 0 0 / 0.1);
+        display: none;
+        min-width: 140px;
+        padding: 6px 0;
+        z-index: 200;
+        transition: all 0.3s ease;
+      }
+      ul.submenu.active {
+        display: block;
+      }
+      ul.submenu li {
+        padding: 0;
+        margin: 0;
+        white-space: nowrap;
+      }
+      ul.submenu li a {
+        padding: 10px 20px;
+        display: block;
+        color: #444;
+        font-weight: 500;
+        font-size: 11px;
+      }
+      ul.submenu li a:hover {
+        background-color: #009879;
+        color: white;
+      }
+      /* Right-aligned submenu */
+      .submenu-right {
+        left: auto;
+        right: 0;
+      }
+      /* Shift Peta Kampung text to the left */
+      .peta-kampung a {
+        margin-left: -5px;
+      }
+      /* Banner hero */
+      .hero {
+        margin: 36px auto;
+        max-width: 1100px;
+        padding: 0 20px;
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 8px 30px rgb(0 0 0 / 0.1);
+        position: relative;
+      }
+      .hero img {
+        width: 100%;
+        height: auto;
+        display: block;
+        border-radius: 15px;
+        object-fit: cover;
+        filter: brightness(0.6);
+      }
+      .hero-text {
+        position: absolute;
+        bottom: 30px;
+        left: 20px;
+        color: white;
+        max-width: 480px;
+        padding: 20px 25px;
+        background: rgba(0, 152, 121, 0.75);
+        border-radius: 12px;
+      }
+      .hero-text h2 {
+        font-size: 28px;
+        font-weight: 900;
+        line-height: 1.2;
+        margin-bottom: 15px;
+        text-shadow: 2px 2px 6px rgb(0 0 0 / 0.4);
+      }
+      .hero-text p {
+        font-size: 16px;
+        font-weight: 500;
+        line-height: 1.4;
+        margin-bottom: 25px;
+        text-shadow: 1px 1px 4px rgb(0 0 0 / 0.3);
+      }
+      .btn-cta {
+        background-color: #009879;
+        color: white;
+        font-weight: 600;
+        font-size: 16px;
+        padding: 12px 25px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        box-shadow: 0 4px 12px rgb(0 152 121 / 0.6);
+        transition: background-color 0.3s ease;
+        text-decoration: none;
+        -webkit-user-select: none;
+        user-select: none;
+      }
+      .btn-cta:hover {
+        background-color: #007a5d;
+      }
+      .btn-cta svg {
+        width: 18px;
+        height: 18px;
+        stroke: white;
+        stroke-width: 2;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        fill: none;
+      }
+
+      /* Section styling */
+      section {
+        max-width: 1100px;
+        margin: 40px auto;
+        padding: 0 20px;
+      }
+
+      /* Konten Unggulan dan Artikel Utama */
+      .flex-row {
+        display: flex;
+        gap: 24px;
+        flex-wrap: wrap;
+      }
+      article.main-article {
+        flex: 1 1 48%;
+        position: relative;
+        border-radius: 16px;
+        overflow: hidden;
+        cursor: pointer;
+        min-width: 280px;
+        height: 240px;
+        color: white;
+      }
+      article.main-article img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        filter: brightness(0.6);
+        border-radius: 16px;
+        transition: transform 0.3s ease;
+      }
+      article.main-article:hover img {
+        transform: scale(1.05);
+      }
+      article.main-article div.text-overlay {
+        position: absolute;
+        bottom: 20px;
+        left: 20px;
+        max-width: 75%;
+      }
+      article.main-article h3 {
+        font-size: 24px;
+        margin-bottom: 8px;
+        font-weight: 700;
+        text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);
+      }
+      article.main-article a {
+        font-weight: 600;
+        color: #00a676;
+        text-decoration: none;
+        text-shadow: 1px 1px 3px rgba(255, 255, 255, 0.8);
+      }
+      /* Konten Unggulan cards */
+      .cards-grid {
+        display: flex;
+        gap: 24px;
+        flex-wrap: wrap;
+        margin-top: 24px;
+      }
+      article.card {
+        flex: 1 1 22%;
+        background: #fff;
+        padding: 16px;
+        border-radius: 12px;
+        box-shadow: 0 5px 15px rgb(0 0 0 / 0.05);
+        cursor: pointer;
+        min-width: 230px;
+        display: flex;
+        flex-direction: column;
+        transition: box-shadow 0.2s;
+      }
+      article.card:hover {
+        box-shadow: 0 10px 25px rgb(0 0 0 / 0.15);
+      }
+      article.card img {
+        width: 100%;
+        height: 140px;
+        object-fit: cover;
+        border-radius: 8px;
+        margin-bottom: 12px;
+        -webkit-user-select: none;
+        user-select: none;
+      }
+      article.card h4 {
+        margin-bottom: 6px;
+        font-weight: 600;
+        color: #222;
+      }
+      article.card p {
+        font-size: 14px;
+        color: #555;
+        margin-bottom: 12px;
+        flex-grow: 1;
+      }
+      /* Bagaimana Kami dapat Membantu */
+      .how-help {
+        background: linear-gradient(to right, #e9fef8, #dff9f3);
+        padding: 48px 20px;
+        text-align: center;
+      }
+      .how-help h2 {
+        font-weight: 700;
+        font-size: 28px;
+        max-width: 1100px;
+        margin: 0 auto 40px;
+      }
+      .how-help .cards {
+        max-width: 1100px;
+        margin: 0 auto;
+        display: flex;
+        gap: 24px;
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+      .how-help .card-item {
+        background: white;
+        padding: 24px;
+        flex: 1 1 280px;
+        border-radius: 12px;
+        box-shadow: 0 4px 20px rgb(0 0 0 / 0.1);
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        cursor: pointer;
+        -webkit-user-select: none;
+        user-select: none;
+        transition: box-shadow 0.2s;
+      }
+      .how-help .card-item:hover {
+        box-shadow: 0 8px 28px rgb(0 0 0 / 0.15);
+      }
+      .how-help .icon {
+        background: #009879;
+        border-radius: 8px;
+        padding: 16px;
+        color: white;
+        font-size: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .how-help .card-item h3 {
+        margin: 0;
+        font-weight: 600;
+        color: #222;
+      }
+      /* Berita Terkini */
+      .news-section h2 {
+        font-weight: 700;
+        margin-bottom: 28px;
+      }
+      .news-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 24px;
+      }
+      .news-article {
+        border-left: 4px solid #009879;
+        padding-left: 12px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        min-width: 280px;
+        cursor: pointer;
+        -webkit-user-select: none;
+        user-select: none;
+      }
+      .news-article time {
+        font-size: 13px;
+        color: #555;
+        margin-bottom: 8px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .news-article h3 {
+        font-weight: 600;
+        font-size: 16px;
+        color: #222;
+        line-height: 1.2;
+      }
+      /* Anda Mungkin Juga Tertarik */
+      .also-interest {
+        margin-bottom: 60px;
+      }
+      .also-interest h2 {
+        font-weight: 700;
+        margin-bottom: 28px;
+      }
+      .also-cards-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 24px;
+      }
+      .also-card {
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 6px 16px rgb(0 0 0 / 0.1);
+        cursor: pointer;
+        display: flex;
+        flex-direction: column;
+        -webkit-user-select: none;
+        user-select: none;
+        transition: box-shadow 0.2s;
+      }
+      .also-card:hover {
+        box-shadow: 0 10px 26px rgb(0 0 0 / 0.15);
+      }
+      .also-card img {
+        width: 100%;
+        height: 160px;
+        object-fit: cover;
+        border-radius: 10px 10px 0 0;
+        margin-bottom: 12px;
+        -webkit-user-select: none;
+        user-select: none;
+      }
+      .also-card h4 {
+        margin: 0 16px 6px;
+        font-weight: 700;
+        color: #222;
+      }
+      .also-card p {
+        font-size: 14px;
+        color: #555;
+        margin: 0 16px 12px;
+        flex-grow: 1;
+      }
+      /* Footer */
+      footer {
+        background: #0d1424;
+        color: #b0b8c1;
+        padding: 40px 20px 60px;
+        font-size: 14px;
+      }
+      footer > div.container {
+        max-width: 1100px;
+        margin: auto;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 40px;
+        justify-content: space-between;
+      }
+      footer .footer-col {
+        flex: 1 1 280px;
+        min-width: 280px;
+      }
+      footer .footer-col h4 {
+        color: white;
+        margin-bottom: 16px;
+        font-weight: 700;
+      }
+      footer .footer-col p,
+      footer .footer-col ul {
+        margin-bottom: 12px;
+      }
+      footer .footer-col ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        color: #b0b8c1;
+        line-height: 2em;
+      }
+      footer .footer-col ul li a {
+        color: #78c3a5;
+        text-decoration: none;
+        transition: color 0.3s;
+      }
+      footer .footer-col ul li a:hover {
+        color: white;
+      }
+      footer .footer-logo {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 12px;
+      }
+      footer .footer-logo div.logo-text h4 {
+        color: white;
+        margin-bottom: 4px;
+      }
+      footer a.footer-contact {
+        color: #78c3a5;
+        text-decoration: none;
+      }
+      footer a.footer-contact:hover {
+        text-decoration: underline;
+      }
+      footer hr {
+        border: none;
+        height: 1px;
+        background-color: #222b45;
+        margin: 20px 0;
+      }
+      footer .copyright {
+        text-align: center;
+        color: #5a646f;
+        margin-bottom: 20px;
+      }
+      footer .social-links {
+        max-width: 1100px;
+        margin: 0 auto;
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        color: #78c3a5;
+        font-size: 20px;
+      }
+      footer .social-links a {
+        color: inherit;
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 34px;
+        height: 34px;
+        border-radius: 50%;
+        transition: background-color 0.3s ease;
+        -webkit-user-select: none;
+        user-select: none;
+      }
+      footer .social-links a:hover {
+        background-color: #009879;
+        color: white;
+      }
+      /* Hamburger Menu */
+      .hamburger {
+        display: none;
+        flex-direction: column;
+        cursor: pointer;
+        gap: 4px;
+        padding: 8px;
+        border-radius: 4px;
+        transition: background-color 0.3s;
+      }
+      .hamburger:hover {
+        background-color: rgba(0, 152, 121, 0.1);
+      }
+      .hamburger span {
+        width: 25px;
+        height: 3px;
+        background-color: #222;
+        transition: all 0.3s;
+      }
+      .hamburger.active span:nth-child(1) {
+        transform: rotate(-45deg) translate(-5px, 6px);
+      }
+      .hamburger.active span:nth-child(2) {
+        opacity: 0;
+      }
+      .hamburger.active span:nth-child(3) {
+        transform: rotate(45deg) translate(-5px, -6px);
+      }
+      /* Responsive Design */
+      @media (max-width: 1024px) {
+        header {
+          padding: 8px 15px;
+        }
+        .hamburger {
+          display: flex;
+        }
+        nav ul {
+          position: fixed;
+          top: 80px;
+          left: -100%;
+          width: 100%;
+          height: calc(100vh - 80px);
+          background: white;
+          flex-direction: column;
+          gap: 0;
+          padding: 20px 0;
+          box-shadow: 0 4px 20px rgb(0 0 0 / 0.1);
+          transition: left 0.3s ease;
+          z-index: 1000;
+          overflow-y: auto;
+        }
+        nav ul.active {
+          left: 0;
+        }
+        nav ul li {
+          width: 100%;
+          border-bottom: 1px solid #eee;
+        }
+        nav ul li a {
+          padding: 15px 20px;
+          display: block;
+          font-size: 16px;
+        }
+        nav ul li:hover > ul.submenu {
+          display: none;
+        }
+        ul.submenu {
+          position: static;
+          background: #f9f9f9;
+          box-shadow: none;
+          padding: 0;
+          margin: 0;
+        }
+        ul.submenu li {
+          border-bottom: none;
+        }
+        ul.submenu li a {
+          padding: 15px 20px;
+          font-size: 16px;
+          overflow-wrap: break-word;
+          white-space: normal;
+        }
+        .hero {
+          margin: 20px auto;
+          padding: 0 10px;
+        }
+        .hero-text h2 {
+          font-size: 24px;
+        }
+        .hero-text p {
+          font-size: 14px;
+        }
+        .btn-cta {
+          font-size: 14px;
+          padding: 10px 20px;
+        }
+        section {
+          padding: 0 10px;
+        }
+        .how-help {
+          padding: 32px 10px;
+        }
+        .how-help h2 {
+          font-size: 24px;
+        }
+        .news-section h2,
+        .also-interest h2 {
+          font-size: 24px;
+        }
+        .hero-text {
+          max-width: 100%;
+          position: relative;
+          background: rgba(0, 152, 121, 0.85);
+          top: auto;
+          left: auto;
+          margin-top: -100px;
+          border-radius: 12px;
+        }
+        .flex-row,
+        .cards-grid {
+          flex-direction: column;
+        }
+        .cards-grid article.card,
+        .how-help .cards,
+        .news-grid,
+        .also-cards-grid {
+          grid-template-columns: 1fr !important;
+          display: block !important;
+        }
+        .also-cards-grid .also-card {
+          margin-bottom: 24px;
+        }
+        footer {
+          padding: 30px 10px 50px;
+        }
+        footer .footer-col {
+          min-width: 250px;
+        }
+        footer > div.container {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+        .peta-kampung a {
+          margin-left: 0;
+        }
+        ul.submenu {
+          transition: none;
+        }
+      }
+
+      @media (min-width: 1025px) {
+        .hero {
+          max-width: 1200px;
+        }
+        section {
+          max-width: 1200px;
+        }
+        .how-help {
+          max-width: 1200px;
+        }
+        footer > div.container {
+          max-width: 1200px;
+        }
+        .cards-grid {
+          grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        }
+        .news-grid {
+          grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+        }
+        .also-cards-grid {
+          grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        }
+      }
+
+      /* Touch devices (laptops with touch, tablets, etc.) */
+      @media (hover: none) and (pointer: coarse) {
+        .hamburger {
+          display: flex;
+        }
+        nav ul {
+          position: fixed;
+          top: 80px;
+          left: -100%;
+          width: 100%;
+          height: calc(100vh - 80px);
+          background: white;
+          flex-direction: column;
+          gap: 0;
+          padding: 20px 0;
+          box-shadow: 0 4px 20px rgb(0 0 0 / 0.1);
+          transition: left 0.3s ease;
+          z-index: 1000;
+          overflow-y: auto;
+        }
+        nav ul.active {
+          left: 0;
+        }
+        nav ul li {
+          width: 100%;
+          border-bottom: 1px solid #eee;
+        }
+        nav ul li a {
+          padding: 15px 20px;
+          display: block;
+          font-size: 16px;
+        }
+        nav ul li:hover > ul.submenu {
+          display: none;
+        }
+        ul.submenu {
+          position: static;
+          background: #f9f9f9;
+          box-shadow: none;
+          padding: 0;
+          margin: 0;
+        }
+        ul.submenu li {
+          border-bottom: none;
+        }
+        ul.submenu li a {
+          padding: 15px 20px;
+          font-size: 16px;
+          overflow-wrap: break-word;
+          white-space: normal;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <a href="#" class="logo" aria-label="Kampung Lapua Home">
+        <div class="logo-text">
+          <div class="main">Kampung Lapua</div>
+          <div class="tagline">Kampung Maju & Berkembang</div>
+        </div>
+      </a>
+      <nav>
+        <div class="hamburger" aria-label="Toggle navigation menu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+        <ul>
+          <li><a href="#">Home</a></li>
+          <li>
+            <a href="#">Profil <i class="arrow"></i></a>
+            <ul class="submenu">
+              <li><a href="sejarah.html">Sejarah</a></li>
+              <li><a href="visi-misi.html">Visi Misi</a></li>
+              <li>
+                <a href="struktur-organisasi-3.html">Struktur Organisasi</a>
+              </li>
+              <li><a href="data-wilayah.html">Data Wilayah</a></li>
+              <li><a href="rpjm.html">RPJM Kampung</a></li>
+            </ul>
+          </li>
+          <li>
+            <a href="#">Berita & Pengumuman <i class="arrow"></i></a>
+            <ul class="submenu">
+              <li><a href="artikel-kegiatan.html">Artikel Kegiatan</a></li>
+              <li>
+                <a href="informasi-pembangunan.html">Informasi Pembangunan</a>
+              </li>
+              <li><a href="pengumuman-resmi.html">Pengumuman Resmi</a></li>
+            </ul>
+          </li>
+          <li>
+            <a href="#">Layanan Publik <i class="arrow"></i></a>
+            <ul class="submenu">
+              <li>
+                <a href="formulir-permohonan-surat.html"
+                  >Form Permohonan Surat</a
+                >
+              </li>
+              <li>
+                <a href="formulir-pengaduan-warga.html">Form Pengaduan Warga</a>
+              </li>
+            </ul>
+          </li>
+          <li>
+            <a href="#">Potensi & UMKM <i class="arrow"></i></a>
+            <ul class="submenu">
+              <li>
+                <a href="Profil-Usaha-Kecil.html">Profil Usaha Kecil</a>
+              </li>
+              <li><a href="produk-lokal.html">Produk Lokal</a></li>
+              <li>
+                <a href="foto-produk-2.html">Foto Produk</a>
+              </li>
+              <li>
+                <a href="kontak-pelaku-usaha.html">Kontak Pelaku Usaha</a>
+              </li>
+            </ul>
+          </li>
+          <li>
+            <a href="#">Wisata & Budaya <i class="arrow"></i></a>
+            <ul class="submenu">
+              <li>
+                <a href="informasi-objek-wisata.html">Informasi Objek Wisata</a>
+              </li>
+              <li><a href="tradisi-adat.html">Tradisi Adat</a></li>
+              <li>
+                <a href="kegitan-budaya.html">Kegiatan Budaya</a>
+              </li>
+            </ul>
+          </li>
+          <li>
+            <a href="#">Transparansi Keuangan <i class="arrow"></i></a>
+            <ul class="submenu">
+              <li><a href="publikasi.html">Publikasi</a></li>
+              <li>
+                <a href="laporan-realisasi-anggaran-2.html"
+                  >Laporan Realisasi Anggaran</a
+                >
+              </li>
+              <li>
+                <a href="kegiatan-pembangunan.html">Kegiatan Pembangunan</a>
+              </li>
+            </ul>
+          </li>
+          <li>
+            <a href="#">Galeri <i class="arrow"></i></a>
+            <ul class="submenu">
+              <li>
+                <a href="dokumentasi-kegiatan.html">Dokumentasi Kegiatan</a>
+              </li>
+              <li><a href="pembangunan.html">Pembangunan</a></li>
+              <li><a href="perayaan-kampung.html">Perayaan Kampung</a></li>
+            </ul>
+          </li>
+          <li class="peta-kampung">
+            <a href="#">Peta Kampung <i class="arrow"></i></a>
+            <ul class="submenu submenu-right">
+              <li>
+                <a href="lokasi-kantor-kampung.html">Lokasi Kantor Kampung</a>
+              </li>
+              <li><a href="batas-wilayah.html">Batas Wilayah</a></li>
+              <li><a href="lokasi-wisata.html">Lokasi Wisata</a></li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+    </header>
+
+    <section class="hero" aria-label="Banner utama Kampung Lapua">
+      <img
+        src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1350&q=80"
+        alt="Pemandangan sawah hijau dan perbukitan"
+      />
+      <div class="hero-text">
+        <h2>Membangun Masa Depan Bersama</h2>
+        <p>
+          Inovasi dan kolaborasi menciptakan kemajuan untuk Kampung Lapua.<br />Bagaimana
+          kami bekerja bersama untuk menciptakan komunitas yang lebih baik.
+        </p>
+        <a href="#" class="btn-cta" aria-label="Baca Selengkapnya">
+          Baca Selengkapnya
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <polyline points="9 6 15 12 9 18" />
+          </svg>
+        </a>
+      </div>
+    </section>
+
+    <section>
+      <div class="flex-row">
+        <article
+          class="main-article"
+          tabindex="0"
+          aria-label="Artikel: Pertanian Berkelanjutan di Kampung Lapua"
+        >
+          <img
+            src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80"
+            alt="Pertanian berkelanjutan di Kampung Lapua"
+          />
+          <div class="text-overlay">
+            <h3>Pertanian Berkelanjutan di Kampung Lapua</h3>
+            <a href="#">Baca Selengkapnya &rarr;</a>
+          </div>
+        </article>
+        <article
+          class="main-article"
+          tabindex="0"
+          aria-label="Artikel: Teknologi Modern untuk Pembangunan Desa"
+        >
+          <img
+            src="https://images.unsplash.com/photo-1501594907352-04cda38ebc29?auto=format&fit=crop&w=800&q=80"
+            alt="Teknologi modern untuk pembangunan desa"
+          />
+          <div class="text-overlay">
+            <h3>Teknologi Modern untuk Pembangunan Desa</h3>
+            <a href="#">Baca Selengkapnya &rarr;</a>
+          </div>
+        </article>
+      </div>
+
+      <h2>Konten Unggulan</h2>
+      <div class="cards-grid">
+        <article class="card" tabindex="0" aria-label="Strategi Kami">
+          <img
+            src="https://images.unsplash.com/photo-1494526585095-c41746248156?auto=format&fit=crop&w=400&q=80"
+            alt="Gambar strategi"
+          />
+          <h4>Strategi Kami</h4>
+          <p>
+            Strategi kami adalah memberikan nilai lebih dengan pembangunan...
+          </p>
+          <a href="#">Baca Selengkapnya &rarr;</a>
+        </article>
+
+        <article
+          class="card"
+          tabindex="0"
+          aria-label="Lingkungan & Keberlanjutan"
+        >
+          <img
+            src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80"
+            alt="Gambar lingkungan dan keberlanjutan"
+          />
+          <h4>Lingkungan & Keberlanjutan</h4>
+          <p>
+            Target kami adalah menciptakan kampung yang hijau dan
+            berkelanjuta...
+          </p>
+          <a href="#">Baca Selengkapnya &rarr;</a>
+        </article>
+
+        <article class="card" tabindex="0" aria-label="Peluang Kerja">
+          <img
+            src="https://images.unsplash.com/photo-1515377905703-c4788e51af15?auto=format&fit=crop&w=400&q=80"
+            alt="Gambar peluang kerja"
+          />
+          <h4>Peluang Kerja</h4>
+          <p>
+            Jelajahi peluang untuk bergabung dan membangun Kampung Lapua
+            bersama...
+          </p>
+          <a href="#">Baca Selengkapnya &rarr;</a>
+        </article>
+
+        <article class="card" tabindex="0" aria-label="Cerita Kami">
+          <img
+            src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=400&q=80"
+            alt="Gambar cerita kami"
+          />
+          <h4>Cerita Kami</h4>
+          <p>
+            Orang-orang, ide, dan inovasi yang mendorong kemajuan di Kampung...
+          </p>
+          <a href="#">Baca Selengkapnya &rarr;</a>
+        </article>
+      </div>
+    </section>
+
+    <section class="how-help" aria-label="Bagaimana Kami Membantu">
+      <h2>Bagaimana Kami Dapat Membantu?</h2>
+      <div class="cards">
+        <div class="card-item" tabindex="0" aria-label="Pencarian Pekerjaan">
+          <div class="icon">📁</div>
+          <h3>Pencarian Pekerjaan</h3>
+        </div>
+        <div class="card-item" tabindex="0" aria-label="Lokasi Kantor Desa">
+          <div class="icon">📍</div>
+          <h3>Lokasi Kantor Desa</h3>
+        </div>
+        <div class="card-item" tabindex="0" aria-label="Layanan Masyarakat">
+          <div class="icon">👥</div>
+          <h3>Layanan Masyarakat</h3>
+        </div>
+      </div>
+    </section>
+
+    <section class="news-section" aria-label="Berita Terkini Kampung Lapua">
+      <h2>Berita Terkini</h2>
+      <div class="news-grid">
+        <article
+          class="news-article"
+          tabindex="0"
+          aria-label="Berita: Kampung Lapua Luncurkan Program Pertanian Organik"
+        >
+          <time datetime="2025-01-14">📅 14 Jan 2025</time>
+          <h3>Kampung Lapua Luncurkan Program Pertanian Organik</h3>
+        </article>
+        <article
+          class="news-article"
+          tabindex="0"
+          aria-label="Berita: Pembangunan Infrastruktur Jalan Desa Selesai"
+        >
+          <time datetime="2025-01-07">📅 7 Jan 2025</time>
+          <h3>Pembangunan Infrastruktur Jalan Desa Selesai</h3>
+        </article>
+        <article
+          class="news-article"
+          tabindex="0"
+          aria-label="Berita: Festival Budaya Kampung Lapua 2025"
+        >
+          <time datetime="2025-01-03">📅 3 Jan 2025</time>
+          <h3>Festival Budaya Kampung Lapua 2025</h3>
+        </article>
+        <article
+          class="news-article"
+          tabindex="0"
+          aria-label="Berita: Koperasi Desa Raih Penghargaan Nasional"
+        >
+          <time datetime="2024-12-28">📅 28 Des 2024</time>
+          <h3>Koperasi Desa Raih Penghargaan Nasional</h3>
+        </article>
+      </div>
+    </section>
+
+    <section class="also-interest" aria-label="Anda Mungkin Juga Tertarik">
+      <h2>Anda Mungkin Juga Tertarik</h2>
+      <div class="also-cards-grid">
+        <article
+          class="also-card"
+          tabindex="0"
+          aria-label="Digitalisasi Kampung Lapua"
+        >
+          <img
+            src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80"
+            alt="Gambar Digitalisasi"
+          />
+          <h4>Digitalisasi</h4>
+          <p>Transformasi digital untuk kemajuan Kampung Lapua.</p>
+          <a href="artikel-kegiatan-2.html">Baca Selengkapnya &rarr;</a>
+        </article>
+        <article
+          class="also-card"
+          tabindex="0"
+          aria-label="Produk Lokal Kampung Lapua"
+        >
+          <img
+            src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=400&q=80"
+            alt="Gambar Produk Lokal"
+          />
+          <h4 style="color: #009879">Produk Lokal</h4>
+          <p>Produk unggulan dari masyarakat Kampung Lapua.</p>
+          <a href="artikel-kegiatan-2.html">Baca Selengkapnya &rarr;</a>
+        </article>
+        <article
+          class="also-card"
+          tabindex="0"
+          aria-label="Budaya & Tradisi Kampung Lapua"
+        >
+          <img
+            src="https://images.unsplash.com/photo-1494526585095-c41746248156?auto=format&fit=crop&w=400&q=80"
+            alt="Budaya & Tradisi"
+          />
+          <h4>Budaya & Tradisi</h4>
+          <p>Melestarikan kearifan lokal dan tradisi budaya.</p>
+          <a href="artikel-kegiatan-2.html">Baca Selengkapnya &rarr;</a>
+        </article>
+        <article
+          class="also-card"
+          tabindex="0"
+          aria-label="Tradisi Lokal Kampung Lapua"
+        >
+          <img
+            src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=400&q=80"
+            alt="Tradisi Lokal"
+          />
+          <h4>Tradisi Lokal</h4>
+          <p>Budaya dan tradisi unik Kampung Lapua.</p>
+          <a href="artikel-kegiatan-2.html">Baca Selengkapnya &rarr;</a>
+        </article>
+      </div>
+    </section>
+
+    <footer aria-label="Footer website Kampung Lapua">
+      <div class="container">
+        <div class="footer-col">
+          <div class="footer-logo">
+            <div class="logo-text">
+              <h4>Kampung Lapua</h4>
+              <div>Desa Maju & Berkelanjutan</div>
+            </div>
+          </div>
+          <p>
+            Membangun kampung yang maju, sejahtera, dan berkelanjutan untuk
+            generasi mendatang.
+          </p>
+          <p>
+            📍 Kampung Lapua, Kecamatan, Kabupaten<br />
+            📞 +62 123 4567 8900<br />
+            ✉️
+            <a class="footer-contact" href="mailto:info@kampunglapua.id"
+              >info@kampunglapua.id</a
+            >
+          </p>
+        </div>
+
+        <div class="footer-col" aria-label="Tentang Kami">
+          <h4>Tentang Kami</h4>
+          <ul>
+            <li><a href="#">Profil Kampung</a></li>
+            <li><a href="sejarah-visi-misi-kampung-2.html">Visi & Misi</a></li>
+            <li>
+              <a href="struktur-organisasi-3.html">Struktur Organisasi</a>
+            </li>
+            <li><a href="#">Kontak</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col" aria-label="Layanan">
+          <h4>Layanan</h4>
+          <ul>
+            <li><a href="#">Administrasi</a></li>
+            <li><a href="#">Program Sosial</a></li>
+            <li><a href="#">UMKM</a></li>
+            <li><a href="#">Pengaduan</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col" aria-label="Informasi">
+          <h4>Informasi</h4>
+          <ul>
+            <li><a href="#">Berita</a></li>
+            <li><a href="#">Agenda</a></li>
+            <li><a href="#">Galeri</a></li>
+            <li><a href="#">Laporan</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col" aria-label="Legal">
+          <h4>Legal</h4>
+          <ul>
+            <li><a href="#">Kebijakan Privasi</a></li>
+            <li><a href="#">Syarat & Ketentuan</a></li>
+            <li><a href="#">Bantuan</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <hr />
+      <div class="copyright" aria-label="Copyright information">
+        © 2025 Kampung Lapua. Seluruh hak cipta dilindungi.
+      </div>
+
+      <div class="social-links" aria-label="Sosial media Kampung Lapua">
+        <a href="#" aria-label="Facebook Kampung Lapua" title="Facebook">
+          <svg
+            width="20"
+            height="20"
+            fill="none"
+            stroke="#78c3a5"
+            stroke-width="2"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"
+            />
+          </svg>
+        </a>
+        <a href="#" aria-label="Instagram Kampung Lapua" title="Instagram">
+          <svg
+            width="20"
+            height="20"
+            fill="none"
+            stroke="#78c3a5"
+            stroke-width="2"
+            viewBox="0 0 24 24"
+          >
+            <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+            <path d="M16 11.37A4 4 0 1 1 9.37 5 4 4 0 0 1 16 11.37z" />
+            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
+          </svg>
+        </a>
+        <a href="#" aria-label="Twitter Kampung Lapua" title="Twitter">
+          <svg
+            width="20"
+            height="20"
+            fill="none"
+            stroke="#78c3a5"
+            stroke-width="2"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"
+            />
+          </svg>
+        </a>
+        <a href="#" aria-label="Email Kampung Lapua" title="Email">
+          <svg
+            width="20"
+            height="20"
+            fill="none"
+            stroke="#78c3a5"
+            stroke-width="2"
+            viewBox="0 0 24 24"
+          >
+            <rect x="2" y="5" width="20" height="14" rx="2" ry="2" />
+            <polyline points="22,7 12,13 2,7" />
+          </svg>
+        </a>
+      </div>
+    </footer>
+
+    <script>
+      // Desktop submenu hover and click functionality
+      const navLis = document.querySelectorAll("nav ul li");
+      navLis.forEach((li) => {
+        const submenu = li.querySelector("ul.submenu");
+        let hideTimeout;
+        if (submenu) {
+          const showSubmenu = () => {
+            if (window.innerWidth > 1024) {
+              clearTimeout(hideTimeout);
+              submenu.style.display = "block";
+            }
+          };
+          const hideSubmenu = () => {
+            if (window.innerWidth > 1024) {
+              hideTimeout = setTimeout(() => {
+                submenu.style.display = "none";
+              }, 100); // Reduced to 100ms for faster response
+            }
+          };
+          li.addEventListener("mouseenter", showSubmenu);
+          li.addEventListener("mouseleave", hideSubmenu);
+          submenu.addEventListener("mouseenter", showSubmenu);
+          submenu.addEventListener("mouseleave", hideSubmenu);
+
+          // Click to toggle submenu on desktop for touch devices
+          li.addEventListener("click", (e) => {
+            if (window.innerWidth > 1024 && !e.target.closest("ul.submenu")) {
+              e.preventDefault();
+              submenu.style.display =
+                submenu.style.display === "block" ? "none" : "block";
+            }
+          });
+        }
+      });
+
+      // Hamburger menu toggle functionality
+      const hamburger = document.querySelector(".hamburger");
+      const navUl = document.querySelector("nav ul");
+
+      hamburger.addEventListener("click", () => {
+        hamburger.classList.toggle("active");
+        navUl.classList.toggle("active");
+      });
+
+      // Submenu toggle on mobile and tablet
+      const submenuParents = document.querySelectorAll("nav ul li");
+      submenuParents.forEach((parent) => {
+        if (parent.querySelector("ul.submenu")) {
+          const a = parent.querySelector("a");
+          a.addEventListener("click", (e) => {
+            if (window.innerWidth <= 1024) {
+              e.preventDefault();
+              const submenu = parent.querySelector("ul.submenu");
+              if (submenu.style.display === "block") {
+                submenu.style.display = "none";
+              } else {
+                submenu.style.display = "block";
+              }
+            }
+          });
+        }
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Galeri Foto Produk — Elegan Modern</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#1b1f3a',
+            accent: '#d97706',
+            soft: '#f8f5f0'
+          },
+          fontFamily: { pop: ['Poppins','sans-serif'] }
+        }
+      }
+    }
+  </script>
+  <style>.img-cover{object-fit:cover;}</style>
+</head>
+<body class="font-pop bg-soft text-primary antialiased">
+
+  <!-- HEADER -->
+  <header class="w-full bg-white/80 backdrop-blur shadow-sm sticky top-0 z-50">
+    <div class="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
+      <a href="#" class="flex items-center gap-3">
+        <!-- Logo FP Dihapus, hanya nama brand yang tersisa -->
+        <div>
+          <div class="font-semibold text-lg">Foto Produk</div>
+          <div class="text-xs text-gray-500">Elegan Modern</div>
+        </div>
+      </a>
+
+      <nav class="hidden md:flex gap-6 text-sm">
+        <a href="#home" class="hover:text-accent">Home</a>
+        <a href="#galeri" class="hover:text-accent">Galeri</a>
+        <a href="#tentang" class="hover:text-accent">Tentang</a>
+        <a href="#kontak" class="hover:text-accent">Kontak</a>
+      </nav>
+
+      <button id="btnMenu" class="md:hidden p-2 border rounded-md" aria-label="menu">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+      </button>
+    </div>
+
+    <div id="mobileNav" class="hidden flex-col px-4 pb-4 md:hidden text-sm">
+      <a href="#home">Home</a>
+      <a href="#galeri">Galeri</a>
+      <a href="#tentang">Tentang</a>
+      <a href="#kontak">Kontak</a>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section id="home" class="py-16">
+    <div class="max-w-6xl mx-auto px-4 grid md:grid-cols-2 gap-10 items-center">
+      <div>
+        <h1 class="text-4xl md:text-5xl font-bold leading-tight">Galeri Foto Produk untuk UMKM Modern</h1>
+        <p class="text-gray-600 mt-4">Tampilan elegan modern untuk menampilkan produk Anda dengan visual yang kuat dan profesional.</p>
+        <div class="mt-6">
+          <a href="#galeri" class="px-6 py-3 bg-accent text-white rounded-lg shadow">Lihat Galeri</a>
+        </div>
+      </div>
+
+      <div class="rounded-xl overflow-hidden shadow-lg h-72 md:h-96">
+        <img class="img-cover w-full h-full" src="https://images.unsplash.com/photo-1585386959984-a4155224a1ad?q=80&w=1200&auto=format&fit=crop" loading="lazy" />
+      </div>
+    </div>
+  </section>
+
+  <!-- GALERI FOTO -->
+  <section id="galeri" class="py-14 bg-white">
+    <div class="max-w-6xl mx-auto px-4">
+      <h2 class="text-3xl font-semibold mb-8">Galeri Produk</h2>
+
+      <div class="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+
+        <!-- Foto Item -->
+        <div class="rounded-xl overflow-hidden shadow hover:scale-[1.02] transition">
+          <img src="https://images.unsplash.com/photo-1567016432779-094069958ea5?q=80&w=800&auto=format&fit=crop" class="w-full h-48 img-cover" />
+        </div>
+
+        <div class="rounded-xl overflow-hidden shadow hover:scale-[1.02] transition">
+          <img src="https://images.unsplash.com/photo-1606811971618-4486d14f74a3?q=80&w=800&auto=format&fit=crop" class="w-full h-48 img-cover" />
+        </div>
+
+        <div class="rounded-xl overflow-hidden shadow hover:scale-[1.02] transition">
+          <img src="https://images.unsplash.com/photo-1612157777902-538592a7ae68?q=80&w=800&auto=format&fit=crop" class="w-full h-48 img-cover" />
+        </div>
+
+        <div class="rounded-xl overflow-hidden shadow hover:scale-[1.02] transition">
+          <img src="https://images.unsplash.com/photo-1575410147875-2f2b9ffaa3af?q=80&w=800&auto=format&fit=crop" class="w-full h-48 img-cover" />
+        </div>
+
+        <div class="rounded-xl overflow-hidden shadow hover:scale-[1.02] transition">
+          <img src="https://images.unsplash.com/photo-1600359756091-effc0b29fefe?q=80&w=800&auto=format&fit=crop" class="w-full h-48 img-cover" />
+        </div>
+
+        <div class="rounded-xl overflow-hidden shadow hover:scale-[1.02] transition">
+          <img src="https://images.unsplash.com/photo-1503602642458-232111445657?q=80&w=800&auto=format&fit=crop" class="w-full h-48 img-cover" />
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- TENTANG -->
+  <section id="tentang" class="py-14">
+    <div class="max-w-6xl mx-auto px-4 grid md:grid-cols-2 gap-10 items-center">
+      <div class="rounded-xl overflow-hidden shadow h-64">
+        <img class="img-cover w-full h-full" src="https://images.unsplash.com/photo-1542744173-8e7e53415bb0?q=80&w=1200&auto=format&fit=crop" />
+      </div>
+
+      <div>
+        <h2 class="text-3xl font-semibold">Tentang Kami</h2>
+        <p class="text-gray-600 mt-4">Kami membantu UMKM menampilkan produk secara profesional melalui galeri foto berkualitas tinggi yang mengangkat nilai lokal dengan gaya modern.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- KONTAK -->
+  <section id="kontak" class="py-14 bg-white">
+    <div class="max-w-6xl mx-auto px-4">
+      <h2 class="text-3xl font-semibold mb-6">Kontak</h2>
+
+      <form class="grid md:grid-cols-2 gap-6 bg-soft p-6 rounded-xl shadow">
+        <input type="text" placeholder="Nama" class="p-3 border rounded-lg" />
+        <input type="email" placeholder="Email" class="p-3 border rounded-lg" />
+        <textarea placeholder="Pesan" class="p-3 border rounded-lg md:col-span-2 h-32"></textarea>
+        <button class="px-6 py-3 bg-accent text-white rounded-lg shadow md:col-span-2">Kirim Pesan</button>
+      </form>
+    </div>
+  </section>
+
+  <footer class="py-6 text-center text-sm text-gray-500">© 2025 Foto Produk UMKM — Elegan Modern</footer>
+
+  <script>
+    const btn = document.getElementById('btnMenu');
+    const nav = document.getElementById('mobileNav');
+    btn.addEventListener('click', () => nav.classList.toggle('hidden'));
+  </script>
+
+</body>
+</html>

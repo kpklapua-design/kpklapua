@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Informasi Pembangunan dan Realisasi Proyek</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Load Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap");
+      body {
+        font-family: "Inter", sans-serif;
+        background-color: #f0f4f8; /* Light blue-grey background */
+      }
+      .info-card {
+        background-color: #ffffff;
+        border-radius: 0.75rem;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+          0 2px 4px -2px rgba(0, 0, 0, 0.06);
+        transition: all 0.3s ease;
+      }
+      .info-card:hover {
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+          0 4px 6px -4px rgba(0, 0, 0, 0.1);
+        transform: translateY(-2px);
+      }
+      .progress-bar-container {
+        height: 8px;
+        background-color: #e5e7eb;
+        border-radius: 4px;
+      }
+    </style>
+  </head>
+  <body class="min-h-screen">
+    <!-- Kontainer Utama -->
+    <div id="app-container" class="min-h-screen p-4 sm:p-8">
+      <!-- Header Informasi Pembangunan -->
+      <div
+        class="max-w-7xl mx-auto mb-10 bg-white p-6 rounded-xl shadow-xl border-l-4 border-amber-600"
+      >
+        <h1 class="text-3xl font-extrabold text-gray-900 mb-2">
+          Informasi Pembangunan Kampung
+        </h1>
+        <p class="text-base text-gray-500">
+          Pemantauan dan Realisasi Fisik serta Keuangan Proyek-proyek
+          Infrastruktur.
+        </p>
+      </div>
+
+      <!-- Bagian Utama: Update Proyek dan Ringkasan Realisasi -->
+      <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <!-- Kolom 1 (Lebar): Update Proyek Detail -->
+        <div class="lg:col-span-2">
+          <section id="project-updates" class="info-card p-6">
+            <h2
+              class="text-2xl font-bold text-amber-800 mb-4 pb-2 border-b border-amber-200 flex items-center"
+            >
+              <i data-lucide="hard-hat" class="w-6 h-6 inline mr-2"></i>
+              Update Proyek Pembangunan
+            </h2>
+            <div class="overflow-x-auto">
+              <table class="min-w-full divide-y divide-gray-200">
+                <thead class="bg-amber-50">
+                  <tr>
+                    <th
+                      scope="col"
+                      class="px-3 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider"
+                    >
+                      Nama Proyek
+                    </th>
+                    <th
+                      scope="col"
+                      class="px-3 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider hidden sm:table-cell"
+                    >
+                      Anggaran (Rp)
+                    </th>
+                    <th
+                      scope="col"
+                      class="px-3 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider"
+                    >
+                      Realisasi Fisik
+                    </th>
+                    <th
+                      scope="col"
+                      class="px-3 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider"
+                    >
+                      Status
+                    </th>
+                  </tr>
+                </thead>
+                <tbody
+                  id="project-table-body"
+                  class="bg-white divide-y divide-gray-200"
+                >
+                  <!-- Project rows will be rendered here -->
+                </tbody>
+              </table>
+            </div>
+          </section>
+        </div>
+
+        <!-- Kolom 2 (Sempit): Ringkasan Realisasi Fisik & Status -->
+        <div class="lg:col-span-1 space-y-8">
+          <!-- Ringkasan Realisasi Fisik -->
+          <section id="physical-summary" class="info-card p-6 bg-blue-50">
+            <h2
+              class="text-xl font-bold text-blue-800 mb-4 pb-2 border-b border-blue-200 flex items-center"
+            >
+              <i data-lucide="percent" class="w-5 h-5 inline mr-2"></i>
+              Realisasi Fisik Rata-rata
+            </h2>
+            <div id="physical-summary-content">
+              <!-- Summary metrics will be rendered here -->
+            </div>
+          </section>
+
+          <!-- Metrik Status Proyek -->
+          <section id="status-metrics" class="info-card p-6 bg-green-50">
+            <h2
+              class="text-xl font-bold text-green-800 mb-4 pb-2 border-b border-green-200 flex items-center"
+            >
+              <i data-lucide="bar-chart-2" class="w-5 h-5 inline mr-2"></i>
+              Status Proyek Total
+            </h2>
+            <div id="status-metrics-content" class="space-y-3">
+              <!-- Status counts will be rendered here -->
+            </div>
+          </section>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <div
+        class="max-w-7xl mx-auto text-center text-xs text-gray-400 pt-8 mt-12 border-t border-gray-200"
+      >
+        <p>© 2024 Pemerintah Kampung. Data realisasi bersifat simulasi.</p>
+      </div>
+    </div>
+
+    <script>
+      // Data Mock untuk Proyek Pembangunan
+      const PROJECT_DATA = [
+        {
+          id: "JBT-001",
+          name: "Pembangunan Jembatan Utama Kampung Sejahtera",
+          budget: 1200000000,
+          realization_cost: 1200000000,
+          physical_progress: 100,
+          status: "Selesai"
+        },
+        {
+          id: "PSR-002",
+          name: "Revitalisasi Pasar Tradisional Indah",
+          budget: 300000000,
+          realization_cost: 240000000,
+          physical_progress: 80,
+          status: "Sedang Berjalan"
+        },
+        {
+          id: "INF-003",
+          name: "Pemasangan Jaringan Air Bersih Wilayah Barat",
+          budget: 500000000,
+          realization_cost: 200000000,
+          physical_progress: 40,
+          status: "Tertunda"
+        },
+        {
+          id: "KNT-004",
+          name: "Perbaikan Kantor Balai Desa",
+          budget: 600000000,
+          realization_cost: 60000000,
+          physical_progress: 10,
+          status: "Sedang Berjalan"
+        },
+        {
+          id: "DRN-005",
+          name: "Normalisasi Sungai dan Drainase Kota",
+          budget: 450000000,
+          realization_cost: 405000000,
+          physical_progress: 90,
+          status: "Selesai"
+        },
+        {
+          id: "JLN-006",
+          name: "Pengaspalan Jalan Utama (Proyek Prioritas A)",
+          budget: 900000000,
+          realization_cost: 180000000,
+          physical_progress: 20,
+          status: "Belum Mulai"
+        }
+      ];
+
+      // --- UTILITAS ---
+
+      /**
+       * Format angka menjadi mata uang Rupiah (IDR).
+       */
+      function formatRupiah(number) {
+        if (number === null || number === undefined) return "N/A";
+        return new Intl.NumberFormat("id-ID", {
+          style: "currency",
+          currency: "IDR",
+          minimumFractionDigits: 0
+        }).format(number);
+      }
+
+      /**
+       * Dapatkan badge status.
+       */
+      function getStatusBadge(status) {
+        let colorClass;
+        switch (status) {
+          case "Selesai":
+            colorClass = "bg-emerald-100 text-emerald-800 border-emerald-500";
+            break;
+          case "Sedang Berjalan":
+            colorClass = "bg-blue-100 text-blue-800 border-blue-500";
+            break;
+          case "Tertunda":
+            colorClass = "bg-red-100 text-red-800 border-red-500";
+            break;
+          case "Belum Mulai":
+          default:
+            colorClass = "bg-gray-100 text-gray-800 border-gray-500";
+            break;
+        }
+        return `<span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${colorClass} border">${status}</span>`;
+      }
+
+      /**
+       * Dapatkan warna progress bar berdasarkan persentase.
+       */
+      function getProgressColor(percentage) {
+        if (percentage >= 90) return "bg-green-600";
+        if (percentage >= 50) return "bg-amber-500";
+        if (percentage > 0) return "bg-blue-500";
+        return "bg-gray-400";
+      }
+
+      /**
+       * Render ikon Lucide ke dalam DOM.
+       */
+      function renderIcons() {
+        setTimeout(() => {
+          if (typeof lucide !== "undefined" && lucide.createIcons) {
+            lucide.createIcons();
+          }
+        }, 0);
+      }
+
+      // --- FUNGSI RENDER UTAMA ---
+
+      /**
+       * Render daftar Update Proyek dalam bentuk tabel.
+       */
+      function renderProjectUpdates() {
+        const tbody = document.getElementById("project-table-body");
+        tbody.innerHTML = "";
+
+        PROJECT_DATA.forEach((project) => {
+          const progressPct = project.physical_progress;
+          const progressColor = getProgressColor(progressPct);
+
+          const row = document.createElement("tr");
+          row.className = "hover:bg-amber-50 transition duration-100";
+          row.innerHTML = `
+                    <td class="px-3 py-4">
+                        <div class="text-sm font-semibold text-gray-900">${
+                          project.name
+                        }</div>
+                        <div class="text-xs text-gray-500">Kode: ${
+                          project.id
+                        } | Realisasi Biaya: ${formatRupiah(
+            project.realization_cost
+          )}</div>
+                    </td>
+                    <td class="px-3 py-4 whitespace-nowrap text-sm text-gray-500 font-medium hidden sm:table-cell">
+                        ${formatRupiah(project.budget)}
+                    </td>
+                    <td class="px-3 py-4">
+                        <div class="text-xs font-bold text-gray-800 mb-1">${progressPct}% Fisik</div>
+                        <div class="progress-bar-container">
+                            <div 
+                                class="h-full rounded-full ${progressColor}" 
+                                style="width: ${progressPct}%;"
+                            ></div>
+                        </div>
+                    </td>
+                    <td class="px-3 py-4 whitespace-nowrap">
+                        ${getStatusBadge(project.status)}
+                    </td>
+                `;
+          tbody.appendChild(row);
+        });
+      }
+
+      /**
+       * Render Ringkasan Realisasi Fisik Rata-rata.
+       */
+      function renderPhysicalSummary() {
+        const totalProgress = PROJECT_DATA.reduce(
+          (sum, p) => sum + p.physical_progress,
+          0
+        );
+        const averageProgress =
+          PROJECT_DATA.length > 0
+            ? (totalProgress / PROJECT_DATA.length).toFixed(2)
+            : 0;
+
+        const container = document.getElementById("physical-summary-content");
+        container.innerHTML = `
+                <div class="text-center py-4">
+                    <p class="text-5xl font-extrabold text-blue-700 mb-2">${averageProgress}%</p>
+                    <p class="text-sm text-gray-600">Rata-rata persentase penyelesaian fisik dari semua proyek.</p>
+                </div>
+            `;
+      }
+
+      /**
+       * Render Metrik Status Proyek (jumlah proyek per status).
+       */
+      function renderStatusMetrics() {
+        const statusCounts = PROJECT_DATA.reduce((counts, p) => {
+          counts[p.status] = (counts[p.status] || 0) + 1;
+          return counts;
+        }, {});
+
+        const statusConfig = {
+          Selesai: {
+            icon: "check-circle",
+            color: "text-emerald-600",
+            count: statusCounts["Selesai"] || 0
+          },
+          "Sedang Berjalan": {
+            icon: "loader",
+            color: "text-blue-600",
+            count: statusCounts["Sedang Berjalan"] || 0
+          },
+          Tertunda: {
+            icon: "pause-circle",
+            color: "text-red-600",
+            count: statusCounts["Tertunda"] || 0
+          },
+          "Belum Mulai": {
+            icon: "clock",
+            color: "text-gray-600",
+            count: statusCounts["Belum Mulai"] || 0
+          }
+        };
+
+        const container = document.getElementById("status-metrics-content");
+        container.innerHTML = Object.keys(statusConfig)
+          .map((status) => {
+            const item = statusConfig[status];
+            return `
+                    <div class="flex justify-between items-center p-2 rounded-lg bg-white shadow-sm">
+                        <div class="flex items-center">
+                            <i data-lucide="${item.icon}" class="w-4 h-4 mr-2 ${item.color}"></i>
+                            <span class="text-sm font-medium text-gray-700">${status}</span>
+                        </div>
+                        <span class="text-lg font-bold ${item.color}">${item.count}</span>
+                    </div>
+                `;
+          })
+          .join("");
+      }
+
+      // --- SETUP AWAL ---
+
+      window.onload = function () {
+        renderProjectUpdates();
+        renderPhysicalSummary();
+        renderStatusMetrics();
+        renderIcons();
+      };
+    </script>
+  </body>
+</html>

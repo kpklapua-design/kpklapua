@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Publikasi APBK Sederhana</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Load Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap");
+      body {
+        font-family: "Inter", sans-serif;
+        background-color: #f8fafc;
+      }
+      /* Kelas CSS untuk header dipertahankan, namun fungsi sort dihapus dari JS */
+      .table-header {
+        display: flex;
+        align-items: center;
+      }
+    </style>
+  </head>
+  <body class="min-h-screen">
+    <!-- Kontainer Utama -->
+    <div id="app-container" class="min-h-screen p-4 sm:p-8">
+      <!-- Header Publikasi APBK -->
+      <div
+        class="max-w-7xl mx-auto mb-10 bg-white p-6 rounded-xl shadow-lg border-l-4 border-emerald-600"
+      >
+        <h1 class="text-3xl font-extrabold text-gray-900 mb-2">
+          Publikasi Anggaran Pendapatan dan Belanja (APBK)
+        </h1>
+        <p class="text-base text-gray-500">
+          Laporan Realisasi Pendapatan dan Belanja Regional (Tahun 2024).
+        </p>
+      </div>
+
+      <!-- Kartu Ringkasan Keuangan Utama (KPI) -->
+      <div
+        id="summary-cards"
+        class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6 mb-12"
+      >
+        <!-- Summary cards will be rendered here -->
+      </div>
+
+      <!-- Bagian A: Realisasi Pendapatan -->
+      <div
+        class="max-w-7xl mx-auto bg-white p-6 rounded-xl shadow-lg border border-gray-100 mb-12"
+      >
+        <h2
+          class="text-2xl font-bold text-gray-800 mb-5 border-b pb-3 flex items-center text-green-700"
+        >
+          <i data-lucide="trending-up" class="w-6 h-6 inline mr-2"></i>
+          Realisasi Pendapatan
+        </h2>
+        <div class="overflow-x-auto">
+          <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-green-50">
+              <tr>
+                <th
+                  scope="col"
+                  class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider"
+                >
+                  Sumber Pendapatan
+                </th>
+                <th
+                  scope="col"
+                  class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider"
+                >
+                  Target (IDR)
+                </th>
+                <th
+                  scope="col"
+                  class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider"
+                >
+                  Realisasi (IDR)
+                </th>
+                <th
+                  scope="col"
+                  class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider"
+                >
+                  Capaian (%)
+                </th>
+              </tr>
+            </thead>
+            <tbody
+              id="revenue-table-body"
+              class="bg-white divide-y divide-gray-200"
+            >
+              <!-- Revenue table rows will be rendered here -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Bagian B: Realisasi Belanja (Expenditure) -->
+      <div
+        class="max-w-7xl mx-auto bg-white p-6 rounded-xl shadow-lg border border-gray-100"
+      >
+        <h2
+          class="text-2xl font-bold text-gray-800 mb-5 border-b pb-3 flex items-center text-red-700"
+        >
+          <i data-lucide="trending-down" class="w-6 h-6 inline mr-2"></i>
+          Realisasi Belanja per Program/Kegiatan
+        </h2>
+
+        <div class="overflow-x-auto">
+          <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-red-50">
+              <tr>
+                <th
+                  scope="col"
+                  class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider"
+                >
+                  Kegiatan/Program
+                </th>
+                <th
+                  scope="col"
+                  class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider table-header"
+                >
+                  Anggaran
+                </th>
+                <th
+                  scope="col"
+                  class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider table-header"
+                >
+                  Realisasi
+                </th>
+                <th
+                  scope="col"
+                  class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider table-header"
+                >
+                  Capaian (%)
+                </th>
+                <th
+                  scope="col"
+                  class="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider"
+                >
+                  Status
+                </th>
+              </tr>
+            </thead>
+            <tbody
+              id="expenditure-table-body"
+              class="bg-white divide-y divide-gray-200"
+            >
+              <!-- Expenditure table rows will be rendered here -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <div
+        class="max-w-7xl mx-auto text-center text-xs text-gray-400 pt-8 mt-12 border-t border-gray-200"
+      >
+        <p>Data Publikasi APBK ini bersifat simulasi dan tidak valid.</p>
+      </div>
+    </div>
+
+    <script>
+      // --- DATA MOCK Sederhana ---
+      const REVENUE_DATA = [
+        {
+          account: "4.1.1",
+          name: "Pendapatan Asli Daerah (PAD)",
+          target: 500000000000,
+          realization: 480000000000
+        },
+        {
+          account: "4.1.2",
+          name: "Dana Transfer Pusat",
+          target: 800000000000,
+          realization: 820000000000
+        },
+        {
+          account: "4.1.3",
+          name: "Lain-lain Pendapatan yang Sah",
+          target: 50000000000,
+          realization: 45000000000
+        }
+      ];
+
+      const EXPENDITURE_DATA = [
+        {
+          id: "P001",
+          name: "Pembangunan Jembatan Layang Citarum",
+          budget: 120000000000,
+          realization: 120000000000,
+          status: "Selesai"
+        },
+        {
+          id: "P002",
+          name: "Revitalisasi Pasar Tradisional Indah",
+          budget: 30000000000,
+          realization: 24000000000,
+          status: "Sedang Berjalan"
+        },
+        {
+          id: "P003",
+          name: "Infrastruktur Serat Optik Pedalaman",
+          budget: 50000000000,
+          realization: 20000000000,
+          status: "Tertunda"
+        },
+        {
+          id: "P006",
+          name: "Pembangunan Rumah Sakit Tipe C",
+          budget: 90000000000,
+          realization: 18000000000,
+          status: "Belum Mulai"
+        }
+      ];
+
+      // --- UTILITAS Sederhana ---
+
+      /**
+       * Format angka menjadi mata uang Rupiah (IDR).
+       */
+      function formatRupiah(number) {
+        if (number === null || number === undefined) return "N/A";
+        return new Intl.NumberFormat("id-ID", {
+          style: "currency",
+          currency: "IDR",
+          minimumFractionDigits: 0
+        }).format(number);
+      }
+
+      /**
+       * Hitung persentase realisasi.
+       */
+      function calculatePercentage(realized, budgeted) {
+        if (budgeted === 0) return 0;
+        return (realized / budgeted) * 100;
+      }
+
+      /**
+       * Dapatkan warna status untuk badge.
+       */
+      function getStatusBadge(status) {
+        let colorClass;
+        switch (status) {
+          case "Selesai":
+            colorClass = "bg-emerald-100 text-emerald-800";
+            break;
+          case "Sedang Berjalan":
+            colorClass = "bg-blue-100 text-blue-800";
+            break;
+          case "Tertunda":
+            colorClass = "bg-red-100 text-red-800";
+            break;
+          default:
+            colorClass = "bg-gray-100 text-gray-800";
+            break;
+        }
+        return `<span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${colorClass}">${status}</span>`;
+      }
+
+      /**
+       * Render ikon Lucide ke dalam DOM.
+       */
+      function renderIcons() {
+        if (typeof lucide !== "undefined" && lucide.createIcons) {
+          lucide.createIcons();
+        }
+      }
+
+      // --- FUNGSI LAPORAN UTAMA yang lebih simpel ---
+
+      /**
+       * Hitung total metrik dan render kartu ringkasan APBK.
+       */
+      function renderSummaryCards() {
+        const totalTargetRevenue = REVENUE_DATA.reduce(
+          (acc, p) => acc + p.target,
+          0
+        );
+        const totalRealizationRevenue = REVENUE_DATA.reduce(
+          (acc, p) => acc + p.realization,
+          0
+        );
+        const totalBudgetExpenditure = EXPENDITURE_DATA.reduce(
+          (acc, p) => acc + p.budget,
+          0
+        );
+        const totalRealizationExpenditure = EXPENDITURE_DATA.reduce(
+          (acc, p) => acc + p.realization,
+          0
+        );
+        const surplusDeficit =
+          totalRealizationRevenue - totalRealizationExpenditure;
+
+        const cards = [
+          {
+            title: "Total Realisasi Pendapatan",
+            value: formatRupiah(totalRealizationRevenue),
+            icon: "wallet",
+            color: "bg-emerald-600",
+            bgColor: "bg-emerald-100"
+          },
+          {
+            title: "Total Realisasi Belanja",
+            value: formatRupiah(totalRealizationExpenditure),
+            icon: "bar-chart-2",
+            color: "bg-red-600",
+            bgColor: "bg-red-100"
+          },
+          {
+            title: "Saldo Anggaran (Surplus/Defisit)",
+            value: formatRupiah(surplusDeficit),
+            icon: surplusDeficit >= 0 ? "check-circle" : "alert-triangle",
+            color: surplusDeficit >= 0 ? "bg-blue-500" : "bg-orange-500",
+            bgColor: surplusDeficit >= 0 ? "bg-blue-100" : "bg-orange-100"
+          }
+        ];
+
+        const container = document.getElementById("summary-cards");
+        container.innerHTML = cards
+          .map(
+            (card) => `
+                <div class="p-6 ${card.bgColor} rounded-xl shadow-md flex items-center space-x-4 transition duration-300 hover:shadow-lg">
+                    <div class="p-3 rounded-full ${card.color} text-white">
+                        <i data-lucide="${card.icon}" class="w-6 h-6"></i>
+                    </div>
+                    <div>
+                        <p class="text-sm font-medium text-gray-600">${card.title}</p>
+                        <p class="text-xl font-bold text-gray-900">${card.value}</p>
+                    </div>
+                </div>
+            `
+          )
+          .join("");
+
+        renderIcons();
+      }
+
+      /**
+       * Render baris tabel Pendapatan.
+       */
+      function renderRevenueTable() {
+        const tbody = document.getElementById("revenue-table-body");
+        tbody.innerHTML = "";
+
+        REVENUE_DATA.forEach((rev) => {
+          const percentage = calculatePercentage(
+            rev.realization,
+            rev.target
+          ).toFixed(2);
+
+          const row = document.createElement("tr");
+          row.className = "hover:bg-green-50 transition duration-100";
+          row.innerHTML = `
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="text-sm font-medium text-gray-900">${
+                          rev.name
+                        }</div>
+                        <div class="text-xs text-gray-500">${rev.account}</div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 font-medium">
+                        ${formatRupiah(rev.target)}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-emerald-600 font-medium">
+                        ${formatRupiah(rev.realization)}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="flex items-center space-x-3">
+                            <span class="text-sm font-bold text-gray-800 w-12">${percentage}%</span>
+                            <div class="h-1.5 w-full bg-gray-200 rounded-full">
+                                <div 
+                                    class="h-1.5 rounded-full bg-emerald-500" 
+                                    style="width: ${Math.min(percentage, 100)}%"
+                                ></div>
+                            </div>
+                        </div>
+                    </td>
+                `;
+          tbody.appendChild(row);
+        });
+      }
+
+      /**
+       * Render baris tabel Belanja (tanpa fungsi sortir).
+       */
+      function renderExpenditureTable() {
+        const tbody = document.getElementById("expenditure-table-body");
+        tbody.innerHTML = "";
+
+        EXPENDITURE_DATA.forEach((project) => {
+          const percentage = calculatePercentage(
+            project.realization,
+            project.budget
+          ).toFixed(2);
+
+          // Tentukan warna progress bar
+          let progressColor = "bg-gray-200";
+          if (percentage >= 100) progressColor = "bg-red-500";
+          else if (percentage >= 75) progressColor = "bg-orange-500";
+          else if (percentage >= 50) progressColor = "bg-yellow-500";
+          else if (percentage > 0) progressColor = "bg-indigo-500";
+
+          const row = document.createElement("tr");
+          row.className = "hover:bg-red-50 transition duration-100";
+          row.innerHTML = `
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="text-sm font-medium text-gray-900">${
+                          project.name
+                        }</div>
+                        <div class="text-xs text-gray-500">${project.id}</div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 font-medium">
+                        ${formatRupiah(project.budget)}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-red-600 font-medium">
+                        ${formatRupiah(project.realization)}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="flex items-center space-x-3">
+                            <span class="text-sm font-bold text-gray-800 w-12">${percentage}%</span>
+                            <div class="h-1.5 w-full bg-gray-200 rounded-full">
+                                <div 
+                                    class="h-1.5 rounded-full ${progressColor}" 
+                                    style="width: ${Math.min(percentage, 100)}%"
+                                ></div>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap">
+                        ${getStatusBadge(project.status)}
+                    </td>
+                `;
+          tbody.appendChild(row);
+        });
+
+        renderIcons();
+      }
+
+      // --- SETUP AWAL ---
+
+      window.onload = function () {
+        renderSummaryCards();
+        renderRevenueTable();
+        renderExpenditureTable();
+      };
+    </script>
+  </body>
+</html>

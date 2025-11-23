@@ -1,0 +1,363 @@
+<!-- Chosen Palette: Elegan Modern (Soft Cream: #f9f7f5, Dark Slate: #1e293b, Golden Accent: #d97706) -->
+<!-- Application Structure Plan: Dashboard Data Wilayah. Fokus pada penyajian angka dan statistik. Struktur: 1. Header, 2. Hero (Ringkasan Statistik Utama), 3. Grafik Demografi (Chart.js), 4. Data Pendidikan & Kesehatan (Grid Cards), 5. Fasilitas Umum (List), 6. Footer. -->
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Data Wilayah & Statistik — Elegan Modern</title>
+    
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Load Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <!-- Load Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+
+    <!-- Google Fonts: Poppins -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Konfigurasi Tema Elegan Modern -->
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              primary: '#1e293b', // Dark Slate
+              accent: '#d97706',  // Golden Accent
+              soft: '#f9f7f5',    // Soft Cream
+              secondary: '#64748b', // Slate-500
+              card: '#ffffff',    // Card White
+            },
+            fontFamily: {
+              sans: ['Poppins', 'sans-serif'],
+            }
+          }
+        }
+      }
+    </script>
+
+    <style>
+      body {
+        background-color: var(--tw-colors-soft);
+      }
+      /* Efek hover kartu */
+      .stat-card {
+        transition: transform 0.3s ease, box-shadow 0.4s ease;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+      }
+      .stat-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 30px -5px rgba(0, 0, 0, 0.1);
+      }
+      /* Styling untuk container chart */
+      .chart-wrapper {
+        position: relative;
+        height: 300px;
+        width: 100%;
+      }
+    </style>
+  </head>
+  <body class="min-h-screen font-sans bg-soft text-primary antialiased">
+    
+    <!-- 1. HEADER -->
+    <header class="sticky top-0 z-50 bg-white/95 backdrop-blur-md shadow-lg border-b border-gray-100">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
+        <div class="flex items-center gap-3">
+          <i data-lucide="pie-chart" class="w-6 h-6 text-accent"></i>
+          <div>
+            <h1 class="font-bold text-lg leading-tight text-primary">Data Wilayah</h1>
+            <p class="text-xs text-secondary">Statistik & Demografi Terpadu</p>
+          </div>
+        </div>
+        <nav class="hidden md:flex items-center space-x-6">
+            <a href="#ringkasan" class="text-sm font-medium text-secondary hover:text-primary transition-colors">Ringkasan</a>
+            <a href="#demografi" class="text-sm font-medium text-secondary hover:text-primary transition-colors">Demografi</a>
+            <a href="#fasilitas" class="text-sm font-medium text-secondary hover:text-primary transition-colors">Fasilitas</a>
+        </nav>
+        <button class="p-2 rounded-lg bg-accent text-white shadow-md hover:bg-accent/90 transition-colors text-sm font-medium flex items-center gap-2">
+            <i data-lucide="download" class="w-4 h-4"></i> <span class="hidden sm:inline">Unduh Laporan</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Kontainer Utama -->
+    <div id="app-container" class="p-4 sm:p-8 max-w-7xl mx-auto">
+      
+      <!-- 2. HERO / RINGKASAN EKSEKUTIF -->
+      <section id="ringkasan" class="mb-16 mt-6">
+        <div class="text-center max-w-4xl mx-auto mb-10">
+            <span class="inline-block py-1.5 px-4 rounded-full bg-accent/20 text-accent text-sm font-semibold tracking-wide mb-4 uppercase shadow-md">Dashboard Informasi</span>
+            <h2 class="text-4xl md:text-5xl font-extrabold text-primary mb-4 leading-tight">
+                Statistik Kampung Jaya Sentosa
+            </h2>
+            <p class="text-secondary text-lg mt-4">
+                Gambaran umum kondisi demografi, sosial, dan potensi wilayah berdasarkan data sensus terbaru tahun 2025.
+            </p>
+        </div>
+
+        <!-- Grid Statistik Utama -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <!-- Card 1 -->
+            <div class="stat-card bg-card p-6 rounded-xl border border-gray-100 flex flex-col items-center text-center">
+                <div class="p-3 bg-blue-50 rounded-full mb-4">
+                    <i data-lucide="users" class="w-8 h-8 text-blue-600"></i>
+                </div>
+                <h3 class="text-3xl font-extrabold text-primary">2.540</h3>
+                <p class="text-sm text-secondary mt-1 font-medium">Total Penduduk</p>
+            </div>
+            <!-- Card 2 -->
+            <div class="stat-card bg-card p-6 rounded-xl border border-gray-100 flex flex-col items-center text-center">
+                <div class="p-3 bg-green-50 rounded-full mb-4">
+                    <i data-lucide="home" class="w-8 h-8 text-green-600"></i>
+                </div>
+                <h3 class="text-3xl font-extrabold text-primary">650</h3>
+                <p class="text-sm text-secondary mt-1 font-medium">Kepala Keluarga</p>
+            </div>
+            <!-- Card 3 -->
+            <div class="stat-card bg-card p-6 rounded-xl border border-gray-100 flex flex-col items-center text-center">
+                <div class="p-3 bg-yellow-50 rounded-full mb-4">
+                    <i data-lucide="map" class="w-8 h-8 text-yellow-600"></i>
+                </div>
+                <h3 class="text-3xl font-extrabold text-primary">150.5</h3>
+                <p class="text-sm text-secondary mt-1 font-medium">Luas Wilayah (Ha)</p>
+            </div>
+            <!-- Card 4 -->
+            <div class="stat-card bg-card p-6 rounded-xl border border-gray-100 flex flex-col items-center text-center">
+                <div class="p-3 bg-purple-50 rounded-full mb-4">
+                    <i data-lucide="trending-up" class="w-8 h-8 text-purple-600"></i>
+                </div>
+                <h3 class="text-3xl font-extrabold text-primary">4.2%</h3>
+                <p class="text-sm text-secondary mt-1 font-medium">Pertumbuhan Ekonomi</p>
+            </div>
+        </div>
+      </section>
+
+      <!-- 3. SEKSI GRAFIK & ANALISIS (Chart.js) -->
+      <section id="demografi" class="mb-16">
+        <h2 class="text-3xl font-bold text-primary text-center mb-12">Analisis Demografi & Ekonomi</h2>
+        
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            
+            <!-- Grafik Piramida Penduduk / Usia -->
+            <div class="stat-card bg-card rounded-xl p-6 sm:p-8 border border-gray-100">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="text-xl font-bold text-primary flex items-center gap-2">
+                        <i data-lucide="bar-chart-2" class="w-5 h-5 text-accent"></i> Distribusi Usia
+                    </h3>
+                    <button class="text-xs text-secondary hover:text-accent"><i data-lucide="more-horizontal" class="w-5 h-5"></i></button>
+                </div>
+                <div class="chart-wrapper">
+                    <canvas id="ageChart"></canvas>
+                </div>
+                <p class="text-xs text-center text-secondary mt-4">Mayoritas penduduk berada pada usia produktif (Dewasa).</p>
+            </div>
+
+            <!-- Grafik Mata Pencaharian -->
+            <div class="stat-card bg-card rounded-xl p-6 sm:p-8 border border-gray-100">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="text-xl font-bold text-primary flex items-center gap-2">
+                        <i data-lucide="briefcase" class="w-5 h-5 text-accent"></i> Mata Pencaharian
+                    </h3>
+                    <button class="text-xs text-secondary hover:text-accent"><i data-lucide="more-horizontal" class="w-5 h-5"></i></button>
+                </div>
+                <div class="chart-wrapper flex justify-center">
+                    <canvas id="jobChart"></canvas>
+                </div>
+                <p class="text-xs text-center text-secondary mt-4">Sektor pertanian dan UMKM mendominasi ekonomi wilayah.</p>
+            </div>
+
+        </div>
+      </section>
+
+      <!-- 4. PENDIDIKAN & FASILITAS UMUM -->
+      <section id="fasilitas" class="mb-16">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            
+            <!-- Data Pendidikan (Tabel Simple) -->
+            <div class="lg:col-span-2 stat-card bg-card rounded-xl p-6 sm:p-8 border border-gray-100">
+                <h3 class="text-xl font-bold text-primary mb-6 flex items-center gap-2">
+                    <i data-lucide="graduation-cap" class="w-5 h-5 text-accent"></i> Tingkat Pendidikan
+                </h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm text-left text-secondary">
+                        <thead class="text-xs text-primary uppercase bg-gray-50">
+                            <tr>
+                                <th scope="col" class="px-6 py-3 rounded-l-lg">Jenjang</th>
+                                <th scope="col" class="px-6 py-3">Jumlah (Jiwa)</th>
+                                <th scope="col" class="px-6 py-3 rounded-r-lg">Persentase</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="bg-white border-b border-gray-50">
+                                <td class="px-6 py-4 font-medium text-primary">SD / Sederajat</td>
+                                <td class="px-6 py-4">450</td>
+                                <td class="px-6 py-4 text-accent font-bold">18%</td>
+                            </tr>
+                            <tr class="bg-white border-b border-gray-50">
+                                <td class="px-6 py-4 font-medium text-primary">SMP / Sederajat</td>
+                                <td class="px-6 py-4">620</td>
+                                <td class="px-6 py-4 text-accent font-bold">24%</td>
+                            </tr>
+                            <tr class="bg-white border-b border-gray-50">
+                                <td class="px-6 py-4 font-medium text-primary">SMA / SMK</td>
+                                <td class="px-6 py-4">980</td>
+                                <td class="px-6 py-4 text-accent font-bold">38%</td>
+                            </tr>
+                            <tr class="bg-white">
+                                <td class="px-6 py-4 font-medium text-primary">Perguruan Tinggi</td>
+                                <td class="px-6 py-4">490</td>
+                                <td class="px-6 py-4 text-accent font-bold">20%</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Fasilitas Umum (List) -->
+            <div class="stat-card bg-card rounded-xl p-6 sm:p-8 border border-gray-100">
+                <h3 class="text-xl font-bold text-primary mb-6 flex items-center gap-2">
+                    <i data-lucide="building" class="w-5 h-5 text-accent"></i> Fasilitas Umum
+                </h3>
+                <ul class="space-y-4">
+                    <li class="flex items-center justify-between p-3 bg-soft rounded-lg">
+                        <div class="flex items-center gap-3">
+                            <i data-lucide="school" class="w-5 h-5 text-blue-500"></i>
+                            <span class="text-primary font-medium">Sekolah</span>
+                        </div>
+                        <span class="text-sm font-bold text-secondary bg-white px-2 py-1 rounded shadow-sm">4 Unit</span>
+                    </li>
+                    <li class="flex items-center justify-between p-3 bg-soft rounded-lg">
+                        <div class="flex items-center gap-3">
+                            <i data-lucide="heart-pulse" class="w-5 h-5 text-red-500"></i>
+                            <span class="text-primary font-medium">Puskesmas</span>
+                        </div>
+                        <span class="text-sm font-bold text-secondary bg-white px-2 py-1 rounded shadow-sm">1 Unit</span>
+                    </li>
+                    <li class="flex items-center justify-between p-3 bg-soft rounded-lg">
+                        <div class="flex items-center gap-3">
+                            <i data-lucide="church" class="w-5 h-5 text-accent"></i> <!-- Generic place of worship icon -->
+                            <span class="text-primary font-medium">Tempat Ibadah</span>
+                        </div>
+                        <span class="text-sm font-bold text-secondary bg-white px-2 py-1 rounded shadow-sm">7 Unit</span>
+                    </li>
+                    <li class="flex items-center justify-between p-3 bg-soft rounded-lg">
+                        <div class="flex items-center gap-3">
+                            <i data-lucide="shopping-basket" class="w-5 h-5 text-green-500"></i>
+                            <span class="text-primary font-medium">Pasar Desa</span>
+                        </div>
+                        <span class="text-sm font-bold text-secondary bg-white px-2 py-1 rounded shadow-sm">1 Unit</span>
+                    </li>
+                </ul>
+            </div>
+
+        </div>
+      </section>
+      
+      <!-- 5. FOOTER -->
+      <footer class="text-center text-xs text-secondary pt-12 mt-12 border-t border-gray-200">
+        <p>© 2025 Data Center Kampung Jaya Sentosa. Transparansi & Akuntabilitas.</p>
+      </footer>
+    </div>
+
+    <!-- SCRIPT -->
+    <script>
+      // 1. Render Icon
+      function renderIcons() {
+        if (typeof lucide !== "undefined" && lucide.createIcons) {
+          lucide.createIcons();
+        }
+      }
+
+      // 2. Konfigurasi Charts
+      function initCharts() {
+          // --- Grafik Usia (Bar Chart) ---
+          const ctxAge = document.getElementById('ageChart').getContext('2d');
+          new Chart(ctxAge, {
+              type: 'bar',
+              data: {
+                  labels: ['Balita (0-5)', 'Anak (6-12)', 'Remaja (13-18)', 'Dewasa (19-59)', 'Lansia (60+)'],
+                  datasets: [{
+                      label: 'Jumlah Penduduk',
+                      data: [320, 410, 450, 1100, 260],
+                      backgroundColor: '#1e293b', // Primary Color
+                      borderRadius: 6,
+                      barThickness: 30
+                  }]
+              },
+              options: {
+                  responsive: true,
+                  maintainAspectRatio: false,
+                  plugins: {
+                      legend: { display: false },
+                  },
+                  scales: {
+                      y: { beginAtZero: true, grid: { color: '#f1f5f9' } },
+                      x: { grid: { display: false } }
+                  }
+              }
+          });
+
+          // --- Grafik Pekerjaan (Doughnut Chart) ---
+          const ctxJob = document.getElementById('jobChart').getContext('2d');
+          new Chart(ctxJob, {
+              type: 'doughnut',
+              data: {
+                  labels: ['Petani', 'Wiraswasta/UMKM', 'Karyawan Swasta', 'PNS/TNI/Polri', 'Lainnya'],
+                  datasets: [{
+                      data: [35, 30, 20, 10, 5], // Dalam Persen
+                      backgroundColor: [
+                          '#d97706', // Accent (Gold)
+                          '#fbbf24', // Lighter Gold
+                          '#1e293b', // Primary (Dark Slate)
+                          '#64748b', // Secondary (Slate)
+                          '#e2e8f0'  // Light Slate
+                      ],
+                      borderWidth: 0,
+                      hoverOffset: 4
+                  }]
+              },
+              options: {
+                  responsive: true,
+                  maintainAspectRatio: false,
+                  plugins: {
+                      legend: { 
+                          position: 'right', 
+                          labels: { 
+                              boxWidth: 15, 
+                              font: { family: 'Poppins', size: 12 } 
+                          } 
+                      }
+                  },
+                  cutout: '70%' // Membuat donat lebih tipis dan elegan
+              }
+          });
+      }
+
+      // 3. Inisialisasi
+      window.onload = function() {
+          renderIcons();
+          initCharts();
+
+          // Smooth Scroll
+          document.querySelectorAll('nav a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                if(targetElement) {
+                    const headerOffset = 80; 
+                    const elementPosition = targetElement.getBoundingClientRect().top;
+                    const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+                    window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
+                }
+            });
+        });
+      };
+    </script>
+  </body>
+</html>

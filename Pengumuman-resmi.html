@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pengumuman Resmi Pemerintah Kampung</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Load Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap");
+      body {
+        font-family: "Inter", sans-serif;
+        background-color: #f0f4f8; /* Light blue-grey background */
+      }
+      .announcement-card {
+        background-color: #ffffff;
+        border-radius: 0.75rem;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+          0 2px 4px -2px rgba(0, 0, 0, 0.06);
+        transition: all 0.3s ease;
+      }
+      .announcement-card:hover {
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+          0 4px 6px -4px rgba(0, 0, 0, 0.1);
+        transform: translateY(-2px);
+      }
+    </style>
+  </head>
+  <body class="min-h-screen">
+    <!-- Kontainer Utama -->
+    <div id="app-container" class="min-h-screen p-4 sm:p-8">
+      <!-- Header Pengumuman Resmi -->
+      <div
+        class="max-w-7xl mx-auto mb-10 bg-white p-6 rounded-xl shadow-xl border-l-4 border-sky-600"
+      >
+        <h1 class="text-3xl font-extrabold text-gray-900 mb-2">
+          Papan Informasi & Pengumuman Resmi Kampung
+        </h1>
+        <p class="text-base text-gray-500">
+          Informasi terpadu dari Pemerintah Kampung untuk warga. Selalu periksa
+          pembaruan terbaru.
+        </p>
+      </div>
+
+      <!-- Bagian Utama: 3 Kategori Informasi -->
+      <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <!-- Kolom 1: Surat Edaran (Edaran) -->
+        <div class="lg:col-span-2">
+          <section id="surat-edaran" class="mb-8">
+            <h2
+              class="text-2xl font-bold text-sky-800 mb-4 pb-2 border-b border-sky-200 flex items-center"
+            >
+              <i data-lucide="mail" class="w-6 h-6 inline mr-2"></i>
+              Surat Edaran & Dokumen
+            </h2>
+            <div id="edaran-list" class="space-y-4">
+              <!-- Surat Edaran items will be rendered here -->
+            </div>
+          </section>
+        </div>
+
+        <!-- Kolom 2: Jadwal Penting & Informasi Umum -->
+        <div class="lg:col-span-1 space-y-8">
+          <!-- Jadwal Penting -->
+          <section id="jadwal-penting" class="announcement-card p-6">
+            <h2
+              class="text-xl font-bold text-indigo-800 mb-4 pb-2 border-b border-indigo-100 flex items-center"
+            >
+              <i data-lucide="calendar" class="w-5 h-5 inline mr-2"></i>
+              Jadwal Penting
+            </h2>
+            <div id="jadwal-list" class="space-y-3">
+              <!-- Jadwal items will be rendered here -->
+            </div>
+          </section>
+
+          <!-- Informasi dari Pemerintah Kampung (Informasi Umum) -->
+          <section id="info-kampung" class="announcement-card p-6">
+            <h2
+              class="text-xl font-bold text-green-800 mb-4 pb-2 border-b border-green-100 flex items-center"
+            >
+              <i data-lucide="megaphone" class="w-5 h-5 inline mr-2"></i>
+              Informasi Pemerintah Kampung
+            </h2>
+            <div id="info-list" class="space-y-3">
+              <!-- Informasi Umum items will be rendered here -->
+            </div>
+          </section>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <div
+        class="max-w-7xl mx-auto text-center text-xs text-gray-400 pt-8 mt-12 border-t border-gray-200"
+      >
+        <p>
+          © 2024 Pemerintah Kampung. Semua informasi tunduk pada ketentuan
+          resmi.
+        </p>
+      </div>
+    </div>
+
+    <script>
+      // Data Mock untuk Surat Edaran
+      const SURAT_EDARAN_DATA = [
+        {
+          title: "Sosialisasi Program Bantuan Sosial Tunai (BST) Tahap III",
+          date: "2024-10-25",
+          number: "001/SE/X/2024",
+          link: "#", // Placeholder link for document download
+          type: "PENTING"
+        },
+        {
+          title: "Edaran Kewajiban Kerja Bakti Massal Bulan November",
+          date: "2024-10-15",
+          number: "002/SE/X/2024",
+          link: "#",
+          type: "UMUM"
+        },
+        {
+          title: "Perubahan Jam Pelayanan Kantor Kampung Selama Musim Hujan",
+          date: "2024-09-01",
+          number: "003/SE/IX/2024",
+          link: "#",
+          type: "LAYANAN"
+        }
+      ];
+
+      // Data Mock untuk Jadwal Penting
+      const JADWAL_DATA = [
+        {
+          event: "Rapat Musyawarah Rencana Pembangunan (Musrenbang)",
+          date: "Sabtu, 16 Nov 2024",
+          time: "09:00 WIB",
+          location: "Balai Kampung",
+          isCritical: true
+        },
+        {
+          event: "Pembayaran Pajak Bumi dan Bangunan (PBB) Terakhir",
+          date: "Jumat, 29 Nov 2024",
+          time: "Sesuai jam kerja",
+          location: "Bank BPD / Kantor Desa",
+          isCritical: true
+        },
+        {
+          event: "Lomba Kebersihan Lingkungan RT",
+          date: "Minggu, 03 Nov 2024",
+          time: "08:00 WIB",
+          location: "Seluruh Wilayah Kampung",
+          isCritical: false
+        }
+      ];
+
+      // Data Mock untuk Informasi Pemerintah Kampung
+      const INFO_KAMPUNG_DATA = [
+        {
+          title: "Alokasi Dana Desa (ADD) Tahap II Telah Dicairkan",
+          excerpt:
+            "Dana desa tahap kedua sebesar 40% telah masuk ke rekening kampung dan siap dialokasikan untuk pembangunan fisik.",
+          date: "2024-10-28",
+          color: "text-green-600",
+          icon: "check-circle"
+        },
+        {
+          title: "Pembukaan Pendaftaran Calon Ketua RT/RW Baru",
+          excerpt:
+            "Pemerintah Kampung membuka kesempatan bagi warga yang ingin mendaftar sebagai Calon Ketua RT/RW untuk periode 2025-2027.",
+          date: "2024-10-20",
+          color: "text-sky-600",
+          icon: "users"
+        }
+      ];
+
+      // --- UTILITAS ---
+
+      /**
+       * Dapatkan badge berdasarkan tipe.
+       */
+      function getTypeBadge(type) {
+        let colorClass;
+        switch (type) {
+          case "PENTING":
+            colorClass = "bg-red-500 text-white";
+            break;
+          case "LAYANAN":
+            colorClass = "bg-yellow-500 text-gray-900";
+            break;
+          case "UMUM":
+          default:
+            colorClass = "bg-sky-500 text-white";
+            break;
+        }
+        return `<span class="px-2 py-0.5 text-xs font-semibold rounded ${colorClass}">${type}</span>`;
+      }
+
+      /**
+       * Format tanggal ke format Indonesia.
+       */
+      function formatDate(dateString) {
+        const options = { year: "numeric", month: "long", day: "numeric" };
+        return new Date(dateString).toLocaleDateString("id-ID", options);
+      }
+
+      /**
+       * Render ikon Lucide ke dalam DOM.
+       */
+      function renderIcons() {
+        setTimeout(() => {
+          if (typeof lucide !== "undefined" && lucide.createIcons) {
+            lucide.createIcons();
+          }
+        }, 0);
+      }
+
+      // --- FUNGSI RENDER UTAMA ---
+
+      /**
+       * Render daftar Surat Edaran.
+       */
+      function renderSuratEdaran() {
+        const container = document.getElementById("edaran-list");
+        container.innerHTML = SURAT_EDARAN_DATA.map(
+          (item) => `
+                <div class="announcement-card p-5 flex justify-between items-center border-l-4 ${
+                  item.type === "PENTING" ? "border-red-500" : "border-sky-500"
+                }">
+                    <div class="flex-grow">
+                        <div class="text-xs text-gray-500 mb-1 flex items-center space-x-2">
+                            <i data-lucide="file-text" class="w-4 h-4 text-sky-500"></i>
+                            <span>${formatDate(item.date)} / No. ${
+            item.number
+          }</span>
+                        </div>
+                        <p class="text-lg font-semibold text-gray-800">${
+                          item.title
+                        }</p>
+                    </div>
+                    <div class="flex items-center space-x-3 ml-4">
+                        ${getTypeBadge(item.type)}
+                        <a href="${
+                          item.link
+                        }" target="_blank" class="p-2 rounded-full bg-sky-100 text-sky-600 hover:bg-sky-200 transition duration-150" title="Unduh Dokumen">
+                            <i data-lucide="download" class="w-5 h-5"></i>
+                        </a>
+                    </div>
+                </div>
+            `
+        ).join("");
+      }
+
+      /**
+       * Render daftar Jadwal Penting.
+       */
+      function renderJadwalPenting() {
+        const container = document.getElementById("jadwal-list");
+        container.innerHTML = JADWAL_DATA.map(
+          (item) => `
+                <div class="p-3 ${
+                  item.isCritical
+                    ? "bg-indigo-50 border-l-4 border-indigo-500"
+                    : "bg-gray-50 border-l-4 border-gray-300"
+                } rounded-lg">
+                    <p class="text-sm font-semibold text-gray-800 mb-1">${
+                      item.event
+                    }</p>
+                    <div class="text-xs text-gray-600 space-y-0.5">
+                        <div class="flex items-center">
+                            <i data-lucide="calendar-check" class="w-3.5 h-3.5 mr-1.5 text-indigo-500"></i>
+                            <span>${item.date}</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i data-lucide="clock" class="w-3.5 h-3.5 mr-1.5 text-indigo-500"></i>
+                            <span>Pukul: ${item.time}</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i data-lucide="map-pin" class="w-3.5 h-3.5 mr-1.5 text-indigo-500"></i>
+                            <span>Lokasi: ${item.location}</span>
+                        </div>
+                    </div>
+                </div>
+            `
+        ).join("");
+      }
+
+      /**
+       * Render daftar Informasi dari Pemerintah Kampung (Informasi Umum).
+       */
+      function renderInfoKampung() {
+        const container = document.getElementById("info-list");
+        container.innerHTML = INFO_KAMPUNG_DATA.map(
+          (item) => `
+                <div class="p-3 border-b last:border-b-0">
+                    <div class="flex items-start mb-1">
+                        <i data-lucide="${
+                          item.icon
+                        }" class="w-4 h-4 mr-2 mt-1 ${item.color}"></i>
+                        <p class="text-sm font-bold text-gray-800 flex-grow">${
+                          item.title
+                        }</p>
+                    </div>
+                    <p class="text-xs text-gray-600 pl-6">${item.excerpt}</p>
+                    <p class="text-xs text-gray-400 mt-1 pl-6">Dipublikasikan: ${formatDate(
+                      item.date
+                    )}</p>
+                </div>
+            `
+        ).join("");
+      }
+
+      // --- SETUP AWAL ---
+
+      window.onload = function () {
+        renderSuratEdaran();
+        renderJadwalPenting();
+        renderInfoKampung();
+        renderIcons();
+      };
+    </script>
+  </body>
+</html>

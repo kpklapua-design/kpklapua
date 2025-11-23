@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Artikel Kegiatan</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+
+    <!-- Konfigurasi Custom Tailwind -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Lato', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                    },
+                    colors: {
+                        'brand-gold': '#D4AF37', /* Emas sedikit lebih gelap/klasik */
+                        'brand-dark': '#1C1C1C',
+                        'brand-green': '#2C3E50', /* Hijau tua kebiruan untuk nuansa alam elegan */
+                        'brand-gray': '#F9FAFB',
+                    },
+                    animation: {
+                        'fade-in-up': 'fadeInUp 0.8s ease-out forwards',
+                    },
+                    keyframes: {
+                        fadeInUp: {
+                            '0%': { opacity: '0', transform: 'translateY(20px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        ::selection {
+            background-color: #D4AF37;
+            color: white;
+        }
+        body {
+            background-color: #FCFCFC;
+        }
+        .image-hover-zoom {
+            overflow: hidden;
+        }
+        .image-hover-zoom img {
+            transition: transform 0.7s ease;
+        }
+        .image-hover-zoom:hover img {
+            transform: scale(1.05);
+        }
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease-out;
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body class="text-brand-dark antialiased font-sans">
+
+    <!-- Navigation -->
+    <nav id="navbar" class="fixed w-full z-50 transition-all duration-300 bg-white/90 backdrop-blur-md border-b border-gray-100 py-4">
+        <div class="container mx-auto px-6 md:px-12 flex justify-between items-center">
+            <!-- Logo -->
+            <a href="#" class="text-2xl font-serif font-bold tracking-wider flex items-center gap-2">
+                Kampung Lapua<span class="text-brand-gold text-4xl leading-none">.</span>
+            </a>
+
+            <!-- Desktop Menu -->
+            <div class="hidden md:flex space-x-8 text-sm uppercase tracking-widest font-medium text-gray-600">
+                <a href="#beranda" class="hover:text-brand-gold transition-colors">Beranda</a>
+                <a href="#featured" class="hover:text-brand-gold transition-colors">Kabar Utama</a>
+                <a href="#potensi" class="hover:text-brand-gold transition-colors">Potensi</a>
+                <a href="#gallery" class="hover:text-brand-gold transition-colors">Galeri</a>
+            </div>
+
+            <!-- Mobile Menu Button -->
+            <button id="mobile-menu-btn" class="md:hidden focus:outline-none">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+            </button>
+        </div>
+
+        <!-- Mobile Menu Dropdown -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-gray-100 absolute w-full shadow-lg">
+            <div class="flex flex-col p-6 space-y-4 text-center font-serif text-lg">
+                <a href="#beranda" class="hover:text-brand-gold">Beranda</a>
+                <a href="#featured" class="hover:text-brand-gold">Kabar Utama</a>
+                <a href="#potensi" class="hover:text-brand-gold">Potensi Desa</a>
+                <a href="#gallery" class="hover:text-brand-gold">Galeri</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="beranda" class="relative h-screen flex items-center justify-center overflow-hidden">
+        <!-- Background Image (Village Landscape) -->
+        <div class="absolute inset-0 z-0">
+            <img src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?q=80&w=2232&auto=format&fit=crop" 
+                 alt="Pemandangan Desa" 
+                 class="w-full h-full object-cover brightness-[0.5]">
+        </div>
+
+        <!-- Hero Content -->
+        <div class="relative z-10 text-center text-white px-6 max-w-4xl animate-fade-in-up">
+            <p class="text-xs md:text-sm tracking-[0.3em] uppercase mb-4 text-brand-gold font-bold">Portal Resmi Kemajuan Desa</p>
+            <h1 class="text-5xl md:text-7xl font-serif font-medium mb-6 leading-tight">
+                Merawat Tradisi, <br> <span class="italic text-brand-gold">Membangun Negeri</span>
+            </h1>
+            <p class="text-gray-200 text-lg font-light mb-10 max-w-2xl mx-auto">
+                Wadah informasi terkini seputar kegiatan gotong royong, pemberdayaan ekonomi warga, dan pelestarian budaya lokal Kampung Lapua.
+            </p>
+            <a href="#featured" class="inline-block border border-white/30 bg-white/10 backdrop-blur-sm hover:bg-white hover:text-brand-dark px-8 py-3 transition-all duration-300 uppercase tracking-widest text-sm">
+                Jelajahi Kegiatan
+            </a>
+        </div>
+        
+        <!-- Scroll Indicator -->
+        <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce text-white/50">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path></svg>
+        </div>
+    </section>
+
+    <!-- Featured Article (Sorotan Utama: Kegiatan Adat/Besar) -->
+    <section id="featured" class="py-24 bg-white">
+        <div class="container mx-auto px-6 md:px-12">
+            <div class="flex flex-col md:flex-row items-center gap-12 reveal">
+                <!-- Image -->
+                <div class="w-full md:w-1/2 image-hover-zoom relative aspect-[4/5] md:aspect-[3/4]">
+                    <img src="https://images.unsplash.com/photo-1596422846543-75c6fc197f07?q=80&w=2064&auto=format&fit=crop" 
+                         alt="Panen Raya" 
+                         class="w-full h-full object-cover shadow-2xl">
+                    <div class="absolute top-6 left-6 bg-brand-dark text-white px-4 py-2 text-xs tracking-widest uppercase font-bold">
+                        Agenda Tahunan
+                    </div>
+                </div>
+
+                <!-- Content -->
+                <div class="w-full md:w-1/2 md:pl-10">
+                    <div class="flex items-center text-brand-gold text-sm font-bold tracking-widest mb-4">
+                        <span class="h-[1px] w-8 bg-brand-gold mr-3"></span>
+                        20 OKTOBER 2023
+                    </div>
+                    <h2 class="text-4xl md:text-5xl font-serif leading-tight mb-6 text-brand-dark">
+                        Festival Panen Raya & Sedekah Bumi
+                    </h2>
+                    <p class="text-gray-600 font-light leading-relaxed mb-8 text-lg">
+                        Bentuk syukur warga Kampung Lapua atas melimpahnya hasil tani tahun ini. Acara dimeriahkan dengan arak-arakan tumpeng raksasa, pertunjukan wayang kulit semalam suntuk, dan pasar rakyat yang menampilkan produk unggulan desa.
+                    </p>
+                    <a href="#" class="group inline-flex items-center text-brand-dark font-medium uppercase tracking-widest text-sm hover:text-brand-gold transition-colors">
+                        Baca Liputan Lengkap
+                        <svg class="w-4 h-4 ml-2 group-hover:translate-x-2 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Article Grid (Kegiatan Warga) -->
+    <section id="potensi" class="py-24 bg-brand-gray">
+        <div class="container mx-auto px-6 md:px-12">
+            <div class="text-center mb-16 reveal">
+                <h3 class="text-3xl md:text-4xl font-serif mb-4">Denyut Nadi Desa</h3>
+                <p class="text-gray-500 font-light">Berita terkini seputar pembangunan, kesehatan, dan ekonomi.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+                <!-- Article 1: Kerja Bakti -->
+                <article class="group cursor-pointer reveal">
+                    <div class="overflow-hidden mb-6 aspect-[4/3] relative">
+                         <div class="absolute top-4 right-4 bg-white/90 backdrop-blur px-3 py-1 text-[10px] font-bold tracking-widest uppercase">Lingkungan</div>
+                        <img src="https://images.unsplash.com/photo-1588074615554-3b511561137b?q=80&w=1974&auto=format&fit=crop" 
+                             class="w-full h-full object-cover transition duration-700 group-hover:scale-110 grayscale group-hover:grayscale-0" 
+                             alt="Kerja Bakti">
+                    </div>
+                    <div class="text-xs text-gray-500 tracking-widest mb-2 font-bold">MINGGU, 12 NOV 2023</div>
+                    <h4 class="text-2xl font-serif mb-3 group-hover:text-brand-gold transition-colors">Gotong Royong: Revitalisasi Sungai</h4>
+                    <p class="text-gray-600 font-light text-sm leading-relaxed line-clamp-3">
+                        Warga RW 05 bahu-membahu membersihkan aliran sungai irigasi untuk menyambut musim tanam, memastikan pasokan air lancar bagi para petani.
+                    </p>
+                </article>
+
+                <!-- Article 2: UMKM / Ekonomi -->
+                <article class="group cursor-pointer reveal" style="transition-delay: 100ms;">
+                    <div class="overflow-hidden mb-6 aspect-[4/3] relative">
+                        <div class="absolute top-4 right-4 bg-white/90 backdrop-blur px-3 py-1 text-[10px] font-bold tracking-widest uppercase">Ekonomi Kreatif</div>
+                        <img src="https://images.unsplash.com/photo-1512106379656-eb3a72a59465?q=80&w=2071&auto=format&fit=crop" 
+                             class="w-full h-full object-cover transition duration-700 group-hover:scale-110 grayscale group-hover:grayscale-0" 
+                             alt="Kerajinan">
+                    </div>
+                    <div class="text-xs text-gray-500 tracking-widest mb-2 font-bold">RABU, 08 NOV 2023</div>
+                    <h4 class="text-2xl font-serif mb-3 group-hover:text-brand-gold transition-colors">Profil UMKM: Tenun "Sari Warisan"</h4>
+                    <p class="text-gray-600 font-light text-sm leading-relaxed line-clamp-3">
+                        Ibu Siti berhasil menembus pasar ekspor dengan kain tenun pewarna alami khas Desa Kencana. Simak kisah inspiratifnya membangun usaha dari nol.
+                    </p>
+                </article>
+
+                <!-- Article 3: Pelayanan Kesehatan -->
+                <article class="group cursor-pointer reveal" style="transition-delay: 200ms;">
+                    <div class="overflow-hidden mb-6 aspect-[4/3] relative">
+                        <div class="absolute top-4 right-4 bg-white/90 backdrop-blur px-3 py-1 text-[10px] font-bold tracking-widest uppercase">Kesehatan</div>
+                        <img src="https://images.unsplash.com/photo-1576765608535-5f04d1e3f289?q=80&w=2068&auto=format&fit=crop" 
+                             class="w-full h-full object-cover transition duration-700 group-hover:scale-110 grayscale group-hover:grayscale-0" 
+                             alt="Posyandu">
+                    </div>
+                    <div class="text-xs text-gray-500 tracking-widest mb-2 font-bold">SENIN, 06 NOV 2023</div>
+                    <h4 class="text-2xl font-serif mb-3 group-hover:text-brand-gold transition-colors">Posyandu Cempaka: Cegah Stunting</h4>
+                    <p class="text-gray-600 font-light text-sm leading-relaxed line-clamp-3">
+                        Sosialisasi gizi seimbang dan pembagian makanan tambahan untuk balita. Program desa menuju generasi emas yang sehat dan cerdas.
+                    </p>
+                </article>
+            </div>
+            
+            <div class="mt-16 text-center">
+                <button class="px-8 py-3 border border-brand-dark text-brand-dark hover:bg-brand-dark hover:text-white transition-all duration-300 uppercase tracking-widest text-xs font-bold">
+                    Lihat Arsip Kegiatan
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Quote / Transparansi Section -->
+    <section class="py-24 bg-brand-green text-white relative overflow-hidden">
+        <div class="absolute top-0 left-0 w-full h-full opacity-10">
+             <img src="https://www.transparenttextures.com/patterns/cubes.png" alt="Texture">
+        </div>
+        <div class="container mx-auto px-6 text-center relative z-10 reveal">
+            <svg class="w-12 h-12 mx-auto text-brand-gold mb-6 opacity-50" fill="currentColor" viewBox="0 0 24 24"><path d="M14.017 21L14.017 18C14.017 16.0547 15.3738 14.9326 17.6146 13.3047C19.5745 11.8811 20.3505 11.1584 20.3505 9.65264C20.3505 8.06529 19.1625 7.07598 17.4108 7.07598C15.6016 7.07598 14.8505 8.29152 14.5234 9.35848L11.923 7.9258C12.4778 6.04019 14.3392 4.5 17.5351 4.5C21.2761 4.5 23.5 7.03269 23.5 10.2952C23.5 13.4855 21.3418 15.3708 19.1009 17.0608C17.2917 18.425 16.6396 18.9735 16.6125 21H14.017ZM5.01664 21L5.01664 18C5.01664 16.0547 6.37379 14.9326 8.61458 13.3047C10.5745 11.8811 11.3505 11.1584 11.3505 9.65264C11.3505 8.06529 10.1625 7.07598 8.41078 7.07598C6.60157 7.07598 5.8505 8.29152 5.52341 9.35848L2.92301 7.9258C3.47783 6.04019 5.33918 4.5 8.53513 4.5C12.2761 4.5 14.5 7.03269 14.5 10.2952C14.5 13.4855 11.3418 15.3708 9.10095 17.0608C7.29175 18.425 6.63965 18.9735 6.61254 21H5.01664Z"/></svg>
+            <blockquote class="text-2xl md:text-4xl font-serif leading-relaxed italic text-gray-200">
+                "Desa yang kuat dibangun di atas pondasi kerukunan warganya dan transparansi para pemimpinnya."
+            </blockquote>
+            <cite class="block mt-8 font-sans text-sm tracking-widest uppercase text-brand-gold">— Kepala Desa Kencana</cite>
+            
+            <div class="mt-10 flex justify-center gap-4">
+                <a href="#" class="text-xs font-bold border border-white/30 px-6 py-2 hover:bg-white hover:text-brand-green transition">Laporan Dana Desa</a>
+                <a href="#" class="text-xs font-bold border border-white/30 px-6 py-2 hover:bg-white hover:text-brand-green transition">Struktur Organisasi</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section id="gallery" class="py-24 bg-white">
+        <div class="container mx-auto px-6 md:px-12">
+             <div class="flex justify-between items-end mb-12 reveal">
+                <div>
+                    <h3 class="text-3xl font-serif">Wajah Desa</h3>
+                    <p class="text-gray-500 text-sm mt-2">Keindahan alam dan keramahan warga.</p>
+                </div>
+                <a href="#" class="hidden md:block text-sm font-bold border-b border-black pb-1 hover:text-brand-gold hover:border-brand-gold transition-colors">Instagram Desa</a>
+            </div>
+            
+            <!-- Masonry-ish Layout -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 h-96 md:h-[500px]">
+                <div class="relative overflow-hidden group h-full w-full col-span-2 row-span-2 reveal">
+                    <img src="https://images.unsplash.com/photo-1530053969600-caed2596d242?q=80&w=2574&auto=format&fit=crop" class="w-full h-full object-cover transition duration-500 group-hover:scale-105" alt="Sawah">
+                    <div class="absolute bottom-0 left-0 w-full bg-gradient-to-t from-black/70 to-transparent p-6 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        <p class="text-white font-serif">Hamparan Sawah Blok Timur</p>
+                    </div>
+                </div>
+                <div class="relative overflow-hidden group h-full w-full reveal">
+                    <img src="https://images.unsplash.com/photo-1517457373958-b7bdd4587205?q=80&w=2069&auto=format&fit=crop" class="w-full h-full object-cover transition duration-500 group-hover:scale-105" alt="Musyawarah">
+                </div>
+                <div class="relative overflow-hidden group h-full w-full reveal">
+                    <img src="https://images.unsplash.com/photo-1492693677088-43c6b75b0c3a?q=80&w=2072&auto=format&fit=crop" class="w-full h-full object-cover transition duration-500 group-hover:scale-105" alt="Anak-anak">
+                </div>
+                <div class="relative overflow-hidden group h-full w-full col-span-2 reveal">
+                    <img src="https://images.unsplash.com/photo-1464226184884-fa280b87c399?q=80&w=2070&auto=format&fit=crop" class="w-full h-full object-cover transition duration-500 group-hover:scale-105" alt="Senja Desa">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-brand-dark text-white pt-20 pb-10 border-t border-gray-800">
+        <div class="container mx-auto px-6 md:px-12">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
+                <div class="md:col-span-2">
+                    <a href="#" class="text-3xl font-serif font-bold tracking-wider block mb-6">
+                        Kampung<span class="text-brand-gold">Lapua</span>
+                    </a>
+                    <p class="text-gray-400 font-light max-w-sm leading-relaxed">
+                        Alamat Kantor Desa:<br>
+                        Jl. Melati No. 10, RT 01/RW 02<br>
+                        Kecamatan Maju Jaya, Kabupaten Sejahtera.<br><br>
+                        Email: admin@desakencana.id
+                    </p>
+                </div>
+                <div>
+                    <h5 class="text-sm font-bold tracking-widest uppercase mb-6 text-gray-300">Layanan Publik</h5>
+                    <ul class="space-y-4 text-gray-400 font-light text-sm">
+                        <li><a href="#" class="hover:text-white transition-colors">Pengurusan KTP/KK</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Surat Keterangan Usaha</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Jadwal Posyandu</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Lapor Pak Kades</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h5 class="text-sm font-bold tracking-widest uppercase mb-6 text-gray-300">Info Desa</h5>
+                    <ul class="space-y-4 text-gray-400 font-light text-sm">
+                        <li><a href="#" class="hover:text-white transition-colors">Transparansi Anggaran</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Profil Perangkat Desa</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Peta Wilayah</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center text-xs text-gray-500 font-light tracking-wide">
+                <p>&copy; 2023 Pemerintah Desa Kencana. Hak Cipta Dilindungi.</p>
+                <div class="flex space-x-6 mt-4 md:mt-0">
+                    <a href="#" class="hover:text-white transition-colors">Facebook Desa</a>
+                    <a href="#" class="hover:text-white transition-colors">Instagram Karang Taruna</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+        const btn = document.getElementById('mobile-menu-btn');
+        const menu = document.getElementById('mobile-menu');
+
+        btn.addEventListener('click', () => {
+            menu.classList.toggle('hidden');
+        });
+
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('shadow-md');
+                navbar.classList.remove('py-4');
+                navbar.classList.add('py-2');
+            } else {
+                navbar.classList.remove('shadow-md');
+                navbar.classList.remove('py-2');
+                navbar.classList.add('py-4');
+            }
+        });
+
+        function reveal() {
+            var reveals = document.querySelectorAll(".reveal");
+            for (var i = 0; i < reveals.length; i++) {
+                var windowHeight = window.innerHeight;
+                var elementTop = reveals[i].getBoundingClientRect().top;
+                var elementVisible = 150;
+                if (elementTop < windowHeight - elementVisible) {
+                    reveals[i].classList.add("active");
+                }
+            }
+        }
+        window.addEventListener("scroll", reveal);
+        reveal();
+    </script>
+</body>
+</html>

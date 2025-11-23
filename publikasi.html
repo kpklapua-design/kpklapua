@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Data Desa LAPUA</title>
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Kombinasi Font: Merriweather (Serif untuk Judul) dan Inter (Sans-Serif untuk Isi) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Merriweather:wght@700;900&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+
+    <style>
+      /* Warna Dasar dan Font Klasik */
+      body {
+        font-family: "Inter", sans-serif; /* Teks isi */
+        background-color: #fcfcfc; /* Hampir Putih */
+        color: #262626; /* Deep Charcoal */
+      }
+
+      h1,
+      h2,
+      h3 {
+        font-family: "Merriweather", serif; /* Judul dengan Serif */
+        color: #1a1a1a;
+      }
+
+      /* Palet Warna Elegan */
+      .color-accent {
+        color: #bfa17d; /* Soft Gold */
+      }
+      .bg-accent {
+        background-color: #bfa17d;
+      }
+
+      /* Hover efek pada Card */
+      .data-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
+      }
+
+      .data-card {
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        border: 1px solid #e0e0e0;
+      }
+
+      /* Animasi untuk Detail Popup */
+      .detail-popup {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+          padding 0.5s;
+        padding: 0 1.5rem;
+        margin-bottom: 0; /* Penting untuk menghilangkan margin saat tertutup */
+      }
+      .detail-popup.active {
+        max-height: 1000px; /* Nilai besar agar konten terlihat */
+        padding: 1.5rem;
+        margin-bottom: 2rem;
+      }
+      /* Mengubah tampilan grid agar setiap kartu + detail menempati satu baris penuh (span 3) */
+      .grid-item-container {
+        grid-column: span 3 / span 3;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- 1. NAVIGATION BAR DIHAPUS SEPERTI PERMINTAAN -->
+
+    <!-- 2. MAIN CONTENT AREA: Publikasi Data -->
+    <!-- Padding atas dimulai langsung dari body -->
+    <main class="pt-10 pb-16 md:pt-12 md:pb-24">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Judul Halaman -->
+        <!-- Judul ini bisa berfungsi sebagai pengganti header yang dihapus -->
+        <h1
+          class="text-3xl sm:text-4xl font-extrabold leading-tight mb-8 text-center md:text-left"
+        >
+          Publikasi Data Desa
+        </h1>
+
+        <!-- Grid Publikasi (5 Item - Setiap Item Menempati 3 Kolom agar Detail Muncul Lebar) -->
+        <div
+          class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-0 gap-x-8"
+        >
+          <!-- KARTU 1: Kependudukan -->
+          <div class="grid-item-container">
+            <div
+              id="kependudukan-card"
+              class="data-card p-6 bg-white rounded-xl shadow-lg hover:shadow-xl transition duration-300"
+            >
+              <div class="flex items-start justify-between">
+                <div class="flex items-start">
+                  <i
+                    data-lucide="users"
+                    class="w-10 h-10 color-accent flex-shrink-0 mt-1"
+                  ></i>
+                  <div class="ml-4">
+                    <h3 class="text-2xl font-bold mb-2">Kependudukan</h3>
+                    <p class="text-gray-500 text-sm">
+                      Data statistik jumlah penduduk, komposisi usia, dan mata
+                      pencaharian utama.
+                    </p>
+                  </div>
+                </div>
+                <button
+                  onclick="toggleDetail('kependudukan-detail', this)"
+                  class="toggle-btn mt-2 inline-flex items-center text-sm font-semibold color-accent hover:underline bg-gray-50 p-2 rounded-full transition duration-150"
+                  aria-expanded="false"
+                >
+                  Lihat Detail
+                  <i
+                    data-lucide="chevron-down"
+                    class="w-4 h-4 ml-1 transition-transform transform"
+                  ></i>
+                </button>
+              </div>
+            </div>
+            <!-- DETAIL KEPENDUDUKAN -->
+            <div
+              id="kependudukan-detail"
+              class="detail-popup mt-2 bg-white rounded-xl shadow-lg border-2 border-accent/50"
+            >
+              <h4
+                class="text-xl font-bold font-serif mb-4 text-gray-800 border-b pb-2"
+              >
+                Ringkasan Data Populasi Tahun 2025
+              </h4>
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+                <div class="p-4 bg-blue-50/50 rounded-lg">
+                  <p class="text-gray-500 font-medium">Total Penduduk</p>
+                  <p class="text-3xl font-extrabold color-accent mt-1">
+                    2.450 Jiwa
+                  </p>
+                </div>
+                <div class="p-4 bg-green-50/50 rounded-lg">
+                  <p class="text-gray-500 font-medium">
+                    Usia Produktif (15-64)
+                  </p>
+                  <p class="text-3xl font-extrabold text-green-700 mt-1">68%</p>
+                  <p class="text-xs text-gray-500 mt-1">
+                    Anak-anak (0-14): 22%, Lanjut Usia (>65): 10%
+                  </p>
+                </div>
+                <div class="p-4 bg-yellow-50/50 rounded-lg">
+                  <p class="text-gray-500 font-medium">
+                    Mata Pencaharian Utama
+                  </p>
+                  <ul class="list-disc list-inside text-sm mt-2 text-gray-700">
+                    <li>Pertanian: 60%</li>
+                    <li>Perdagangan/Jasa: 25%</li>
+                  </ul>
+                </div>
+              </div>
+              <div class="mt-6 text-sm text-gray-600 border-t pt-4">
+                <i data-lucide="info" class="w-4 h-4 inline mr-1"></i>
+                Data terakhir diperbarui pada 10 November 2025.
+              </div>
+            </div>
+          </div>
+
+          <!-- KARTU 2: Pendidikan -->
+          <div class="grid-item-container">
+            <div
+              id="pendidikan-card"
+              class="data-card p-6 bg-white rounded-xl shadow-lg hover:shadow-xl transition duration-300"
+            >
+              <div class="flex items-start justify-between">
+                <div class="flex items-start">
+                  <i
+                    data-lucide="graduation-cap"
+                    class="w-10 h-10 color-accent flex-shrink-0 mt-1"
+                  ></i>
+                  <div class="ml-4">
+                    <h3 class="text-2xl font-bold mb-2">Pendidikan</h3>
+                    <p class="text-gray-500 text-sm">
+                      Informasi terkait fasilitas sekolah, angka partisipasi,
+                      dan program beasiswa desa.
+                    </p>
+                  </div>
+                </div>
+                <button
+                  onclick="toggleDetail('pendidikan-detail', this)"
+                  class="toggle-btn mt-2 inline-flex items-center text-sm font-semibold color-accent hover:underline bg-gray-50 p-2 rounded-full transition duration-150"
+                  aria-expanded="false"
+                >
+                  Lihat Detail
+                  <i
+                    data-lucide="chevron-down"
+                    class="w-4 h-4 ml-1 transition-transform transform"
+                  ></i>
+                </button>
+              </div>
+            </div>
+            <!-- DETAIL PENDIDIKAN -->
+            <div
+              id="pendidikan-detail"
+              class="detail-popup mt-2 bg-white rounded-xl shadow-lg border-2 border-accent/50"
+            >
+              <h4
+                class="text-xl font-bold font-serif mb-4 text-gray-800 border-b pb-2"
+              >
+                Ringkasan Sektor Pendidikan
+              </h4>
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+                <div class="p-4 bg-blue-50/50 rounded-lg">
+                  <p class="text-gray-500 font-medium">Jumlah Institusi</p>
+                  <p class="text-3xl font-extrabold color-accent mt-1">
+                    3 Unit
+                  </p>
+                  <p class="text-xs text-gray-500 mt-1">1 SD, 1 SMP, 1 PAUD</p>
+                </div>
+                <div class="p-4 bg-green-50/50 rounded-lg">
+                  <p class="text-gray-500 font-medium">Angka Putus Sekolah</p>
+                  <p class="text-3xl font-extrabold text-green-700 mt-1">
+                    0.5%
+                  </p>
+                  <p class="text-xs text-gray-500 mt-1">
+                    Target APBDes: 0% di 2026
+                  </p>
+                </div>
+                <div class="p-4 bg-yellow-50/50 rounded-lg">
+                  <p class="text-gray-500 font-medium">Program Beasiswa</p>
+                  <p class="text-3xl font-extrabold mt-1">20 Kuota</p>
+                  <p class="text-xs text-gray-500 mt-1">
+                    Untuk siswa berprestasi tingkat SMP/SMA
+                  </p>
+                </div>
+              </div>
+              <div class="mt-6 text-sm text-gray-600 border-t pt-4">
+                <i data-lucide="info" class="w-4 h-4 inline mr-1"></i>
+                Dokumen lengkap program sekolah dan kurikulum tersedia di Kantor
+                Desa.
+              </div>
+            </div>
+          </div>
+
+          <!-- KARTU 3: APBDes -->
+          <div class="grid-item-container">
+            <div
+              id="apbdes-card"
+              class="data-card p-6 bg-white rounded-xl shadow-lg hover:shadow-xl transition duration-300"
+            >
+              <div class="flex items-start justify-between">
+                <div class="flex items-start">
+                  <i
+                    data-lucide="wallet"
+                    class="w-10 h-10 color-accent flex-shrink-0 mt-1"
+                  ></i>
+                  <div class="ml-4">
+                    <h3 class="text-2xl font-bold mb-2">APBDes</h3>
+                    <p class="text-gray-500 text-sm">
+                      Rincian anggaran pendapatan dan belanja desa tahunan yang
+                      terperinci dan transparan.
+                    </p>
+                  </div>
+                </div>
+                <button
+                  onclick="toggleDetail('apbdes-detail', this)"
+                  class="toggle-btn mt-2 inline-flex items-center text-sm font-semibold color-accent hover:underline bg-gray-50 p-2 rounded-full transition duration-150"
+                  aria-expanded="false"
+                >
+                  Lihat Detail
+                  <i
+                    data-lucide="chevron-down"
+                    class="w-4 h-4 ml-1 transition-transform transform"
+                  ></i>
+                </button>
+              </div>
+            </div>
+            <!-- DETAIL APBDes -->
+            <div
+              id="apbdes-detail"
+              class="detail-popup mt-2 bg-white rounded-xl shadow-lg border-2 border-accent/50"
+            >
+              <h4
+                class="text-xl font-bold font-serif mb-4 text-gray-800 border-b pb-2"
+              >
+                Rangkuman Anggaran APBDes 2025
+              </h4>
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+                <div class="p-4 bg-blue-50/50 rounded-lg">
+                  <p class="text-gray-500 font-medium">Total Pendapatan</p>
+                  <p class="text-3xl font-extrabold color-accent mt-1">
+                    Rp 1.5 M
+                  </p>
+                </div>
+                <div class="p-4 bg-red-50/50 rounded-lg">
+                  <p class="text-gray-500 font-medium">Total Belanja</p>
+                  <p class="text-3xl font-extrabold text-red-700 mt-1">
+                    Rp 1.45 M
+                  </p>
+                </div>
+                <div class="p-4 bg-green-50/50 rounded-lg">
+                  <p class="text-gray-500 font-medium">Realisasi</p>
+                  <p class="text-3xl font-extrabold text-green-700 mt-1">75%</p>
+                  <p class="text-xs text-gray-500 mt-1">Per Triwulan III</p>
+                </div>
+              </div>
+              <h5 class="text-lg font-semibold mt-6 mb-2">
+                Alokasi Belanja Utama:
+              </h5>
+              <ul class="list-disc list-inside text-sm text-gray-700 ml-4">
+                <li>Pembangunan Fisik & Infrastruktur: 40%</li>
+                <li>Pemberdayaan Masyarakat: 30%</li>
+                <li>Penghasilan Aparatur Desa: 20%</li>
+              </ul>
+              <div class="mt-6 text-sm text-gray-600 border-t pt-4">
+                <i data-lucide="info" class="w-4 h-4 inline mr-1"></i>
+                Laporan pertanggungjawaban lengkap dapat diunduh di papan
+                informasi desa.
+              </div>
+            </div>
+          </div>
+
+          <!-- KARTU 4: RPJMDes -->
+          <div class="grid-item-container">
+            <div
+              id="rpjmdes-card"
+              class="data-card p-6 bg-white rounded-xl shadow-lg hover:shadow-xl transition duration-300"
+            >
+              <div class="flex items-start justify-between">
+                <div class="flex items-start">
+                  <i
+                    data-lucide="align-start-horizontal"
+                    class="w-10 h-10 color-accent flex-shrink-0 mt-1"
+                  ></i>
+                  <div class="ml-4">
+                    <h3 class="text-2xl font-bold mb-2">RPJMDes</h3>
+                    <p class="text-gray-500 text-sm">
+                      Dokumen perencanaan pembangunan desa jangka menengah (6
+                      tahun) dan arah kebijakan.
+                    </p>
+                  </div>
+                </div>
+                <button
+                  onclick="toggleDetail('rpjmdes-detail', this)"
+                  class="toggle-btn mt-2 inline-flex items-center text-sm font-semibold color-accent hover:underline bg-gray-50 p-2 rounded-full transition duration-150"
+                  aria-expanded="false"
+                >
+                  Lihat Detail
+                  <i
+                    data-lucide="chevron-down"
+                    class="w-4 h-4 ml-1 transition-transform transform"
+                  ></i>
+                </button>
+              </div>
+            </div>
+            <!-- DETAIL RPJMDes -->
+            <div
+              id="rpjmdes-detail"
+              class="detail-popup mt-2 bg-white rounded-xl shadow-lg border-2 border-accent/50"
+            >
+              <h4
+                class="text-xl font-bold font-serif mb-4 text-gray-800 border-b pb-2"
+              >
+                Visi & Misi RPJMDes 2024-2030
+              </h4>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <div class="p-4 bg-gray-50 rounded-lg border-l-4 border-accent">
+                  <p class="font-medium text-lg color-accent">Visi:</p>
+                  <p class="text-sm text-gray-700 mt-1">
+                    Mewujudkan Kampung Lapua yang mandiri, sejahtera, berbudaya,
+                    dan berbasis digital.
+                  </p>
+                </div>
+                <div class="p-4 bg-gray-50 rounded-lg border-l-4 border-accent">
+                  <p class="font-medium text-lg color-accent">
+                    Prioritas 6 Tahun:
+                  </p>
+                  <ul
+                    class="list-disc list-inside text-sm text-gray-700 mt-2 ml-4"
+                  >
+                    <li>Peningkatan Kualitas SDM</li>
+                    <li>Pengembangan Ekonomi Lokal</li>
+                    <li>Pembangunan Infrastruktur Dasar</li>
+                  </ul>
+                </div>
+              </div>
+              <div class="mt-6 text-sm text-gray-600 border-t pt-4">
+                <i data-lucide="info" class="w-4 h-4 inline mr-1"></i>
+                RPJMDes adalah acuan utama bagi semua program kerja tahunan
+                desa.
+              </div>
+            </div>
+          </div>
+
+          <!-- KARTU 5: RKPDes -->
+          <div class="grid-item-container">
+            <div
+              id="rkpdes-card"
+              class="data-card p-6 bg-white rounded-xl shadow-lg hover:shadow-xl transition duration-300"
+            >
+              <div class="flex items-start justify-between">
+                <div class="flex items-start">
+                  <i
+                    data-lucide="calendar-check"
+                    class="w-10 h-10 color-accent flex-shrink-0 mt-1"
+                  ></i>
+                  <div class="ml-4">
+                    <h3 class="text-2xl font-bold mb-2">RKPDes</h3>
+                    <p class="text-gray-500 text-sm">
+                      Rencana kerja pembangunan tahunan desa yang merupakan
+                      penjabaran terperinci dari RPJMDes.
+                    </p>
+                  </div>
+                </div>
+                <button
+                  onclick="toggleDetail('rkpdes-detail', this)"
+                  class="toggle-btn mt-2 inline-flex items-center text-sm font-semibold color-accent hover:underline bg-gray-50 p-2 rounded-full transition duration-150"
+                  aria-expanded="false"
+                >
+                  Lihat Detail
+                  <i
+                    data-lucide="chevron-down"
+                    class="w-4 h-4 ml-1 transition-transform transform"
+                  ></i>
+                </button>
+              </div>
+            </div>
+            <!-- DETAIL RKPDes -->
+            <div
+              id="rkpdes-detail"
+              class="detail-popup mt-2 bg-white rounded-xl shadow-lg border-2 border-accent/50"
+            >
+              <h4
+                class="text-xl font-bold font-serif mb-4 text-gray-800 border-b pb-2"
+              >
+                Program Prioritas RKPDes 2025
+              </h4>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <div class="p-4 bg-gray-50 rounded-lg">
+                  <p class="font-medium text-lg text-gray-700">
+                    Infrastruktur:
+                  </p>
+                  <ul
+                    class="list-disc list-inside text-sm text-gray-700 mt-2 ml-4"
+                  >
+                    <li>Pembangunan Jembatan Gantung (Selesai Q2)</li>
+                    <li>Perbaikan Drainase Utama (Target Q4)</li>
+                  </ul>
+                </div>
+                <div class="p-4 bg-gray-50 rounded-lg">
+                  <p class="font-medium text-lg text-gray-700">
+                    Ekonomi & Sosial:
+                  </p>
+                  <ul
+                    class="list-disc list-inside text-sm text-gray-700 mt-2 ml-4"
+                  >
+                    <li>Pelatihan UMKM Digital</li>
+                    <li>Penyaluran Bantuan Langsung Tunai</li>
+                  </ul>
+                </div>
+              </div>
+              <div class="mt-6 text-sm text-gray-600 border-t pt-4">
+                <i data-lucide="info" class="w-4 h-4 inline mr-1"></i>
+                Semua program RKPDes diselaraskan dengan sasaran jangka panjang
+                RPJMDes.
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Akhir Grid Publikasi -->
+      </div>
+    </main>
+
+    <!-- 3. FOOTER (Klasik dan Terperinci) -->
+    <footer class="bg-white py-12 border-t border-gray-200 mt-16">
+      <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <p class="text-base font-light text-gray-600 leading-relaxed">
+          Portal Informasi Resmi Kampung Lapua. <br />
+          Dedikasi untuk transparansi dan kemajuan komunitas.
+        </p>
+        <div class="mt-4 text-sm text-gray-500">
+          &copy; 2025 Kampung Lapua. Hak Cipta Dilindungi.
+        </div>
+      </div>
+    </footer>
+
+    <!-- Inisialisasi Lucide Icons dan Logic Detail -->
+    <script>
+      lucide.createIcons();
+
+      /**
+       * Fungsi untuk menampilkan/menyembunyikan detail di bawah kartu.
+       * @param {string} detailId ID dari div detail yang akan di-toggle
+       * @param {HTMLElement} buttonElement Tombol yang diklik
+       */
+      function toggleDetail(detailId, buttonElement) {
+        const detailElement = document.getElementById(detailId);
+        const isExpanded = detailElement.classList.contains("active");
+
+        // Atur status active
+        if (isExpanded) {
+          // Tutup detail
+          detailElement.classList.remove("active");
+          buttonElement.setAttribute("aria-expanded", "false");
+          buttonElement.innerHTML =
+            'Lihat Detail <i data-lucide="chevron-down" class="w-4 h-4 ml-1 transition-transform transform"></i>';
+        } else {
+          // Buka detail
+          // Tutup semua detail lain agar hanya satu yang terbuka (optional, tapi disarankan untuk UI bersih)
+          document.querySelectorAll(".detail-popup.active").forEach((popup) => {
+            if (popup.id !== detailId) {
+              popup.classList.remove("active");
+              // Atur kembali teks tombolnya
+              const associatedButton = document.querySelector(
+                `[onclick="toggleDetail('${popup.id}', this)"]`
+              );
+              if (associatedButton) {
+                associatedButton.setAttribute("aria-expanded", "false");
+                associatedButton.innerHTML =
+                  'Lihat Detail <i data-lucide="chevron-down" class="w-4 h-4 ml-1 transition-transform transform"></i>';
+              }
+            }
+          });
+
+          // Buka detail yang dipilih
+          detailElement.classList.add("active");
+          buttonElement.setAttribute("aria-expanded", "true");
+          buttonElement.innerHTML =
+            'Sembunyikan <i data-lucide="chevron-up" class="w-4 h-4 ml-1 transition-transform transform"></i>';
+        }
+
+        // Memastikan ikon di-render ulang setelah perubahan innerHTML
+        lucide.createIcons();
+      }
+    </script>
+  </body>
+</html>

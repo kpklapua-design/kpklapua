@@ -1,0 +1,263 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Dashboard Rencana Pembangunan Jangka Menengah (RPJM)</title>
+
+  <!-- GOOGLE FONT -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- INTERNAL CSS (Menggunakan skema warna Elegan Modern) -->
+  <style>
+    /* VARIAN COLOR PALETTE */
+    :root {
+      --primary-color: #1b1f3a; /* Deep Navy Blue */
+      --accent-color: #d97706; /* Golden Orange */
+      --soft-bg: #f9f7f5; /* Off-white/Cream */
+      --dark-text: #2c314a;
+      --light-text: #777;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Poppins', sans-serif; background: var(--soft-bg); color: var(--dark-text); line-height: 1.6; }
+
+    .container { max-width: 1200px; margin: auto; padding: 0 20px; }
+    .section-spacing { padding: 60px 0; }
+
+    /* HEADER */
+    header { position: sticky; top: 0; background: rgba(255,255,255,0.95); backdrop-filter: blur(8px); padding: 15px 0; box-shadow: 0 2px 8px rgba(0,0,0,0.05); z-index: 50; }
+    nav a { margin-left: 25px; text-decoration: none; color: var(--primary-color); font-size: 14px; transition: .3s; font-weight: 500;}
+    nav a.active { font-weight: 700; color: var(--accent-color); border-bottom: 2px solid var(--accent-color); padding-bottom: 5px; }
+    nav a:hover { color: var(--accent-color); }
+
+    /* HERO / RINGKASAN EKSEKUTIF */
+    .hero { padding: 80px 0; background: var(--primary-color); color: white; border-bottom-left-radius: 30px; border-bottom-right-radius: 30px; }
+    .hero h1 { font-size: 44px; font-weight: 800; line-height: 1.1; margin-bottom: 10px; }
+    .hero p { font-size: 18px; opacity: 0.9; }
+    
+    /* GRID & CARD */
+    .section-title { font-size: 32px; font-weight: 700; margin-bottom: 10px; color: var(--primary-color); }
+    .section-subtitle { margin-bottom: 40px; color: var(--light-text); text-align: center; }
+    
+    .grid { display: grid; gap: 30px; }
+    .grid-2 { grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); }
+    .grid-3 { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+
+    .card { background: white; border-radius: 14px; padding: 25px; box-shadow: 0 4px 14px rgba(0,0,0,0.08); transition: .3s; }
+
+    /* VISI & MISI */
+    .vision-mission-box { border: 2px solid var(--accent-color); background: white; border-radius: 16px; padding: 40px; text-align: center; margin: 40px auto 0; max-width: 900px; }
+    .vision-mission-box h3 { color: var(--primary-color); font-size: 24px; font-weight: 700; margin-bottom: 10px; }
+
+    /* PROGRESS BAR */
+    .progress-container { background: #e0e0e0; border-radius: 10px; overflow: hidden; height: 16px; margin-top: 10px; }
+    .progress-bar { height: 100%; background: var(--accent-color); border-radius: 10px; transition: width 0.8s ease-in-out; }
+    .progress-label { font-size: 12px; font-weight: 600; color: var(--dark-text); margin-top: 5px; }
+    
+    /* IKU STATS CARD */
+    .stat-card { text-align: center; }
+    .stat-card .icon { color: var(--accent-color); font-size: 40px; margin-bottom: 10px; }
+    .stat-card .value { font-size: 36px; font-weight: 800; color: var(--primary-color); }
+    .stat-card .label { font-size: 14px; color: var(--light-text); margin-top: 5px; }
+
+    /* RESPONSIVE */
+    @media(max-width: 768px){
+      .hero { padding: 40px 0; border-radius: 0; }
+      .hero h1 { font-size: 30px; }
+      .hero p { font-size: 16px; }
+      nav { display: none; }
+      .section-title { font-size: 26px; }
+      .vision-mission-box { padding: 30px 20px; }
+      .stat-card .value { font-size: 30px; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="container" style="display:flex; justify-content:space-between; align-items:center;">
+    <!-- Brand Name (Logo Pemerintah) -->
+    <div style="display:flex; align-items:center; gap:12px;">
+      <div>
+        <div style="font-weight:700; font-size:20px; color: var(--primary-color);">RPJM 2025-2030</div>
+        <div style="font-size:12px; color:#777;">Dashboard Kinerja</div>
+      </div>
+    </div>
+
+    <!-- Desktop Navigation -->
+    <nav id="desktop-nav">
+      <a href="#visi" class="active">Visi & Misi</a>
+      <a href="#program">Program Prioritas</a>
+      <a href="#kinerja">Kinerja Utama</a>
+      <a href="#dokumen">Dokumen Lengkap</a>
+    </nav>
+  </div>
+</header>
+
+<!-- HERO / RINGKASAN EKSEKUTIF -->
+<section id="home" class="hero">
+  <div class="container">
+    <h1 style="color: var(--accent-color);">Ringkasan RPJM 2025-2030</h1>
+    <p>Akselerasi Pembangunan Berbasis Digital dan Sumber Daya Manusia Unggul.</p>
+    
+    <div class="grid grid-3" style="margin-top: 40px;">
+        <div class="card" style="text-align:center; background: #2f3454; color: white;">
+            <div style="font-size: 14px; opacity: 0.8;">Target Peningkatan SDM</div>
+            <div style="font-size: 32px; font-weight: 800; margin-top: 5px;">+15%</div>
+        </div>
+        <div class="card" style="text-align:center; background: #2f3454; color: white;">
+            <div style="font-size: 14px; opacity: 0.8;">Realisasi Anggaran Tahunan</div>
+            <div style="font-size: 32px; font-weight: 800; margin-top: 5px;">85.4%</div>
+        </div>
+        <div class="card" style="text-align:center; background: #2f3454; color: white;">
+            <div style="font-size: 14px; opacity: 0.8;">Program Tuntas</div>
+            <div style="font-size: 32px; font-weight: 800; margin-top: 5px;">12/18</div>
+        </div>
+    </div>
+  </div>
+</section>
+
+<!-- VISI DAN MISI -->
+<section id="visi" class="container section-spacing" style="text-align: center;">
+    <h2 class="section-title">Visi & Misi Pembangunan</h2>
+    <p class="section-subtitle">Arah strategis yang menjadi panduan utama dalam periode 2025-2030.</p>
+
+    <div class="vision-mission-box">
+        <h3 style="color: var(--accent-color);">Visi Jangka Menengah</h3>
+        <p style="font-size: 18px; font-weight: 600; margin-bottom: 25px; line-height: 1.4;">
+            "Menjadi Pusat Inovasi Regional yang Berkelanjutan, Berdaya Saing, dan Berlandaskan Nilai Budaya Lokal."
+        </p>
+
+        <h3 style="margin-top: 30px; border-top: 1px solid #eee; padding-top: 20px;">Misi Utama</h3>
+        <div class="grid grid-3" style="margin-top: 15px;">
+            <div style="text-align:left;">
+                <h4 style="font-size: 16px; font-weight: 600; color: var(--accent-color);">1. Peningkatan Kualitas SDM</h4>
+                <p style="font-size: 14px; color: var(--light-text);">Fokus pada pendidikan, kesehatan, dan pelatihan vokasi.</p>
+            </div>
+            <div style="text-align:left;">
+                <h4 style="font-size: 16px; font-weight: 600; color: var(--accent-color);">2. Infrastruktur Digital</h4>
+                <p style="font-size: 14px; color: var(--light-text);">Mewujudkan konektivitas yang merata dan cepat.</p>
+            </div>
+            <div style="text-align:left;">
+                <h4 style="font-size: 16px; font-weight: 600; color: var(--accent-color);">3. Tata Kelola Pemerintahan</h4>
+                <p style="font-size: 14px; color: var(--light-text);">Menciptakan birokrasi yang bersih, efektif, dan melayani.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- PROGRAM PRIORITAS -->
+<section id="program" class="container section-spacing" style="background: white; border-radius: 16px;">
+    <div style="padding: 40px;">
+        <h2 class="section-title" style="text-align: center;">Program Prioritas 5 Tahun</h2>
+        <p class="section-subtitle">Status realisasi program utama yang sedang berjalan hingga tahun berjalan.</p>
+
+        <div class="grid grid-2">
+            
+            <!-- Program 1: Pendidikan Vokasi -->
+            <div class="card">
+                <h3 style="font-size: 20px; font-weight: 700; color: var(--primary-color);">Inisiatif Pendidikan & Pelatihan Vokasi</h3>
+                <p style="font-size: 14px; margin-top: 5px; color: var(--light-text);">Mencetak 50.000 tenaga kerja terampil di bidang teknologi hijau.</p>
+                <div style="margin-top: 15px;">
+                    <div class="progress-label">Tahun 3 dari 5 (Progress: 65%)</div>
+                    <div class="progress-container">
+                        <div class="progress-bar" style="width: 65%;"></div>
+                    </div>
+                    <p style="font-size: 12px; color: #555; margin-top: 5px;">Tercapai: 32.500 tenaga kerja. Fokus saat ini: Sertifikasi internasional.</p>
+                </div>
+            </div>
+
+            <!-- Program 2: Infrastruktur Konektivitas -->
+            <div class="card">
+                <h3 style="font-size: 20px; font-weight: 700; color: var(--primary-color);">Pembangunan Jaringan Internet Cepat Desa</h3>
+                <p style="font-size: 14px; margin-top: 5px; color: var(--light-text);">Menjangkau 85% desa dengan koneksi fiber optik stabil.</p>
+                <div style="margin-top: 15px;">
+                    <div class="progress-label">Tahun 2 dari 5 (Progress: 40%)</div>
+                    <div class="progress-container">
+                        <div class="progress-bar" style="width: 40%; background: #06b6d4;"></div>
+                    </div>
+                    <p style="font-size: 12px; color: #555; margin-top: 5px;">Realisasi: 38% desa. Tantangan: Mediasi lahan dan geografi sulit.</p>
+                </div>
+            </div>
+
+            <!-- Program 3: Revitalisasi UMKM -->
+            <div class="card">
+                <h3 style="font-size: 20px; font-weight: 700; color: var(--primary-color);">Digitalisasi dan Modernisasi UMKM Lokal</h3>
+                <p style="font-size: 14px; margin-top: 5px; color: var(--light-text);">Mendorong 10.000 UMKM bertransaksi secara digital dan terintegrasi.</p>
+                <div style="margin-top: 15px;">
+                    <div class="progress-label">Tahun 4 dari 5 (Progress: 78%)</div>
+                    <div class="progress-container">
+                        <div class="progress-bar" style="width: 78%; background: #10b981;"></div>
+                    </div>
+                    <p style="font-size: 12px; color: #555; margin-top: 5px;">Tercapai: 7.800 UMKM. Fokus saat ini: Pelatihan *e-commerce*.</p>
+                </div>
+            </div>
+
+            <!-- Program 4: Konservasi Lingkungan -->
+            <div class="card">
+                <h3 style="font-size: 20px; font-weight: 700; color: var(--primary-color);">Program Konservasi dan Penghijauan Kota</h3>
+                <p style="font-size: 14px; margin-top: 5px; color: var(--light-text);">Penambahan 50 hektar ruang terbuka hijau (RTH) publik.</p>
+                <div style="margin-top: 15px;">
+                    <div class="progress-label">Tahun 1 dari 5 (Progress: 15%)</div>
+                    <div class="progress-container">
+                        <div class="progress-bar" style="width: 15%; background: #65a30d;"></div>
+                    </div>
+                    <p style="font-size: 12px; color: #555; margin-top: 5px;">Realisasi: 7.5 hektar. Tantangan: Akuisisi lahan.</p>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+</section>
+
+<!-- INDIKATOR KINERJA UTAMA (IKU) -->
+<section id="kinerja" class="container section-spacing">
+    <h2 class="section-title" style="text-align: center;">Indikator Kinerja Utama (IKU)</h2>
+    <p class="section-subtitle">Data kunci yang menunjukkan capaian strategis pembangunan daerah.</p>
+
+    <div class="grid grid-3">
+        
+        <!-- IKU 1: Pertumbuhan Ekonomi -->
+        <div class="card stat-card">
+            <div class="icon">📈</div>
+            <div class="value">5.8%</div>
+            <div class="label">Pertumbuhan Ekonomi (Target: 6.0%)</div>
+            <p style="font-size: 12px; color: #555; margin-top: 5px;">Tahun sebelumnya: 5.1%</p>
+        </div>
+
+        <!-- IKU 2: Indeks Pembangunan Manusia -->
+        <div class="card stat-card">
+            <div class="icon">🧠</div>
+            <div class="value">78.5</div>
+            <div class="label">Indeks Pembangunan Manusia (Target: 80.0)</div>
+            <p style="font-size: 12px; color: #555; margin-top: 5px;">Peringkat Nasional: Ke-10</p>
+        </div>
+
+        <!-- IKU 3: Angka Kemiskinan -->
+        <div class="card stat-card">
+            <div class="icon">📉</div>
+            <div class="value">4.2%</div>
+            <div class="label">Penurunan Angka Kemiskinan (Target: 4.0%)</div>
+            <p style="font-size: 12px; color: #555; margin-top: 5px;">Penurunan 0.5% dari tahun lalu</p>
+        </div>
+    </div>
+</section>
+
+<!-- PEMBERITAHUAN DOKUMEN -->
+<section id="dokumen" class="container" style="padding: 40px; text-align: center;">
+    <div style="background: white; border-radius: 14px; padding: 40px; box-shadow: 0 4px 14px rgba(0,0,0,0.08); max-width: 700px; margin: auto;">
+        <h3 style="font-size: 24px; color: var(--primary-color);">Akses Dokumen RPJM Lengkap</h3>
+        <p style="font-size: 16px; margin-top: 10px; margin-bottom: 20px; color: var(--dark-text);">
+            Unduh berkas resmi Rencana Pembangunan Jangka Menengah untuk rincian kebijakan, sub-program, dan alokasi anggaran secara detail.
+        </p>
+        <a style="padding: 12px 30px; background: var(--accent-color); color: white; border-radius: 10px; text-decoration: none; display: inline-block; font-weight: 600; font-size: 16px; transition: .3s;" href="#">Unduh Dokumen (PDF)</a>
+    </div>
+</section>
+
+<footer>© 2025 Biro Perencanaan Daerah. Seluruh Hak Cipta Dilindungi.</footer>
+
+</body>
+</html>

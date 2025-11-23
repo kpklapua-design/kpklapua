@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Formulir Permohonan Surat Kampung</title>
+    <!-- Muat Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      /* Menggunakan font Inter untuk tampilan yang bersih */
+      body {
+        font-family: "Inter", sans-serif;
+        background-color: #f7f9fc;
+      }
+      /* Style untuk container utama agar tampil elegan di tengah */
+      .card-container {
+        max-width: 900px;
+        margin: 2rem auto;
+        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1),
+          0 0 10px rgba(0, 0, 0, 0.04);
+      }
+      /* Style untuk membuat setiap pasangan label/input menjadi kotak yang jelas */
+      /* Ini adalah kotak luar yang membungkus Label dan Input */
+      .form-group-box {
+        @apply p-4 bg-gray-50 border border-gray-200 rounded-lg transition duration-150 hover:border-kampung-secondary;
+      }
+
+      /* == PERBAIKAN UTAMA UNTUK GARIS YANG LEBIH TIPIS == */
+      /* Menggunakan 1px tetapi dengan warna abu-abu gelap agar terlihat lebih halus */
+      .form-input-field {
+        width: 100%;
+        padding: 0.75rem; /* 12px */
+        border-width: 1px; /* Ketebalan 1px */
+        border-color: #4b5563; /* Abu-abu Gelap, terlihat tipis tapi tegas */
+        border-style: solid;
+        border-radius: 0.5rem;
+        background-color: #ffffff; /* Latar putih untuk kontras yang lebih baik */
+        transition: all 150ms ease-in-out;
+      }
+      /* Saat di-klik (focus), beri warna biru yang lebih hidup */
+      .form-input-field:focus {
+        outline: none;
+        /* Tambahkan efek ring biru halus */
+        box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.3);
+        border-color: #3b82f6; /* Warna batas biru */
+      }
+      /* Menangani style khusus untuk input file */
+      .form-input-field[type="file"] {
+        @apply file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-kampung-primary file:text-white hover:file:bg-kampung-secondary;
+      }
+      /* Menangani style khusus untuk file opsional/dinamis */
+      #dynamic_file_upload .form-input-field[type="file"] {
+         @apply file:bg-gray-200 file:text-gray-700 hover:file:bg-gray-300;
+      }
+    </style>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              "kampung-primary": "#1e40af" /* Biru Tua */,
+              "kampung-secondary": "#3b82f6" /* Biru Muda */
+            }
+          }
+        }
+      };
+    </script>
+  </head>
+  <body class="p-4 sm:p-8">
+    <div class="card-container bg-white rounded-xl overflow-hidden">
+      <header class="bg-kampung-primary text-white p-6 sm:p-8">
+        <h1 class="text-2xl sm:text-3xl font-bold">
+          Formulir Permohonan Surat
+        </h1>
+        <p class="text-sm mt-1 opacity-90">
+          Layanan Administrasi Publik Kampung (Wajib diisi dengan data yang
+          benar)
+        </p>
+      </header>
+
+      <main class="p-6 sm:p-8">
+        <form id="submissionForm">
+          <!-- BAGIAN 1: DATA IDENTITAS PEMOHON -->
+          <section class="mb-8 border-b pb-6">
+            <h2
+              class="text-xl font-semibold text-gray-800 mb-4 flex items-center"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-6 w-6 mr-2 text-kampung-secondary"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-7 0V4a2 2 0 012-2h4a2 2 0 012 2v2m-7 0h14"
+                />
+              </svg>
+              1. Data Identitas Pemohon
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <!-- Nama Lengkap -->
+              <div class="form-group-box">
+                <label
+                  for="nama_lengkap"
+                  class="block text-sm font-medium text-gray-700 mb-1"
+                  >Nama Lengkap (Sesuai KTP)</label
+                >
+                <input
+                  type="text"
+                  id="nama_lengkap"
+                  name="nama_lengkap"
+                  class="form-input-field"
+                  required
+                />
+              </div>
+              <!-- NIK -->
+              <div class="form-group-box">
+                <label
+                  for="nik"
+                  class="block text-sm font-medium text-gray-700 mb-1"
+                  >Nomor Induk Kependudukan (NIK)</label
+                >
+                <input
+                  type="text"
+                  id="nik"
+                  name="nik"
+                  class="form-input-field"
+                  pattern="[0-9]{16}"
+                  maxlength="16"
+                  title="NIK harus terdiri dari 16 digit angka"
+                  required
+                />
+              </div>
+              <!-- RT (Baru) -->
+              <div class="form-group-box">
+                <label
+                  for="rt"
+                  class="block text-sm font-medium text-gray-700 mb-1"
+                  >Rukun Tetangga (RT)</label
+                >
+                <input
+                  type="text"
+                  id="rt"
+                  name="rt"
+                  class="form-input-field"
+                  placeholder="Contoh: 001"
+                  required
+                />
+              </div>
+              <!-- RW (Baru) -->
+              <div class="form-group-box">
+                <label
+                  for="rw"
+                  class="block text-sm font-medium text-gray-700 mb-1"
+                  >Rukun Warga (RW)</label
+                >
+                <input
+                  type="text"
+                  id="rw"
+                  name="rw"
+                  class="form-input-field"
+                  placeholder="Contoh: 001"
+                  required
+                />
+              </div>
+              <!-- Tempat Lahir -->
+              <div class="form-group-box">
+                <label
+                  for="tempat_lahir"
+                  class="block text-sm font-medium text-gray-700 mb-1"
+                  >Tempat Lahir</label
+                >
+                <input
+                  type="text"
+                  id="tempat_lahir"
+                  name="tempat_lahir"
+                  class="form-input-field"
+                  required
+                />
+              </div>
+              <!-- Tanggal Lahir -->
+              <div class="form-group-box">
+                <label
+                  for="tanggal_lahir"
+                  class="block text-sm font-medium text-gray-700 mb-1"
+                  >Tanggal Lahir</label
+                >
+                <input
+                  type="date"
+                  id="tanggal_lahir"
+                  name="tanggal_lahir"
+                  class="form-input-field"
+                  required
+                />
+              </div>
+              <!-- Jenis Kelamin -->
+              <div class="form-group-box">
+                <label
+                  for="jenis_kelamin"
+                  class="block text-sm font-medium text-gray-700 mb-1"
+                  >Jenis Kelamin</label
+                >
+                <select
+                  id="jenis_kelamin"
+                  name="jenis_kelamin"
+                  class="form-input-field"
+                  required
+                >
+                  <option value="" disabled selected>
+                    Pilih Jenis Kelamin
+                  </option>
+                  <option value="Laki-laki">Laki-laki</option>
+                  <option value="Perempuan">Perempuan</option>
+                </select>
+              </div>
+              <!-- Status Perkawinan -->
+              <div class="form-group-box">
+                <label
+                  for="status_kawin"
+                  class="block text-sm font-medium text-gray-700 mb-1"
+                  >Status Perkawinan</label
+                >
+                <select
+                  id="status_kawin"
+                  name="status_kawin"
+                  class="form-input-field"
+                  required
+                >
+                  <option value="" disabled selected>Pilih Status</option>
+                  <option value="Belum Kawin">Belum Kawin</option>
+                  <option value="Kawin">Kawin</option>
+                  <option value="Cerai Hidup">Cerai Hidup</option>
+                  <option value="Cerai Mati">Cerai Mati</option>
+                </select>
+              </div>
+              <!-- Pekerjaan -->
+              <div class="form-group-box">
+                <label
+                  for="pekerjaan"
+                  class="block text-sm font-medium text-gray-700 mb-1"
+                  >Pekerjaan</label
+                >
+                <input
+                  type="text"
+                  id="pekerjaan"
+                  name="pekerjaan"
+                  class="form-input-field"
+                  required
+                />
+              </div>
+              <!-- Kontak -->
+              <div class="form-group-box">
+                <label
+                  for="kontak"
+                  class="block text-sm font-medium text-gray-700 mb-1"
+                  >Nomor Kontak (WhatsApp)</label
+                >
+                <input
+                  type="tel"
+                  id="kontak"
+                  name="kontak"
+                  class="form-input-field"
+                  required
+                />
+              </div>
+              <!-- Alamat Lengkap Domisili (Span 2 kolom) -->
+              <div class="md:col-span-2 form-group-box">
+                <label
+                  for="alamat"
+                  class="block text-sm font-medium text-gray-700 mb-1"
+                  >Alamat Lengkap Domisili</label
+                >
+                <textarea
+                  id="alamat"
+                  name="alamat"
+                  rows="2"
+                  class="form-input-field"
+                  required
+                ></textarea>
+              </div>
+            </div>
+          </section>
+
+          <!-- BAGIAN 2: DETAIL PERMOHONAN SURAT (DINAMIS) -->
+          <section class="mb-8 border-b pb-6">
+            <h2
+              class="text-xl font-semibold text-gray-800 mb-4 flex items-center"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-6 w-6 mr-2 text-kampung-secondary"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                />
+              </svg>
+              2. Detail Permohonan Surat
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <!-- Jenis Surat -->
+              <div class="form-group-box">
+                <label
+                  for="jenis_surat"
+                  class="block text-sm font-medium text-gray-700 mb-1"
+                  >Pilih Jenis Surat yang Dimohon</label
+                >
+                <select
+                  id="jenis_surat"
+                  name="jenis_surat"
+                  class="form-input-field"
+                  required
+                  onchange="handleSuratChange(this.value)"
+                >
+                  <option value="" disabled selected>
+                    -- Pilih Jenis Surat --
+                  </option>
+                  <option value="SKU">Surat Keterangan Usaha (SKU)</option>
+                  <option value="SKTM">
+                    Surat Keterangan Tidak Mampu (SKTM)
+                  </option>
+                  <option value="DOMISILI">Surat Keterangan Domisili</option>
+                  <option value="NIKAH">Surat Pengantar Nikah (N.1-N.4)</option>
+                  <option value="UMUM">Surat Pengantar Umum/Lainnya</option>
+                </select>
+              </div>
+              <!-- Tujuan Permohonan -->
+              <div class="form-group-box">
+                <label
+                  for="tujuan_permohonan"
+                  class="block text-sm font-medium text-gray-700 mb-1"
+                  >Tujuan Permohonan Surat (Singkat)</label
+                >
+                <input
+                  type="text"
+                  id="tujuan_permohonan"
+                  name="tujuan_permohonan"
+                  class="form-input-field"
+                  placeholder="Contoh: Persyaratan pinjaman KUR Bank BNI"
+                  required
+                />
+              </div>
+            </div>
+
+            <!-- KETERANGAN KHUSUS DINAMIS -->
+            <div
+              id="dynamicFields"
+              class="mt-6 p-4 bg-blue-50 border-l-4 border-kampung-secondary rounded-lg hidden"
+            >
+              <h3 class="text-lg font-medium text-gray-800 mb-3">
+                Keterangan Khusus:
+              </h3>
+              <!-- Konten Dinamis akan dimasukkan di sini oleh JavaScript -->
+            </div>
+          </section>
+
+          <!-- BAGIAN 3: DOKUMEN PERSYARATAN & KONFIRMASI -->
+          <section class="mb-8">
+            <h2
+              class="text-xl font-semibold text-gray-800 mb-4 flex items-center"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-6 w-6 mr-2 text-kampung-secondary"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"
+                />
+              </svg>
+              3. Dokumen Persyaratan
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <!-- File KTP -->
+              <div class="form-group-box">
+                <label
+                  for="file_ktp"
+                  class="block text-sm font-medium text-gray-700 mb-1"
+                  >Unggah Foto KTP (Wajib)</label
+                >
+                <input
+                  type="file"
+                  id="file_ktp"
+                  name="file_ktp"
+                  accept=".pdf,.jpg,.jpeg,.png"
+                  class="form-input-field"
+                  required
+                />
+              </div>
+              <!-- File KK -->
+              <div class="form-group-box">
+                <label
+                  for="file_kk"
+                  class="block text-sm font-medium text-gray-700 mb-1"
+                  >Unggah Foto KK (Wajib)</label
+                >
+                <input
+                  type="file"
+                  id="file_kk"
+                  name="file_kk"
+                  accept=".pdf,.jpg,.jpeg,.png"
+                  class="form-input-field"
+                  required
+                />
+              </div>
+              <!-- File Khusus (Dinamis) -->
+              <div id="dynamic_file_upload" class="hidden form-group-box">
+                <label
+                  for="file_khusus"
+                  class="block text-sm font-medium text-gray-700 mb-1"
+                  >Unggah Dokumen Khusus</label
+                >
+                <input
+                  type="file"
+                  id="file_khusus"
+                  name="file_khusus"
+                  accept=".pdf,.jpg,.jpeg,.png"
+                  class="form-input-field"
+                />
+              </div>
+            </div>
+
+            <div class="mt-8 pt-4 border-t">
+              <div class="flex items-start">
+                <div class="flex items-center h-5">
+                  <input
+                    id="verifikasi"
+                    name="verifikasi"
+                    type="checkbox"
+                    class="h-4 w-4 text-kampung-secondary border-gray-300 rounded focus:ring-kampung-secondary"
+                    required
+                  />
+                </div>
+                <div class="ml-3 text-sm">
+                  <label for="verifikasi" class="font-medium text-gray-700"
+                    >Pernyataan Verifikasi Data</label
+                  >
+                  <p class="text-gray-500">
+                    Saya menyatakan bahwa semua data yang diisikan di atas
+                    adalah **benar dan dapat dipertanggungjawabkan**.
+                  </H1>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Tombol Submit -->
+          <div class="text-center mt-8">
+            <button
+              type="submit"
+              class="w-full sm:w-1/2 py-3 px-6 border border-transparent rounded-full shadow-lg text-lg font-medium text-white bg-kampung-primary hover:bg-kampung-secondary focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-opacity-50 transition duration-300 transform hover:scale-[1.01]"
+            >
+              <span id="submitText">Ajukan Permohonan Surat</span>
+            </button>
+          </div>
+
+          <!-- Pesan Status -->
+          <div
+            id="statusMessage"
+            class="mt-4 p-4 rounded-lg text-center hidden"
+            role="alert"
+          ></div>
+        </form>
+      </main>
+    </div>
+
+    <script>
+      // Data Keterangan Khusus Dinamis
+      const dynamicFieldsConfig = {
+        SKU: `
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="p-3 bg-white rounded-md border border-blue-200">
+                    <label for="nama_usaha" class="block text-sm font-medium text-gray-700 mb-1">Nama Usaha</label>
+                    <input type="text" id="nama_usaha" name="nama_usaha" class="form-input-field" required>
+                </div>
+                <div class="p-3 bg-white rounded-md border border-blue-200">
+                    <label for="lokasi_usaha" class="block text-sm font-medium text-gray-700 mb-1">Lokasi/Alamat Usaha</label>
+                    <input type="text" id="lokasi_usaha" name="lokasi_usaha" class="form-input-field" required>
+                </div>
+            </div>
+            <p class="text-xs text-gray-600 mt-3">Dokumen Khusus: Lampirkan Foto Tempat Usaha (Opsional).</p>
+        `,
+        SKTM: `
+            <div class="grid grid-cols-1 gap-4">
+                <div class="p-3 bg-white rounded-md border border-blue-200">
+                    <label for="keperluan_sktm" class="block text-sm font-medium text-gray-700 mb-1">Keperluan SKTM</label>
+                    <select id="keperluan_sktm" name="keperluan_sktm" class="form-input-field" required>
+                        <option value="" disabled selected>Pilih Keperluan</option>
+                        <option value="Pendidikan">Pendidikan (Sekolah/Beasiswa)</option>
+                        <option value="Kesehatan">Kesehatan (Berobat)</option>
+                        <option value="Bantuan Sosial">Bantuan Sosial (Raskin/BLT)</option>
+                        <option value="Lainnya">Lainnya</option>
+                    </select>
+                </div>
+            </div>
+            <p class="text-xs text-gray-600 mt-3">Dokumen Khusus: Lampirkan Surat Pengantar RT/RW yang menyatakan kondisi tidak mampu.</p>
+        `,
+        NIKAH: `
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="p-3 bg-white rounded-md border border-blue-200">
+                    <label for="nama_pasangan" class="block text-sm font-medium text-gray-700 mb-1">Nama Calon Pasangan</label>
+                    <input type="text" id="nama_pasangan" name="nama_pasangan" class="form-input-field" required>
+                </div>
+                <div class="p-3 bg-white rounded-md border border-blue-200">
+                    <label for="tempat_nikah" class="block text-sm font-medium text-gray-700 mb-1">Tempat/Tanggal Akad Nikah</label>
+                    <input type="text" id="tempat_nikah" name="tempat_nikah" class="form-input-field" placeholder="Contoh: KUA Kecamatan X, 20/12/2024" required>
+                </div>
+            </div>
+            <p class="text-xs text-gray-600 mt-3">Dokumen Khusus: Lampirkan Fotokopi Akta Lahir dan Ijazah Terakhir.</p>
+        `,
+        DOMISILI: `
+            <p class="text-sm text-gray-700">Surat Keterangan Domisili akan mencantumkan alamat yang Anda isi di Bagian 1. Pastikan alamat tersebut sudah benar.</p>
+            <p class="text-xs text-gray-600 mt-3">Dokumen Khusus: Lampirkan Surat Pengantar RT/RW (Wajib).</p>
+        `,
+        UMUM: `
+            <div class="grid grid-cols-1 gap-4">
+                <div class="p-3 bg-white rounded-md border border-blue-200">
+                    <label for="keterangan_lain" class="block text-sm font-medium text-gray-700 mb-1">Keterangan Tambahan untuk Surat Umum</label>
+                    <textarea id="keterangan_lain" name="keterangan_lain" rows="2" class="form-input-field" placeholder="Jelaskan detail yang perlu dicantumkan dalam surat pengantar umum ini." required></textarea>
+                </div>
+            </div>
+            <p class="text-xs text-gray-600 mt-3">Dokumen Khusus: Lampirkan surat atau berkas yang relevan dengan permohonan Anda (Opsional).</p>
+        `
+      };
+
+      const dynamicFieldsContainer = document.getElementById("dynamicFields");
+      const dynamicFileUpload = document.getElementById("dynamic_file_upload");
+      const fileKhususInput = document.getElementById("file_khusus");
+
+      /**
+       * Mengubah field input dinamis berdasarkan jenis surat yang dipilih.
+       * @param {string} selectedSurat - Kode jenis surat yang dipilih.
+       */
+      function handleSuratChange(selectedSurat) {
+        if (selectedSurat && dynamicFieldsConfig[selectedSurat]) {
+          dynamicFieldsContainer.innerHTML = dynamicFieldsConfig[selectedSurat];
+          dynamicFieldsContainer.classList.remove("hidden");
+
+          // Tampilkan atau sembunyikan kolom unggah file khusus
+          if (
+            selectedSurat === "SKU" ||
+            selectedSurat === "SKTM" ||
+            selectedSurat === "NIKAH" ||
+            selectedSurat === "DOMISILI" ||
+            selectedSurat === "UMUM"
+          ) {
+            dynamicFileUpload.classList.remove("hidden");
+            // Atur apakah file_khusus wajib diisi atau tidak
+            if (selectedSurat === "DOMISILI") {
+              fileKhususInput.required = true;
+              // Ubah label agar lebih spesifik
+              document.querySelector("#dynamic_file_upload label").textContent =
+                "Unggah Surat Pengantar RT/RW (Wajib)";
+            } else {
+              fileKhususInput.required = false;
+              document.querySelector("#dynamic_file_upload label").textContent =
+                "Unggah Dokumen Khusus (Opsional)";
+            }
+          } else {
+            dynamicFileUpload.classList.add("hidden");
+            fileKhususInput.required = false;
+          }
+        } else {
+          dynamicFieldsContainer.classList.add("hidden");
+          dynamicFieldsContainer.innerHTML = "";
+          dynamicFileUpload.classList.add("hidden");
+          fileKhususInput.required = false;
+        }
+      }
+
+      // Penanganan Pengiriman Formulir ke WhatsApp
+      document
+        .getElementById("submissionForm")
+        .addEventListener("submit", function (event) {
+          event.preventDefault();
+          const form = event.target;
+          const submitButton = form.querySelector('button[type="submit"]');
+          const submitText = document.getElementById("submitText");
+          const statusMessage = document.getElementById("statusMessage");
+
+          // Nonaktifkan tombol saat proses
+          submitButton.disabled = true;
+          submitButton.classList.add("opacity-50", "cursor-not-allowed");
+          submitText.textContent = "Memproses...";
+          statusMessage.classList.add("hidden");
+
+          // Kumpulkan data formulir
+          const formData = new FormData(form);
+          const data = {};
+          for (let [key, value] of formData.entries()) {
+            if (key.startsWith("file_")) {
+              data[key] = value.name || "Tidak ada file";
+            } else {
+              data[key] = value;
+            }
+          }
+
+          // Buat pesan WhatsApp
+          let message = `*Permohonan Surat Baru:*\n\n`;
+          message += `*Data Identitas Pemohon:*\n`;
+          message += `Nama Lengkap: ${data.nama_lengkap}\n`;
+          message += `NIK: ${data.nik}\n`;
+          message += `RT/RW: ${data.rt}/${data.rw}\n`;
+          message += `Tempat/Tanggal Lahir: ${data.tempat_lahir}, ${data.tanggal_lahir}\n`;
+          message += `Jenis Kelamin: ${data.jenis_kelamin}\n`;
+          message += `Status Perkawinan: ${data.status_kawin}\n`;
+          message += `Pekerjaan: ${data.pekerjaan}\n`;
+          message += `Kontak (WA): ${data.kontak}\n`;
+          message += `Alamat: ${data.alamat}\n\n`;
+
+          message += `*Detail Permohonan:*\n`;
+          message += `Jenis Surat: ${data.jenis_surat}\n`;
+          message += `Tujuan: ${data.tujuan_permohonan}\n`;
+
+          // Tambahkan field dinamis jika ada
+          if (data.nama_usaha) message += `Nama Usaha: ${data.nama_usaha}\n`;
+          if (data.lokasi_usaha) message += `Lokasi Usaha: ${data.lokasi_usaha}\n`;
+          if (data.keperluan_sktm) message += `Keperluan SKTM: ${data.keperluan_sktm}\n`;
+          if (data.nama_pasangan) message += `Nama Pasangan: ${data.nama_pasangan}\n`;
+          if (data.tempat_nikah) message += `Tempat/Tanggal Nikah: ${data.tempat_nikah}\n`;
+          if (data.keterangan_lain) message += `Keterangan Lain: ${data.keterangan_lain}\n`;
+
+          message += `\n*Dokumen Terunggah:*\n`;
+          message += `KTP: ${data.file_ktp}\n`;
+          message += `KK: ${data.file_kk}\n`;
+          if (data.file_khusus) message += `Dokumen Khusus: ${data.file_khusus}\n`;
+
+          message += `\n*Catatan:* Harap lampirkan file asli jika diperlukan. Terima kasih!`;
+
+          // Encode pesan dan buat URL WhatsApp
+          const encodedMessage = encodeURIComponent(message);
+          const whatsappURL = `https://wa.me/6285344014281?text=${encodedMessage}`;
+
+          // Buka WhatsApp di tab baru
+          window.open(whatsappURL, '_blank');
+
+          // Tampilkan pesan sukses
+          statusMessage.textContent = `Permohonan surat ${data.jenis_surat} telah dikirim ke WhatsApp admin! Harap lampirkan file asli jika diminta.`;
+          statusMessage.classList.remove("hidden", "bg-red-100", "text-red-700");
+          statusMessage.classList.add("bg-green-100", "text-green-700");
+
+          // Reset formulir
+          form.reset();
+          handleSuratChange(""); // Reset field dinamis
+
+          // Kembalikan tombol ke keadaan awal
+          submitButton.disabled = false;
+          submitButton.classList.remove("opacity-50", "cursor-not-allowed");
+          submitText.textContent = "Ajukan Permohonan Surat";
+        });
+    </script>
+  </body>
+</html>

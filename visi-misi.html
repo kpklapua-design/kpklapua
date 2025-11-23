@@ -1,0 +1,235 @@
+<!-- Chosen Palette: Elegan Modern (Soft Cream: #f9f7f5, Dark Slate: #1e293b, Golden Accent: #d97706) -->
+<!-- Application Structure Plan: Halaman Visi Misi. Struktur: 1. Header, 2. Hero (Judul Besar), 3. Section Visi (Highlight Utama), 4. Section Misi (Grid Points), 5. Nilai Inti (Core Values), 6. Footer. -->
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Visi & Misi — Elegan Modern</title>
+    
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Load Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Google Fonts: Poppins -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Konfigurasi Tema Elegan Modern -->
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              primary: '#1e293b', // Dark Slate
+              accent: '#d97706',  // Golden Accent
+              soft: '#f9f7f5',    // Soft Cream
+              secondary: '#64748b', // Slate-500
+              card: '#ffffff',    // Card White
+            },
+            fontFamily: {
+              sans: ['Poppins', 'sans-serif'],
+            }
+          }
+        }
+      }
+    </script>
+
+    <style>
+      body {
+        background-color: var(--tw-colors-soft);
+      }
+      .vision-card {
+        transition: transform 0.3s ease, box-shadow 0.4s ease;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+      }
+      .vision-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 30px -5px rgba(0, 0, 0, 0.1);
+      }
+      /* Quote decoration */
+      .quote-mark {
+          font-size: 4rem;
+          line-height: 1;
+          opacity: 0.2;
+          position: absolute;
+      }
+    </style>
+  </head>
+  <body class="min-h-screen font-sans bg-soft text-primary antialiased selection:bg-accent selection:text-white">
+    
+    <!-- 1. HEADER -->
+    <header class="sticky top-0 z-50 bg-white/95 backdrop-blur-md shadow-lg border-b border-gray-100">
+      <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
+        <div class="flex items-center gap-3">
+          <i data-lucide="target" class="w-6 h-6 text-accent"></i>
+          <div>
+            <h1 class="font-bold text-lg leading-tight text-primary">Arah Strategis</h1>
+            <p class="text-xs text-secondary">Visi & Misi Pembangunan</p>
+          </div>
+        </div>
+        <nav class="hidden md:flex items-center space-x-6">
+            <a href="#visi" class="text-sm font-medium text-secondary hover:text-primary transition-colors">Visi Utama</a>
+            <a href="#misi" class="text-sm font-medium text-secondary hover:text-primary transition-colors">Misi Kami</a>
+            <a href="#nilai" class="text-sm font-medium text-secondary hover:text-primary transition-colors">Nilai Inti</a>
+        </nav>
+      </div>
+    </header>
+
+    <!-- Kontainer Utama -->
+    <div id="app-container" class="p-4 sm:p-8 max-w-5xl mx-auto">
+      
+      <!-- 2. HERO & VISI -->
+      <section id="visi" class="mb-20 mt-10 text-center relative">
+        <span class="inline-block py-1.5 px-4 rounded-full bg-accent/10 text-accent text-sm font-semibold tracking-wide mb-6 uppercase shadow-sm">Tujuan Masa Depan</span>
+        
+        <div class="relative max-w-3xl mx-auto bg-card p-8 sm:p-12 rounded-2xl shadow-xl border border-gray-100 vision-card">
+            <!-- Decorative Quotes -->
+            <span class="quote-mark text-accent -top-4 left-4">“</span>
+            
+            <h2 class="text-3xl sm:text-4xl md:text-5xl font-extrabold text-primary mb-6 leading-tight">
+                Visi Kami
+            </h2>
+            <p class="text-xl sm:text-2xl font-medium text-secondary leading-relaxed italic">
+                "Menjadi Kampung Wisata Mandiri yang Berbasis Kearifan Lokal, Inovatif, dan Berkelanjutan Menuju Kesejahteraan Bersama."
+            </p>
+            
+            <span class="quote-mark text-accent -bottom-8 right-8 rotate-180">“</span>
+        </div>
+      </section>
+
+      <!-- 3. MISI (Grid Layout) -->
+      <section id="misi" class="mb-20">
+        <div class="text-center mb-12">
+            <h2 class="text-3xl font-bold text-primary">Misi Pembangunan</h2>
+            <p class="text-secondary mt-2">Langkah-langkah strategis untuk mewujudkan visi kami.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            
+            <!-- Misi 1 -->
+            <div class="vision-card bg-card p-6 rounded-xl border border-gray-100 flex items-start gap-4">
+                <div class="bg-blue-50 p-3 rounded-lg shrink-0">
+                    <i data-lucide="users" class="w-6 h-6 text-blue-600"></i>
+                </div>
+                <div>
+                    <h3 class="text-lg font-bold text-primary mb-2">Pemberdayaan Masyarakat</h3>
+                    <p class="text-sm text-secondary leading-relaxed">Meningkatkan kapasitas SDM melalui pelatihan keterampilan dan partisipasi aktif dalam kegiatan ekonomi lokal.</p>
+                </div>
+            </div>
+
+            <!-- Misi 2 -->
+            <div class="vision-card bg-card p-6 rounded-xl border border-gray-100 flex items-start gap-4">
+                <div class="bg-green-50 p-3 rounded-lg shrink-0">
+                    <i data-lucide="leaf" class="w-6 h-6 text-green-600"></i>
+                </div>
+                <div>
+                    <h3 class="text-lg font-bold text-primary mb-2">Kelestarian Lingkungan</h3>
+                    <p class="text-sm text-secondary leading-relaxed">Mengelola potensi alam secara bijak dengan prinsip ramah lingkungan dan pelestarian budaya setempat.</p>
+                </div>
+            </div>
+
+            <!-- Misi 3 -->
+            <div class="vision-card bg-card p-6 rounded-xl border border-gray-100 flex items-start gap-4">
+                <div class="bg-purple-50 p-3 rounded-lg shrink-0">
+                    <i data-lucide="lightbulb" class="w-6 h-6 text-purple-600"></i>
+                </div>
+                <div>
+                    <h3 class="text-lg font-bold text-primary mb-2">Inovasi Digital</h3>
+                    <p class="text-sm text-secondary leading-relaxed">Mengembangkan infrastruktur digital untuk mendukung promosi wisata dan efisiensi layanan administrasi.</p>
+                </div>
+            </div>
+
+            <!-- Misi 4 -->
+            <div class="vision-card bg-card p-6 rounded-xl border border-gray-100 flex items-start gap-4">
+                <div class="bg-yellow-50 p-3 rounded-lg shrink-0">
+                    <i data-lucide="heart-handshake" class="w-6 h-6 text-yellow-600"></i>
+                </div>
+                <div>
+                    <h3 class="text-lg font-bold text-primary mb-2">Kolaborasi Sinergis</h3>
+                    <p class="text-sm text-secondary leading-relaxed">Membangun kemitraan strategis dengan pemerintah, swasta, dan akademisi untuk percepatan pembangunan.</p>
+                </div>
+            </div>
+
+        </div>
+      </section>
+
+      <!-- 4. NILAI INTI (Core Values) -->
+      <section id="nilai" class="mb-16">
+        <div class="bg-primary text-white rounded-2xl p-8 sm:p-12 text-center shadow-2xl relative overflow-hidden">
+            <!-- Background Pattern (Optional CSS Only) -->
+            <div class="absolute top-0 left-0 w-full h-full opacity-10 pointer-events-none" 
+                 style="background-image: radial-gradient(circle, #ffffff 1px, transparent 1px); background-size: 20px 20px;"></div>
+
+            <h2 class="text-2xl sm:text-3xl font-bold mb-8 relative z-10">Nilai Inti Organisasi</h2>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-8 relative z-10">
+                <!-- Value 1 -->
+                <div class="flex flex-col items-center">
+                    <div class="w-16 h-16 rounded-full bg-white/10 flex items-center justify-center mb-4 backdrop-blur-sm">
+                        <i data-lucide="shield-check" class="w-8 h-8 text-accent"></i>
+                    </div>
+                    <h3 class="font-bold text-lg mb-2">Integritas</h3>
+                    <p class="text-sm text-gray-300">Jujur dan transparan dalam setiap tindakan.</p>
+                </div>
+
+                <!-- Value 2 -->
+                <div class="flex flex-col items-center">
+                    <div class="w-16 h-16 rounded-full bg-white/10 flex items-center justify-center mb-4 backdrop-blur-sm">
+                        <i data-lucide="users" class="w-8 h-8 text-accent"></i>
+                    </div>
+                    <h3 class="font-bold text-lg mb-2">Gotong Royong</h3>
+                    <p class="text-sm text-gray-300">Bekerja sama untuk mencapai tujuan bersama.</p>
+                </div>
+
+                <!-- Value 3 -->
+                <div class="flex flex-col items-center">
+                    <div class="w-16 h-16 rounded-full bg-white/10 flex items-center justify-center mb-4 backdrop-blur-sm">
+                        <i data-lucide="award" class="w-8 h-8 text-accent"></i>
+                    </div>
+                    <h3 class="font-bold text-lg mb-2">Keunggulan</h3>
+                    <p class="text-sm text-gray-300">Selalu memberikan hasil terbaik dan berkualitas.</p>
+                </div>
+            </div>
+        </div>
+      </section>
+
+      <!-- Footer -->
+      <footer class="text-center text-xs text-secondary pt-8 mt-12 border-t border-gray-200">
+        <p>© 2025 Kampung Jaya Sentosa. Mewujudkan Masa Depan.</p>
+      </footer>
+    </div>
+
+    <!-- SCRIPT -->
+    <script>
+      // Render Icons
+      function renderIcons() {
+        if (typeof lucide !== "undefined" && lucide.createIcons) {
+          lucide.createIcons();
+        }
+      }
+
+      window.onload = function() {
+          renderIcons();
+          
+          // Smooth Scroll
+          document.querySelectorAll('nav a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                if(targetElement) {
+                    const headerOffset = 100; 
+                    const elementPosition = targetElement.getBoundingClientRect().top;
+                    const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+                    window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
+                }
+            });
+        });
+      };
+    </script>
+  </body>
+</html>

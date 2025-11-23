@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Struktur Organisasi Kampung</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Load Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap");
+      body {
+        font-family: "Inter", sans-serif;
+        background-color: #fcfcfc; /* Latar belakang sangat terang/putih bersih */
+      }
+      /* Style untuk kartu profil - Lebih elegan dan berkelas */
+      .profile-card {
+        background-color: #ffffff;
+        border-radius: 0.75rem; /* Lebih bulat, lebih elegan */
+        /* Stronger, smoother shadow for elevation */
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.08),
+          0 4px 6px -2px rgba(0, 0, 0, 0.04);
+        transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); /* Transisi lebih halus */
+        text-align: center;
+        padding: 16px; /* Padding ditingkatkan sedikit */
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        border: 1px solid #f3f4f6; /* Border sangat halus */
+      }
+      .profile-card:hover {
+        transform: translateY(-4px); /* Peningkatan hover yang lebih terasa */
+        box-shadow: 0 15px 25px -5px rgba(0, 0, 0, 0.1),
+          0 10px 10px -5px rgba(0, 0, 0, 0.05);
+      }
+      .profile-photo {
+        width: 72px; /* Ukuran foto sedikit lebih besar */
+        height: 72px;
+        object-fit: cover;
+        border-radius: 50%;
+        border: 3px solid #3b82f6; /* Border lebih tebal */
+        margin: 0 auto 10px;
+      }
+      .role-badge {
+        display: inline-block;
+        padding: 3px 8px;
+        margin-bottom: 6px;
+        border-radius: 9999px;
+        font-size: 0.7rem; /* Font badge sedikit lebih besar */
+        font-weight: 700;
+        color: #ffffff;
+        background-color: #3b82f6; /* Default biru */
+      }
+      .text-sm {
+        font-size: 0.875rem;
+      }
+
+      /* Style Tambahan untuk hirarki - Desain Header Lebih Elegan */
+      .level-header {
+        background-color: #ffffff;
+        padding: 8px 16px;
+        margin-bottom: 1.5rem;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05),
+          0 2px 4px -2px rgba(0, 0, 0, 0.03); /* Bayangan bawah elegan */
+        border-radius: 0.5rem;
+        font-weight: 700;
+        font-size: 0.875rem;
+        text-align: center;
+        border: 1px solid #e5e7eb; /* Border halus */
+      }
+
+      /* CSS untuk Konektor Bagan (Lebih Tegas) */
+      .hierarchy-connector {
+        position: relative;
+        padding-top: 1.5rem; /* Padding ditingkatkan */
+      }
+      .hierarchy-connector::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 50%;
+        width: 3px; /* Garis vertikal lebih tebal */
+        height: 1.5rem;
+        background-color: #4b5563; /* Abu-abu gelap */
+        transform: translateX(-50%);
+      }
+      /* Garis Horizontal untuk pembagian */
+      .horizontal-line {
+        height: 3px; /* Garis horizontal lebih tebal */
+        background-color: #4b5563;
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+      }
+    </style>
+  </head>
+  <body class="min-h-screen">
+    <!-- Kontainer Utama -->
+    <div id="app-container" class="min-h-screen p-4 sm:p-8">
+      <!-- Header Utama (Struktur Organisasi) -->
+      <div
+        class="max-w-7xl mx-auto mb-10 bg-white p-6 rounded-xl shadow-2xl border-l-4 border-green-600"
+      >
+        <h1
+          class="text-2xl sm:text-3xl font-extrabold text-gray-900 mb-2 flex items-center"
+        >
+          <i
+            data-lucide="layout-grid"
+            class="w-6 h-6 sm:w-8 sm:h-8 mr-3 text-green-600"
+          ></i>
+          Struktur Organisasi Pemerintah Kampung
+        </h1>
+        <p class="text-sm text-gray-500">
+          Mengenal perangkat kampung, jabatan resmi, dan tupoksi mereka. Desain
+          Elegan & Modern.
+        </p>
+      </div>
+
+      <!-- Bagian Struktur Organisasi (Hirarki Fungsional) -->
+      <div class="max-w-7xl mx-auto mt-6 mb-10">
+        <h2
+          class="text-xl font-semibold text-gray-700 border-b border-gray-300 pb-2 flex items-center mb-6"
+        >
+          <i data-lucide="git-branch" class="w-5 h-5 mr-2 text-gray-500"></i>
+          Bagan Organisasi Fungsional
+        </h2>
+        <div id="organization-chart">
+          <!-- Struktur Hirarki akan dirender di sini -->
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <div
+        class="max-w-7xl mx-auto text-center text-xs text-gray-400 pt-8 mt-12 border-t border-gray-200"
+      >
+        <p>© 2024 Informasi Resmi Perangkat Kampung. Desain oleh Gemini.</p>
+      </div>
+    </div>
+
+    <!-- Modal untuk Tampilan Foto Penuh -->
+    <div
+      id="imageModal"
+      class="fixed inset-0 bg-black bg-opacity-80 z-50 hidden flex items-center justify-center p-4"
+      onclick="closeModal()"
+    >
+      <!-- StopPropagation mencegah klik pada konten modal menutup modal -->
+      <div
+        class="bg-white rounded-lg p-3 max-w-lg w-full relative"
+        onclick="event.stopPropagation()"
+      >
+        <!-- Tombol Tutup -->
+        <button
+          class="absolute top-0 right-0 m-2 text-white bg-red-600 hover:bg-red-700 rounded-full w-8 h-8 flex items-center justify-center text-xl font-bold leading-none z-10"
+          onclick="closeModal()"
+        >
+          &times;
+        </button>
+        <img
+          id="modalImage"
+          class="max-h-[80vh] w-full object-contain mx-auto rounded-lg shadow-xl"
+          src=""
+          alt="Foto Perangkat Kampung"
+        />
+        <p
+          id="modalCaption"
+          class="text-center text-gray-700 mt-2 font-semibold text-sm"
+        ></p>
+      </div>
+    </div>
+
+    <script>
+      // Data Mock untuk Perangkat Kampung (Sesuai Struktur Resmi)
+      const ORGANIZATION_DATA = [
+        {
+          name: "Bapak Budi Santoso",
+          role: "Kepala Kampung",
+          level: 1,
+          group: "Pimpinan",
+          contact: "0812-XXXX-1000",
+          photoUrl:
+            "https://placehold.co/400x400/059669/ffffff?text=KEPALA+KAMPUNG" // Changed color
+        },
+        // LEVEL 2: Sekretariat
+        {
+          name: "Ibu Rina Wijaya",
+          role: "Sekretaris Kampung",
+          level: 2,
+          group: "Sekretariat",
+          contact: "0812-XXXX-1001",
+          photoUrl: "https://placehold.co/400x400/ef4444/ffffff?text=SEKRETARIS" // Changed color
+        },
+        // LEVEL 3: Unsur Pelaksana Teknis (Kaur & Kasi)
+        // KAUR (Staf Sekretariat)
+        {
+          name: "Bapak Dwi Haryanto",
+          role: "Kaur Tata Usaha & Umum",
+          level: 3,
+          group: "Kaur",
+          contact: "0812-XXXX-1008",
+          photoUrl: "https://placehold.co/400x400/2563eb/ffffff?text=KAUR+TU" // Changed color
+        },
+        {
+          name: "Bapak Agung Pramono",
+          role: "Kaur Keuangan",
+          level: 3,
+          group: "Kaur",
+          contact: "0812-XXXX-1002",
+          photoUrl:
+            "https://placehold.co/400x400/2563eb/ffffff?text=KAUR+KEUANGAN"
+        },
+        {
+          name: "Ibu Siti Aisyah",
+          role: "Kaur Perencanaan",
+          level: 3,
+          group: "Kaur",
+          contact: "0812-XXXX-1003",
+          photoUrl:
+            "https://placehold.co/400x400/2563eb/ffffff?text=KAUR+PERENCANAAN"
+        },
+        // KASI (Pelaksana Teknis)
+        {
+          name: "Bapak Herman Setiadi",
+          role: "Kasi Pemerintahan",
+          level: 3,
+          group: "Kasi",
+          contact: "0812-XXXX-1006",
+          photoUrl:
+            "https://placehold.co/400x400/f59e0b/ffffff?text=KASI+PEMERINTAHAN" // Changed color for visual break
+        },
+        {
+          name: "Ibu Maya Sari",
+          role: "Kasi Kesejahteraan",
+          level: 3,
+          group: "Kasi",
+          contact: "0812-XXXX-1007",
+          photoUrl:
+            "https://placehold.co/400x400/f59e0b/ffffff?text=KASI+KESEJAHTERAAN"
+        },
+        {
+          name: "Bapak Joni Prasetio",
+          role: "Kasi Pelayanan",
+          level: 3,
+          group: "Kasi",
+          contact: "0812-XXXX-1009",
+          photoUrl:
+            "https://placehold.co/400x400/f59e0b/ffffff?text=KASI+PELAYANAN"
+        },
+
+        // LEVEL 4: Unsur Pelaksana Kewilayahan (Dusun)
+        {
+          name: "Bapak Dedi Kurniawan",
+          role: "Kepala Dusun I",
+          level: 4,
+          group: "Kadus",
+          contact: "0812-XXXX-1004",
+          photoUrl: "https://placehold.co/400x400/6b7280/ffffff?text=KADUS+I" // Changed color
+        },
+        {
+          name: "Ibu Ratih Kumala",
+          role: "Kepala Dusun II",
+          level: 4,
+          group: "Kadus",
+          contact: "0812-XXXX-1010",
+          photoUrl: "https://placehold.co/400x400/6b7280/ffffff?text=KADUS+II"
+        },
+        {
+          name: "Bapak Setyo Wibowo",
+          role: "Kepala Dusun III",
+          level: 4,
+          group: "Kadus",
+          contact: "0812-XXXX-1011",
+          photoUrl: "https://placehold.co/400x400/6b7280/ffffff?text=KADUS+III"
+        }
+      ];
+
+      // Fungsi untuk menampilkan modal
+      function openModal(imageUrl, name) {
+        const modal = document.getElementById("imageModal");
+        const img = document.getElementById("modalImage");
+        const caption = document.getElementById("modalCaption");
+
+        img.src = imageUrl;
+        img.alt = `Foto ${name}`;
+        caption.textContent = `Foto Resmi: ${name} (${
+          ORGANIZATION_DATA.find((d) => d.name === name)?.role || ""
+        })`;
+        modal.classList.remove("hidden");
+      }
+
+      // Fungsi untuk menyembunyikan modal
+      function closeModal() {
+        document.getElementById("imageModal").classList.add("hidden");
+      }
+
+      // --- UTILITAS ICON ---
+
+      /**
+       * Render ikon Lucide ke dalam DOM.
+       */
+      function renderIcons() {
+        setTimeout(() => {
+          if (typeof lucide !== "undefined" && lucide.createIcons) {
+            lucide.createIcons();
+          }
+        }, 0);
+      }
+
+      /**
+       * Mengelompokkan data berdasarkan level dan group.
+       */
+      function groupDataByLevel(data) {
+        const grouped = {};
+        data.forEach((item) => {
+          if (!grouped[item.level]) {
+            grouped[item.level] = [];
+          }
+          grouped[item.level].push(item);
+        });
+        return grouped;
+      }
+
+      function groupDataByGroup(data) {
+        const grouped = {
+          Kaur: [],
+          Kasi: [],
+          Kadus: []
+        };
+        data.forEach((item) => {
+          if (item.group in grouped) {
+            grouped[item.group].push(item);
+          }
+        });
+        return grouped;
+      }
+
+      /**
+       * Mendapatkan style badge berdasarkan level (Diperbarui untuk Elegansi & Monotoni)
+       */
+      function getBadgeStyle(level, group) {
+        // Palet warna baru: Green, Red, Blue, Amber/Orange, Slate
+        switch (level) {
+          case 1:
+            return { bg: "#059669", icon: "crown", border: "#10b981" }; // Deep Green (Pimpinan)
+          case 2:
+            return { bg: "#ef4444", icon: "pen-tool", border: "#f87171" }; // Deep Red (Sekretariat)
+          case 3:
+            if (group === "Kaur") {
+              return { bg: "#2563eb", icon: "folder-cog", border: "#3b82f6" }; // Deep Blue (Kaur/Staf)
+            } else if (group === "Kasi") {
+              return {
+                bg: "#f59e0b",
+                icon: "briefcase-business",
+                border: "#fbbf24"
+              }; // Deep Amber (Kasi/Pelaksana)
+            }
+            return { bg: "#2563eb", icon: "briefcase", border: "#3b82f6" };
+          case 4:
+            return { bg: "#6b7280", icon: "map-pin", border: "#9ca3af" }; // Dark Slate (Kewilayahan)
+          default:
+            return { bg: "#1d4ed8", icon: "user", border: "#3b82f6" };
+        }
+      }
+
+      /**
+       * Render Kartu Anggota
+       */
+      function renderMemberCard(item) {
+        const style = getBadgeStyle(item.level, item.group);
+        // Tambahkan event onclick pada div yang membungkus foto
+        return `
+                <div class="profile-card border-t-2" style="border-color: ${
+                  style.border
+                };">
+                    <div class="cursor-pointer" onclick="openModal('${
+                      item.photoUrl
+                    }', '${item.name}')">
+                        <img 
+                            src="${item.photoUrl}" 
+                            alt="Foto ${item.name}"
+                            onerror="this.onerror=null; this.src='https://placehold.co/400x400/${style.border.substring(
+                              1
+                            )}/ffffff?text=FOTO';"
+                            class="profile-photo"
+                            style="border-color: ${style.border};"
+                        >
+                    </div>
+                    <div class="flex-grow">
+                        <div class="role-badge" style="background-color: ${
+                          style.bg
+                        };">
+                            <i data-lucide="${
+                              style.icon
+                            }" class="w-3 h-3 inline mr-1 -mt-0.5"></i> ${
+          item.role
+        }
+                        </div>
+                        <h3 class="text-sm font-extrabold text-gray-800">${
+                          item.name
+                        }</h3>
+                        <p class="text-xs text-gray-500 mt-0.5">${
+                          item.contact
+                        }</p>
+                    </div>
+                </div>
+            `;
+      }
+
+      /**
+       * Render Divisi Fungsional
+       */
+      function renderDivision(title, members, headerColorClass, icon) {
+        // Mengatur grid per divisi.
+        const gridColsClass = "sm:grid-cols-2 lg:grid-cols-3";
+
+        return `
+                <div class="division">
+                    <!-- Level Header baru dengan bayangan dan warna teks dinamis -->
+                    <div class="level-header flex items-center justify-center mb-6 text-sm font-semibold ${headerColorClass}">
+                        <i data-lucide="${icon}" class="w-4 h-4 mr-2"></i> ${title}
+                    </div>
+                    <div class="relative">
+                        <!-- Garis vertikal di tengah setiap divisi - lebih tipis -->
+                        <div class="w-0.5 bg-gray-300 absolute left-1/2 transform -translate-x-1/2 top-0 bottom-0 z-0 hidden lg:block"></div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-6 relative z-10">
+                            ${members
+                              .map(
+                                (item) => `
+                                <div class="relative">
+                                    ${renderMemberCard(item)}
+                                </div>
+                            `
+                              )
+                              .join("")}
+                        </div>
+                    </div>
+                </div>
+            `;
+      }
+
+      // --- FUNGSI RENDER UTAMA ---
+      function renderOrganizationChart() {
+        const container = document.getElementById("organization-chart");
+        const groupedData = groupDataByLevel(ORGANIZATION_DATA);
+        const operationalGroups = groupDataByGroup(
+          groupedData[3].concat(groupedData[4])
+        );
+
+        let htmlContent = "";
+
+        // 1. LEVEL 1: Kepala Kampung (Pimpinan)
+        const chief = groupedData[1][0];
+        htmlContent += `
+                <div class="level-1 flex justify-center mb-10">
+                    <div class="max-w-xs w-full relative z-10">
+                        ${renderMemberCard(chief)}
+                    </div>
+                </div>
+            `;
+
+        // 2. LEVEL 2: Sekretaris Desa (Garis Lurus di bawah)
+        const secretary = groupedData[2][0];
+        htmlContent += `
+                <div class="level-2 flex justify-center relative hierarchy-connector mb-12">
+                    <div class="max-w-xs w-full relative z-10">
+                        ${renderMemberCard(secretary)}
+                    </div>
+                </div>
+            `;
+
+        // 3. LEVEL 3 & 4: UNIT OPERASIONAL
+
+        // Konektor T-Junction yang lebih tebal dan tegas:
+        htmlContent += `
+                <div class="relative max-w-7xl mx-auto h-12 mb-8">
+                    <!-- Garis Vertikal (dari Sekdes) -->
+                    <div class="w-0.5 h-6 bg-gray-600 absolute top-0 left-1/2 transform -translate-x-1/2"></div>
+                    <!-- Garis Horizontal (distribusi ke 3 Divisi) -->
+                    <div class="horizontal-line w-full top-6 bg-gray-600"></div>
+                    <!-- Garis Vertikal Lanjutan (ke unit di bawah) - lebih tebal dan ke tengah area divisi -->
+                    <div class="w-0.5 h-6 bg-gray-600 absolute top-6 left-1/2 transform -translate-x-1/2"></div>
+                </div>
+                <!-- Divisi Utama yang dibagi 3 -->
+                <div class="operational-units grid grid-cols-1 lg:grid-cols-3 gap-8 mt-6">
+            `;
+
+        // --- KOLOM 1: KAUR (Staf Sekretariat) ---
+        htmlContent += renderDivision(
+          "Unsur Staf Sekretariat (Kaur)",
+          operationalGroups.Kaur,
+          "text-blue-700",
+          "folder-cog"
+        );
+
+        // --- KOLOM 2: KASI (Pelaksana Teknis) ---
+        htmlContent += renderDivision(
+          "Unsur Pelaksana Teknis (Seksi)",
+          operationalGroups.Kasi,
+          "text-amber-700",
+          "briefcase-business"
+        );
+
+        // --- KOLOM 3: KADUS (Pelaksana Kewilayahan) ---
+        htmlContent += renderDivision(
+          "Unsur Pelaksana Kewilayahan",
+          operationalGroups.Kadus,
+          "text-slate-700",
+          "map-pin"
+        );
+
+        htmlContent += `</div>`; // Tutup operational-units grid
+
+        container.innerHTML = htmlContent;
+      }
+
+      // --- SETUP AWAL ---
+
+      window.onload = function () {
+        renderOrganizationChart();
+        renderIcons();
+      };
+    </script>
+  </body>
+</html>

@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dokumentasi Acara Kampung - Dengan Tautan Maps Langsung</title>
+    
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Load Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Google Fonts: Poppins -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Konfigurasi Tema Elegan Modern -->
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              primary: '#1e293b', // Slate-900 (Teks utama)
+              accent: '#d97706',  // Amber-600 (Aksen/Sorotan)
+              soft: '#f9f7f5',    // Soft Cream (Latar belakang)
+              secondary: '#64748b', // Slate-500 (Teks sekunder)
+            },
+            fontFamily: {
+              sans: ['Poppins', 'sans-serif'],
+            }
+          }
+        }
+      }
+    </script>
+
+    <style>
+      body {
+        background-color: #f9f7f5;
+      }
+      .activity-card {
+        transition: transform 0.3s ease, box-shadow 0.4s ease;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+      }
+      .activity-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 30px -5px rgba(0, 0, 0, 0.15);
+      }
+      .image-container {
+        height: 200px;
+        width: 100%;
+        overflow: hidden;
+      }
+      .image-placeholder {
+        object-fit: cover;
+        height: 100%;
+        width: 100%;
+        transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      }
+      .activity-card:hover .image-placeholder {
+        transform: scale(1.08);
+      }
+      /* Modal Styles for transition */
+      #location-modal-overlay {
+        opacity: 0;
+        transition: opacity 0.3s ease;
+      }
+      #location-modal {
+        transform: scale(0.95);
+        transition: transform 0.3s ease;
+        max-height: 90vh; 
+      }
+    </style>
+  </head>
+  <body class="min-h-screen font-sans bg-soft text-primary antialiased selection:bg-accent selection:text-white">
+    
+    <!-- Header Navigasi -->
+    <header class="sticky top-0 z-50 bg-white/95 backdrop-blur-md shadow-lg border-b border-gray-100">
+      <div class="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
+        <!-- Brand / Judul -->
+        <div class="flex items-center gap-3">
+          <i data-lucide="party-popper" class="w-6 h-6 text-accent"></i>
+          <div>
+            <h1 class="font-bold text-lg leading-tight text-primary">Dokumentasi Acara Kampung</h1>
+            <p class="text-xs text-secondary">Jadwal & Informasi Festival Komunitas</p>
+          </div>
+        </div>
+        <!-- Tombol Aksi (Filter/Search Mock) -->
+        <button class="text-sm font-medium text-secondary hover:text-accent transition-colors flex items-center gap-2 border border-gray-200 p-2 rounded-xl hover:border-accent shadow-sm">
+          <i data-lucide="calendar-check" class="w-4 h-4"></i>
+          <span class="hidden sm:inline">Telusuri Acara Lain</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Kontainer Utama -->
+    <div id="app-container" class="p-4 sm:p-8 max-w-6xl mx-auto">
+      
+      <!-- Judul Halaman -->
+      <div class="mb-14 text-center max-w-4xl mx-auto mt-6">
+        <span class="inline-block py-1.5 px-4 rounded-full bg-accent/20 text-accent text-sm font-semibold tracking-wide mb-4 uppercase shadow-md">Semangat Komunitas</span>
+        <h2 class="text-4xl md:text-5xl font-extrabold text-primary mb-4 leading-tight">
+          Daftar Acara Utama Festival Akbar
+        </h2>
+        <p class="text-secondary text-lg mt-4">
+          Cek detail jadwal, lokasi, dan deskripsi acara. Klik tombol peta untuk melihat detail lokasi.
+        </p>
+      </div>
+
+      <!-- Grid Dokumentasi Kegiatan -->
+      <div
+        id="activities-grid"
+        class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"
+      >
+        <!-- Activity Cards will be rendered here by JavaScript -->
+        <div class="col-span-full text-center py-20 text-gray-400 animate-pulse">
+          Memuat daftar acara...
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <div class="text-center text-xs text-secondary pt-12 mt-12 border-t border-gray-200">
+        <p>© 2025 Panitia Perayaan Kampung. Dirancang dengan Elegan Modern.</p>
+      </div>
+    </div>
+
+    <!-- MODAL LOKASI (Hidden by default) -->
+    <div id="location-modal-overlay" class="fixed inset-0 bg-primary bg-opacity-70 z-[100] hidden flex items-center justify-center transition-opacity duration-300" onclick="closeLocationModal()">
+        <!-- Stop propagation agar klik di dalam konten modal tidak menutup modal -->
+        <div id="location-modal" class="bg-white rounded-xl shadow-2xl max-w-xs sm:max-w-xl lg:max-w-3xl w-full mx-4 my-10 transform scale-95 transition-transform duration-300 relative" onclick="event.stopPropagation()">
+            
+            <div class="p-6 sm:p-8 overflow-y-auto max-h-[85vh]">
+                <!-- Close Button -->
+                <button onclick="closeLocationModal()" class="absolute top-4 right-4 text-secondary hover:text-accent p-2 rounded-full transition-colors z-10 bg-white/50 backdrop-blur-sm shadow-md">
+                    <i data-lucide="x" class="w-6 h-6"></i>
+                </button>
+                
+                <h3 id="modal-title" class="text-2xl font-bold text-primary mb-4 border-b pb-2">Detail Lokasi Acara</h3>
+                
+                <!-- Image Placeholder (Foto Lokasi) -->
+                <div class="mb-6 rounded-lg overflow-hidden border border-gray-100 shadow-xl">
+                    <img id="modal-image" src="" alt="Foto Lokasi Acara" class="w-full h-auto object-cover max-h-80 sm:max-h-96" loading="lazy" onerror="this.onerror=null; this.src='https://placehold.co/800x400/1e293b/f8fafc?text=Foto+Lokasi+Tidak+Tersedia';">
+                </div>
+                
+                <!-- Tautan Langsung ke Google Maps (Mengganti Iframe) -->
+                <a id="modal-map-link" 
+                   target="_blank" 
+                   rel="noopener noreferrer"
+                   class="w-full block text-center py-4 bg-green-600 text-white font-bold rounded-lg hover:bg-green-700 transition-colors shadow-lg shadow-green-600/40 text-lg mb-4"
+                >
+                    <i data-lucide="compass" class="w-6 h-6 inline-block mr-3"></i>
+                    Buka di Google Maps (Arahkan ke Lokasi)
+                </a>
+
+                <p id="modal-address" class="text-secondary text-sm text-center mb-2">
+                    <!-- Placeholder for Address/Coordinates -->
+                </p>
+
+                <p class="text-xs text-secondary mt-4 italic text-center">Tautan ini akan membuka aplikasi navigasi di perangkat Anda.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+      // Data Mock Kegiatan Perayaan Kampung (ditambah data lokasi dan koordinat)
+      const ACTIVITY_DATA = [
+        {
+          id: "A001",
+          title: "Lomba Masak Nusantara Antar RW",
+          date: "Sabtu, 14.00 - Selesai",
+          location: "Balai RW 05",
+          category: "Kuliner",
+          summary: "Ajang kompetisi kuliner yang menampilkan masakan tradisional terbaik dari setiap RW di lingkungan kampung.",
+          imageUrl: "https://placehold.co/600x220/1e293b/f8fafc?text=Lomba+Masak", 
+          // New Location Data
+          locationImage: "https://placehold.co/800x400/27374D/f8fafc?text=Foto+Balai+RW+05",
+          coordinates: { lat: -6.1754, lng: 106.8272, label: "Jalan Kenanga No. 12, Balai RW 05" }, 
+        },
+        {
+          id: "A002",
+          title: "Panggung Utama & Pentas Seni Daerah",
+          date: "Minggu, 19.00 - 22.00",
+          location: "Lapangan Utama",
+          category: "Seni & Hiburan",
+          summary: "Malam puncak menampilkan tarian tradisional, musik kontemporer, dan penampilan bakat lokal.",
+          imageUrl: "https://placehold.co/600x220/334155/f8fafc?text=Pentas+Seni",
+          // New Location Data
+          locationImage: "https://placehold.co/800x400/364F6B/f8fafc?text=Foto+Lapangan+Utama",
+          coordinates: { lat: -6.2088, lng: 106.8456, label: "Lapangan Merdeka, Pusat Kota" },
+        },
+        {
+          id: "A003",
+          title: "Turnamen Sepak Bola Mini (Final)",
+          date: "Sabtu, 08.00 - 12.00",
+          location: "Lapangan Hijau",
+          category: "Olahraga",
+          summary: "Pertandingan final yang sangat dinantikan, memperebutkan piala bergilir dan hadiah utama.",
+          imageUrl: "https://placehold.co/600x220/64748b/f8fafc?text=Turnamen+Sepakbola",
+          // New Location Data
+          locationImage: "https://placehold.co/800x400/4F6D7A/f8fafc?text=Foto+Lapangan+Hijau",
+          coordinates: { lat: -6.2000, lng: 106.8167, label: "Komplek Olahraga Cempaka, Lapangan Hijau" }, 
+        },
+        {
+          id: "A004",
+          title: "Bazar UMKM Lokal & Kerajinan",
+          date: "Sepanjang Hari (2 hari)",
+          location: "Sepanjang Jalan Raya",
+          category: "Ekonomi",
+          summary: "Pameran produk UMKM, kerajinan tangan, dan berbagai jajanan pasar yang meramaikan festival.",
+          imageUrl: "https://placehold.co/600x220/94a3b8/f8fafc?text=Bazar+UMKM",
+          // New Location Data
+          locationImage: "https://placehold.co/800x400/5C7A87/f8fafc?text=Foto+Jalan+Raya",
+          coordinates: { lat: -6.2300, lng: 106.9000, label: "Jalan Raya Utama, Samping Bank BPD" }, 
+        },
+        {
+          id: "A005",
+          title: "Edukasi Kebersihan Lingkungan",
+          date: "Minggu, 10.00 - 11.30",
+          location: "Taman Kota",
+          category: "Pendidikan",
+          summary: "Sesi interaktif tentang pentingnya memilah sampah dan menjaga kebersihan sungai di lingkungan kampung.",
+          imageUrl: "https://placehold.co/600x220/cbd5e1/1e293b?text=Edukasi+Lingkungan",
+          // New Location Data
+          locationImage: "https://placehold.co/800x400/8D99AE/1e293b?text=Foto+Taman+Kota",
+          coordinates: { lat: -6.3000, lng: 106.8000, label: "Taman Kota Sejahtera, Area Utama" }, 
+        },
+        {
+          id: "A006",
+          title: "Donor Darah Massal",
+          date: "Jumat, 09.00 - 15.00",
+          location: "Gedung Serbaguna",
+          category: "Sosial",
+          summary: "Kegiatan amal bekerjasama dengan PMI untuk mengumpulkan stok darah bagi warga yang membutuhkan.",
+          imageUrl: "https://placehold.co/600x220/e2e8f0/1e293b?text=Donor+Darah",
+          // New Location Data
+          locationImage: "https://placehold.co/800x400/A3B1C6/1e293b?text=Foto+Gedung+Serbaguna",
+          coordinates: { lat: -6.2222, lng: 106.7777, label: "Gedung Serbaguna RT 02" }, 
+        }
+      ];
+
+      // --- UTILITAS ---
+
+      function getCategoryColor(category) {
+        switch (category) {
+          case "Kuliner": return "bg-red-100 text-red-700";
+          case "Seni & Hiburan": return "bg-purple-100 text-purple-700";
+          case "Olahraga": return "bg-green-100 text-green-700";
+          case "Ekonomi": return "bg-yellow-100 text-yellow-700";
+          case "Pendidikan": return "bg-blue-100 text-blue-700";
+          case "Sosial": return "bg-pink-100 text-pink-700";
+          default: return "bg-gray-100 text-gray-700";
+        }
+      }
+
+      function renderIcons() {
+        setTimeout(() => {
+          if (typeof lucide !== "undefined" && lucide.createIcons) {
+            lucide.createIcons();
+          }
+        }, 0);
+      }
+
+      // --- LOGIKA MODAL ---
+
+      /**
+       * Membuka modal dengan detail lokasi dan tautan Maps untuk activityId tertentu.
+       * @param {string} activityId ID acara yang akan ditampilkan.
+       */
+      function openLocationModal(activityId) {
+        const activity = ACTIVITY_DATA.find(a => a.id === activityId);
+        if (!activity) return;
+
+        const modalOverlay = document.getElementById("location-modal-overlay");
+        const modalTitle = document.getElementById("modal-title");
+        const modalImage = document.getElementById("modal-image");
+        const modalMapLink = document.getElementById("modal-map-link");
+        const modalAddress = document.getElementById("modal-address");
+
+        // 1. Populate Content
+        modalTitle.textContent = `Lokasi: ${activity.location} (${activity.title})`;
+        modalImage.src = activity.locationImage;
+
+        // 2. Generate Direct Google Maps Link
+        const lat = activity.coordinates.lat;
+        const lng = activity.coordinates.lng;
+        // Gunakan parameter 'q' dengan koordinat untuk membuka Maps dan menandai lokasi
+        const directMapUrl = `https://maps.google.com/?q=${lat},${lng}`; 
+        
+        modalMapLink.href = directMapUrl;
+        modalAddress.textContent = activity.coordinates.label || `Koordinat: ${lat}, ${lng}`;
+        
+        // 3. Display Modal with transition effect
+        modalOverlay.classList.remove('hidden');
+        document.body.style.overflow = 'hidden'; // Mencegah scroll pada body saat modal terbuka
+        
+        setTimeout(() => {
+            modalOverlay.style.opacity = '1';
+            document.getElementById("location-modal").style.transform = 'scale(1)';
+        }, 10); 
+
+        renderIcons(); // Render icons di dalam modal
+      }
+
+      function closeLocationModal() {
+        const modalOverlay = document.getElementById("location-modal-overlay");
+        
+        // Animate closing
+        modalOverlay.style.opacity = '0';
+        document.getElementById("location-modal").style.transform = 'scale(0.95)';
+        
+        setTimeout(() => {
+            modalOverlay.classList.add('hidden');
+            document.body.style.overflow = 'auto'; // Mengizinkan scroll kembali
+        }, 300); // Tunggu transisi selesai
+      }
+
+      // --- RENDERING UI ---
+
+      function renderActivitiesGrid() {
+        const container = document.getElementById("activities-grid");
+        container.innerHTML = ""; 
+
+        ACTIVITY_DATA.forEach((activity, index) => {
+          const categoryClass = getCategoryColor(activity.category);
+          const delay = index * 100; 
+          
+          const cardHtml = `
+            <!-- Kartu Acara: Elegan Modern Sederhana -->
+            <div class="activity-card bg-white rounded-xl overflow-hidden border border-gray-100 flex flex-col" style="animation-delay: ${delay}ms">
+                
+                <!-- Image Header -->
+                <div class="image-container relative">
+                    <img 
+                        src="${activity.imageUrl}" 
+                        alt="${activity.title}" 
+                        class="image-placeholder"
+                        loading="lazy"
+                        onerror="this.onerror=null; this.src='https://placehold.co/600x220/1e293b/f8fafc?text=Acara+Kampung';"
+                    >
+                    <div class="absolute top-4 left-4">
+                         <span class="text-xs font-bold px-3 py-1 rounded-full ${categoryClass} shadow-md backdrop-blur-sm bg-opacity-90">
+                            ${activity.category}
+                        </span>
+                    </div>
+                </div>
+
+                <div class="p-6 flex flex-col flex-grow">
+                    <h3 class="text-xl font-bold text-primary mb-3 line-clamp-2 hover:text-accent transition-colors">
+                        ${activity.title}
+                    </h3>
+                    
+                    <!-- Metadata Acara (Jadwal & Lokasi) -->
+                    <div class="flex flex-col space-y-2 text-sm text-secondary mb-4 pb-4 border-b border-gray-100">
+                        <div class="flex items-center">
+                            <i data-lucide="clock" class="w-4 h-4 mr-2 text-accent"></i>
+                            <span class="font-semibold text-primary/80">Waktu:</span> ${activity.date}
+                        </div>
+                        <div class="flex items-center">
+                            <i data-lucide="map-pin" class="w-4 h-4 mr-2 text-accent"></i>
+                            <span class="font-semibold text-primary/80">Tempat:</span> ${activity.location}
+                        </div>
+                    </div>
+
+                    <p class="text-sm text-secondary line-clamp-3 mb-6 flex-grow">
+                        ${activity.summary}
+                    </p>
+                    
+                    <!-- Button for Modal -->
+                    <button 
+                        onclick="openLocationModal('${activity.id}')"
+                        class="mt-auto px-4 py-3 bg-accent text-white font-semibold rounded-lg hover:bg-yellow-700 transition-colors flex items-center justify-center gap-2 shadow-xl shadow-accent/30 text-sm"
+                    >
+                        <i data-lucide="map" class="w-5 h-5"></i>
+                        Lihat Lokasi & Peta
+                    </button>
+                </div>
+            </div>
+          `;
+          container.insertAdjacentHTML("beforeend", cardHtml);
+        });
+
+        renderIcons();
+      }
+
+      window.onload = function () {
+        renderActivitiesGrid();
+      };
+    </script>
+  </body>
+</html>
